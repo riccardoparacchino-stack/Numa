@@ -1,6 +1,7 @@
 import { useState, type CSSProperties, type ElementType, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import colorTokens from "../../../tokens/primitive/color.json";
+import semanticColorTokens from "../../../tokens/semantic/color.json";
 import {
   getDefaultTextWeight,
   getPrimaryFontFamily,
@@ -27,6 +28,7 @@ type StoryTextProps = {
   color?: CSSProperties["color"];
   fontWeight?: CSSProperties["fontWeight"];
   fontFamily?: CSSProperties["fontFamily"];
+  style?: ThemeProperties;
   letterSpacing?: LetterSpacingOption;
   href?: string;
   htmlFor?: string;
@@ -39,30 +41,64 @@ type ThemeProperties = CSSProperties & {
   [key: `--${string}`]: string;
 };
 
+const harmonicRatios = [
+  { name: "Minor second", value: 1.067 },
+  { name: "Major second", value: 1.125 },
+  { name: "Minor third", value: 1.2 },
+  { name: "Major third", value: 1.25 },
+  { name: "Perfect fourth", value: 1.333 },
+  { name: "Augmented fourth", value: 1.414 },
+  { name: "Perfect fifth", value: 1.5 },
+  { name: "Golden ratio", value: 1.618 },
+] as const;
+
+function resolveSemanticColor(name: keyof typeof semanticColorTokens): string {
+  const token = semanticColorTokens[name];
+  if (token.$type !== "color") {
+    throw new TypeError(`Expected a semantic color token: ${name}`);
+  }
+
+  const match = /^\{([^{}]+)\}$/.exec(token.$value);
+  if (!match) {
+    throw new TypeError(`Semantic color must alias a primitive color: ${name}`);
+  }
+
+  const primitive = colorTokens[match[1] as keyof typeof colorTokens];
+  if (!primitive || primitive.$type !== "color" || typeof primitive.$value !== "string") {
+    throw new Error(`Missing primitive color referenced by ${name}: ${match[1]}`);
+  }
+
+  return primitive.$value;
+}
+
 const palette = {
-  ink: colorTokens["numa-sys-col-slate-900"].$value,
-  muted: colorTokens["numa-sys-col-slate-600"].$value,
-  line: colorTokens["numa-sys-col-slate-200"].$value,
-  paper: colorTokens["numa-sys-col-slate-50"].$value,
-  surface: colorTokens["numa-sys-col-gray-50"].$value,
-  green: colorTokens["numa-sys-col-green-800"].$value,
-  mint: colorTokens["numa-sys-col-green-100"].$value,
-  gold: colorTokens["numa-sys-col-amber-500"].$value,
-  callout: colorTokens["numa-sys-col-amber-50"].$value,
-  code: colorTokens["numa-sys-col-green-50"].$value,
+  ink: resolveSemanticColor("numa-color-context-text-primary"),
+  muted: resolveSemanticColor("numa-color-context-text-secondary"),
+  tertiary: resolveSemanticColor("numa-color-context-text-tertiary"),
+  line: resolveSemanticColor("numa-color-context-border-subtle"),
+  paper: resolveSemanticColor("numa-color-context-background-default"),
+  surface: resolveSemanticColor("numa-color-context-surface-level-1"),
+  accent: resolveSemanticColor("numa-color-interactive-text-primary"),
+  accentSurface: resolveSemanticColor("numa-color-interactive-surface-primary-default"),
+  accentText: resolveSemanticColor("numa-color-interactive-text-on-primary"),
+  focus: resolveSemanticColor("numa-color-interactive-outline-focus"),
+  focusOnAccent: resolveSemanticColor("numa-color-interactive-outline-focus-on-primary-inner"),
+  subtleHover: resolveSemanticColor("numa-color-interactive-surface-subtle-hover"),
 } as const;
 
 const themeStyle: ThemeProperties = {
   "--ink": palette.ink,
   "--muted": palette.muted,
+  "--tertiary": palette.tertiary,
   "--line": palette.line,
   "--paper": palette.paper,
   "--surface": palette.surface,
-  "--green": palette.green,
-  "--mint": palette.mint,
-  "--gold": palette.gold,
-  "--callout": palette.callout,
-  "--code": palette.code,
+  "--accent": palette.accent,
+  "--accent-surface": palette.accentSurface,
+  "--accent-text": palette.accentText,
+  "--focus": palette.focus,
+  "--focus-on-accent": palette.focusOnAccent,
+  "--subtle-hover": palette.subtleHover,
   "--font-family": getPrimaryFontFamily(),
 };
 
@@ -138,6 +174,7 @@ function StoryApp() {
   const [size, setSize] = useState<StorySize>("m");
   const [element, setElement] = useState<StoryElement>("p");
   const [letterSpacing, setLetterSpacing] = useState<LetterSpacingOption>("relaxed");
+  const [harmonicRatio, setHarmonicRatio] = useState<number>(1.2);
 
   const selectedMetrics = metricsFor(variant, size);
   const selectedTracking = resolveLetterSpacing(selectedMetrics.fontSizeToken, letterSpacing);
@@ -154,6 +191,20 @@ function StoryApp() {
       ),
     ).values(),
   ).sort((a, b) => a.fontSize - b.fontSize);
+  const scaleSamples = variants.flatMap((name) =>
+    (Object.keys(textVariants[name]) as StorySize[]).map((textSize) => {
+      const metrics = metricsFor(name, textSize);
+      const step = fontSizes.findIndex((fontSize) => fontSize.fontSize === metrics.fontSize);
+      const generatedFontSize = 16 * harmonicRatio ** (step - 2);
+      return {
+        variant: name,
+        size: textSize,
+        metrics,
+        generatedFontSize,
+        generatedLineHeight: generatedFontSize * (metrics.lineHeight / metrics.fontSize),
+      };
+    }),
+  );
 
   return (
     <div className="story-theme" style={themeStyle}>
@@ -181,7 +232,7 @@ function StoryApp() {
             ["#specimens", "Specimens"],
             ["#playground", "Playground"],
             ["#semantics", "Semantics"],
-            ["#scale", "Scale in use"],
+            ["#scale", "Type scale"],
             ["#rules", "Component rules"],
             ["#references", "References"],
           ].map(([href, label]) => (
@@ -207,7 +258,7 @@ function StoryApp() {
                         {name}
                       </StoryText>
                       <span className="tag">
-                        <StoryText variant="label" size="s" color={palette.green}>
+                        <StoryText variant="label" size="s" color={palette.accent}>
                           default weight {getDefaultTextWeight(name)}
                         </StoryText>
                       </span>
@@ -360,11 +411,68 @@ function StoryApp() {
 
           <section id="scale" aria-labelledby="scale-title">
             <SectionHeading
-              eyebrow="04 · Foundation values"
-              title="The scale in use"
+              eyebrow="04 · Harmonic configurations"
+              title="Harmonic scale explorer"
               id="scale-title"
-              description="These are the explicit font-size tokens used by Text, expressed in rem at a 16px root. Repeated sizes share tokens."
+              description="Compare harmonic-ratio configurations across every Text style. The Foundation scale currently used by Text remains documented below."
             />
+            <div className="scale-explorer card">
+              <div className="scale-explorer-heading">
+                <div>
+                  <StoryText variant="title" size="s" as="h3">Test a harmonic ratio</StoryText>
+                  <StoryText variant="body" size="s" as="p">
+                    Select a ratio to generate a geometric scale. The 16px
+                    base is anchored at the current 16px Foundation step; all
+                    13 styles are previewed at their corresponding scale step.
+                  </StoryText>
+                </div>
+                <div className="scale-picker">
+                  <StoryText variant="label" size="m" as="label" htmlFor="harmonic-ratio">
+                    Harmonic ratio
+                  </StoryText>
+                  <select
+                    id="harmonic-ratio"
+                    value={harmonicRatio}
+                    onChange={(event) => setHarmonicRatio(Number(event.currentTarget.value))}
+                  >
+                    {harmonicRatios.map(({ name, value }) => (
+                      <option key={value} value={value}>
+                        {name} · {value.toFixed(3)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <StoryText variant="label" size="s" as="p" className="scale-selection-status" aria-live="polite">
+                Ratio {harmonicRatio.toFixed(3)} · 16px base · {fontSizes.length} steps · {scaleSamples.length} style previews
+              </StoryText>
+              <div className="scale-preview-grid">
+                {scaleSamples.map(({ variant: name, size: textSize, metrics, generatedFontSize, generatedLineHeight }) => (
+                  <article className="scale-preview-card" key={`${name}-${textSize}`}>
+                    <StoryText variant="label" size="s" className="scale-preview-name">
+                      {name} / {textSize}
+                    </StoryText>
+                    <StoryText
+                      variant={name}
+                      size={textSize}
+                      className="scale-preview-sample scale-generated-sample"
+                      style={{
+                        "--generated-font-size": `${generatedFontSize}px`,
+                        "--generated-line-height": `${generatedLineHeight}px`,
+                      }}
+                    >
+                      The quick brown fox
+                    </StoryText>
+                    <StoryText variant="label" size="s" className="scale-preview-meta">
+                      {generatedFontSize.toFixed(1)}px · {harmonicRatio.toFixed(3)} ratio step · weight {getDefaultTextWeight(name)}
+                    </StoryText>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <StoryText variant="title" size="s" as="h3" className="foundation-scale-heading">
+              Foundation scale currently used by Text
+            </StoryText>
             <div className="table-wrap">
               <table>
                 <thead>
@@ -414,13 +522,13 @@ function StoryApp() {
             </div>
             <aside className="callout">
               <StoryText variant="body" size="m" as="p">
-                <StoryText variant="title" size="s" as="strong">There is no single harmonic ratio configured here.</StoryText>{" "}
-                Adjacent steps vary; this is a discrete, hand-specified
-                Foundation scale, not a geometric progression or generated
-                modular scale. The table shows ratios computed between sorted,
-                distinct font sizes. Line-height tokens are separate fixed
-                values, paired explicitly per variant and size. Letter-spacing
-                presets are size-aware, expressed in em, and independent of line
+                The ratio explorer is an illustration for comparing generated
+                scales; it does not change Text’s Foundation token mapping.
+                Adjacent steps in the implemented scale vary, so it remains a
+                discrete, hand-specified scale rather than a geometric
+                progression. Line-height tokens are separate fixed values,
+                paired explicitly per variant and size. Letter-spacing presets
+                are size-aware, expressed in em, and independent of line
                 height; relaxed is used when the prop is omitted.
               </StoryText>
             </aside>
@@ -446,8 +554,8 @@ function StoryApp() {
               </Rule>
               <Rule title="Foundation owns shared values">
                 Consume named typography tokens from <Code>tokens/typography/text.json</Code>.
-                Do not duplicate shared values in component styles or invent
-                semantic/component token layers.
+                Use semantic color tokens for presentation, and do not duplicate
+                Foundation values or invent component token layers.
               </Rule>
               <Rule title="Variant is not semantics">
                 Select headings and other HTML elements according to document
@@ -482,6 +590,7 @@ function StoryApp() {
             <div className="docs-links">
               <StoryText variant="body" size="m" as="a" href="./README.md">Text Atom API and specification</StoryText>
               <StoryText variant="body" size="m" as="a" href="../../../docs/foundation/typography.md">Foundation Typography</StoryText>
+              <StoryText variant="body" size="m" as="a" href="../../../docs/foundation/semantic-colors.md">Foundation Semantic Colors</StoryText>
               <StoryText variant="body" size="m" as="a" href="../../../docs/decisions/0001-foundation-text-typography.md">ADR 0001 · Typography decision</StoryText>
               <StoryText variant="body" size="m" as="a" href="../../../.github/skills/numa-components/SKILL.md">Component-development skill</StoryText>
               <StoryText variant="body" size="m" as="a" href="../../../.github/copilot-instructions.md">Repository Copilot instructions</StoryText>
@@ -493,7 +602,7 @@ function StoryApp() {
       <footer className="story-footer">
         <div className="shell">
           <StoryText variant="label" size="s">
-            Numa Text Atom · React Web story · Typography and palette values from Foundation · No external fonts or network requests.
+            Numa Text Atom · React Web story · Typography and semantic color values from Foundation · No external fonts or network requests.
           </StoryText>
         </div>
       </footer>
