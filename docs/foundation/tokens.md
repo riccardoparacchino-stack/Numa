@@ -12,10 +12,11 @@ The canonical files and their generated counterparts are:
 | Integers | [`tokens/primitive/numeric.json`](../../tokens/primitive/numeric.json) | Primitive values |
 | Percentages | [`tokens/primitive/percentage.json`](../../tokens/primitive/percentage.json) | Primitive values |
 | REM dimensions | [`tokens/primitive/rem.json`](../../tokens/primitive/rem.json) | Generated from integer primitives |
+| Gap configuration and paired outputs | [`tokens/gap/config.json`](../../tokens/gap/config.json) | Config is maintained; integer and REM files are generated independently |
 | Typography | [`tokens/typography/tokens.json`](../../tokens/typography/tokens.json) | Generated |
 | Typography copy | [`tokens/text/typography.json`](../../tokens/text/typography.json) | Generated duplicate |
 
-The generator also writes typography configuration snapshots to `tokens/typography/config.json` and `tokens/text/config.json`, plus `tokens/typography/report.json`. Details are in [tooling and workflow](tooling-and-workflow.md).
+Typography generation reads the maintained scale configuration from `tokens/typography/config.json` and writes a mirror to `tokens/text/config.json`, along with `tokens/typography/report.json`. Gap configuration and its outputs are separate; see [Gap primitives](gap.md). Details are in [tooling and workflow](tooling-and-workflow.md).
 
 ## Naming conventions
 
@@ -28,6 +29,8 @@ The generator also writes typography configuration snapshots to `tokens/typograp
 | Typography | `numa-text-{group}-{value}` | `numa-text-weight-400` |
 
 The current typography groups are family, weight, style, decoration, transform, alignment, size, line-height, and letter-spacing. Do not infer additional groups from these examples.
+
+Gap is an independent primitive collection under [`tokens/gap/`](../../tokens/gap/config.json). Its generated integer and REM representations intentionally share `numa-sys-gap-{value}` keys; see [Gap primitives](gap.md) for why the representations are separate.
 
 ## References and derived values
 

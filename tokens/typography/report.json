@@ -31,10 +31,10 @@
       "absoluteRoundingDifference": 1.333
     },
     "numa-text-size-6": {
-      "originalCalculatedValue": 16.0,
+      "originalCalculatedValue": 16,
       "resolvedIntPrimitive": "numa-sys-int-16",
       "correspondingRemPrimitive": "numa-sys-rem-16",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-size-7": {
       "originalCalculatedValue": 19.2,
@@ -99,16 +99,16 @@
       "absoluteRoundingDifference": 0.667
     },
     "numa-text-line-height-5": {
-      "originalCalculatedValue": 20.0,
+      "originalCalculatedValue": 20,
       "resolvedIntPrimitive": "numa-sys-int-20",
       "correspondingRemPrimitive": "numa-sys-rem-20",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-line-height-6": {
-      "originalCalculatedValue": 24.0,
+      "originalCalculatedValue": 24,
       "resolvedIntPrimitive": "numa-sys-int-24",
       "correspondingRemPrimitive": "numa-sys-rem-24",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-line-height-7": {
       "originalCalculatedValue": 28.8,
@@ -149,76 +149,76 @@
   },
   "letterSpacing": {
     "numa-text-letter-spacing-1": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-2": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-3": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-4": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-5": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-6": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-7": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-8": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-9": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-10": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-11": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     },
     "numa-text-letter-spacing-12": {
-      "originalCalculatedValue": 0.0,
+      "originalCalculatedValue": 0,
       "resolvedIntPrimitive": "numa-sys-int-0",
       "correspondingRemPrimitive": "numa-sys-rem-0",
-      "absoluteRoundingDifference": 0.0
+      "absoluteRoundingDifference": 0
     }
   }
 }

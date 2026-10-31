@@ -2,10 +2,6 @@ const fs = require("fs");
 const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
-const tokensDir = path.join(rootDir, "tokens");
-const primitiveDir = path.join(tokensDir, "primitive");
-const typographyDir = path.join(tokensDir, "typography");
-const textDir = path.join(tokensDir, "text");
 
 const scalePresetMap = {
   "minor-second": 1.067,
@@ -18,25 +14,8 @@ const scalePresetMap = {
   "golden-ratio": 1.618
 };
 
-const config = {
-  baseSize: 16,
-  scaleRatioPreset: "Minor Third",
-  scaleRatioPresetKey: "minor-third",
-  scaleRatio: 1.2,
-  numberOfScaleItems: 12,
-  lineHeightRatio: 1.5,
-  letterSpacing: 0,
-  fontFamily: ["Rubik", "Helvetica Neue", "Arial", "sans-serif"],
-  googleFontsUrl:
-    "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-};
-
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
-}
-
-function writeJson(filePath, value) {
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
 function formatRem(value) {
@@ -44,20 +23,18 @@ function formatRem(value) {
   return `${Number(value).toFixed(3)}rem`;
 }
 
-function getScaleRatio(selectedPresetKey) {
-  const candidate = selectedPresetKey || config.scaleRatioPresetKey;
+function getScaleRatio(config) {
+  const candidate = config.scaleRatioPresetKey;
   const presetValue = scalePresetMap[candidate];
-  if (presetValue) {
-    return presetValue;
-  }
+  if (presetValue) return presetValue;
 
-  const normalized = Number(candidate);
-  return Number.isFinite(normalized) && normalized > 0 ? normalized : config.scaleRatio;
+  const customRatio = Number(candidate);
+  if (Number.isFinite(customRatio) && customRatio > 0) return customRatio;
+  return config.scaleRatio;
 }
 
-function buildRemPrimitiveCollection() {
-  const primitiveTokens = readJson(path.join(primitiveDir, "numeric.json"));
-  const primitiveEntries = Object.entries(primitiveTokens)
+function buildRemPrimitiveCollection(numericTokens) {
+  const primitiveEntries = Object.entries(numericTokens)
     .map(([name, token]) => ({
       name,
       intValue: Number(token.$value)
@@ -78,48 +55,91 @@ function buildRemPrimitiveCollection() {
 }
 
 function resolveClosestPrimitive(rawPx, primitiveEntries) {
-  const closest = primitiveEntries.reduce((current, candidate) => {
+  return primitiveEntries.reduce((current, candidate) => {
     const currentDifference = Math.abs(rawPx - current.intValue);
     const candidateDifference = Math.abs(rawPx - candidate.intValue);
-    if (candidateDifference < currentDifference) {
-      return candidate;
-    }
+    if (candidateDifference < currentDifference) return candidate;
     if (candidateDifference === currentDifference && candidate.intValue < current.intValue) {
       return candidate;
     }
     return current;
   });
-
-  return closest;
 }
 
-function generateTypographyTokens() {
-  const { remTokens, primitiveEntries } = buildRemPrimitiveCollection();
-  const scaleRatio = getScaleRatio(config.scaleRatioPresetKey);
+function validateConfig(config) {
+  const errors = [];
+  if (!Number.isFinite(config.baseSize) || config.baseSize <= 0) {
+    errors.push("baseSize must be a positive finite number");
+  }
+  if (!Number.isInteger(config.numberOfScaleItems) || config.numberOfScaleItems < 1) {
+    errors.push("numberOfScaleItems must be a positive integer");
+  }
+  if (!Number.isFinite(config.lineHeightRatio) || config.lineHeightRatio <= 0) {
+    errors.push("lineHeightRatio must be a positive finite number");
+  }
+  if (!Number.isFinite(config.letterSpacing) || config.letterSpacing < 0) {
+    errors.push("letterSpacing must be a non-negative finite number");
+  }
+  const ratioKey = config.scaleRatioPresetKey;
+  if (ratioKey !== undefined && !Object.hasOwn(scalePresetMap, ratioKey) &&
+      !(Number.isFinite(Number(ratioKey)) && Number(ratioKey) > 0)) {
+    errors.push("scaleRatioPresetKey must be a known preset key or a positive numeric ratio");
+  }
+  if (!Number.isFinite(config.scaleRatio) || config.scaleRatio <= 0) {
+    errors.push("scaleRatio must be a positive finite number");
+  }
+  if (!Number.isFinite(getScaleRatio(config)) || getScaleRatio(config) <= 0) {
+    errors.push("scaleRatioPresetKey or scaleRatio must identify a positive ratio");
+  }
+  if (!Array.isArray(config.fontFamily) || config.fontFamily.length === 0 ||
+      config.fontFamily.some((family) => typeof family !== "string" || family.length === 0)) {
+    errors.push("fontFamily must be a non-empty array of non-empty strings");
+  } else if (!config.fontFamily.includes("Rubik")) {
+    errors.push("fontFamily must include the established Rubik primary family");
+  }
+  if (typeof config.googleFontsUrl !== "string" || config.googleFontsUrl.length === 0) {
+    errors.push("googleFontsUrl must be a non-empty string");
+  } else {
+    try {
+      const fontUrl = new URL(config.googleFontsUrl);
+      if (fontUrl.protocol !== "https:" ||
+          fontUrl.hostname !== "fonts.googleapis.com" ||
+          !fontUrl.pathname.startsWith("/css2") ||
+          !fontUrl.searchParams.has("family") ||
+          !fontUrl.searchParams.get("family").startsWith("Rubik:")) {
+        errors.push("googleFontsUrl must be an HTTPS Google Fonts CSS2 URL for Rubik");
+      }
+    } catch {
+      errors.push("googleFontsUrl must be a valid HTTPS Google Fonts CSS2 URL for Rubik");
+    }
+  }
+  if (errors.length > 0) throw new Error(`Invalid typography configuration:\n- ${errors.join("\n- ")}`);
+}
+
+function generateTypographyTokens(config, numericTokens) {
+  validateConfig(config);
+  const { remTokens, primitiveEntries } = buildRemPrimitiveCollection(numericTokens);
+  if (primitiveEntries.length === 0) {
+    throw new Error("Cannot generate typography without integer primitives");
+  }
+
+  const scaleRatio = getScaleRatio(config);
   const totalItems = config.numberOfScaleItems;
   const baseIndex = totalItems % 2 === 0 ? totalItems / 2 : (totalItems + 1) / 2;
-
   const fontSizeTokens = {};
   const lineHeightTokens = {};
   const letterSpacingTokens = {};
-  const report = {
-    fontSize: {},
-    lineHeight: {},
-    letterSpacing: {}
-  };
+  const report = { fontSize: {}, lineHeight: {}, letterSpacing: {} };
 
   for (let index = 1; index <= totalItems; index += 1) {
     const calculatedPx = config.baseSize * Math.pow(scaleRatio, index - baseIndex);
     const resolvedPrimitive = resolveClosestPrimitive(calculatedPx, primitiveEntries);
     const resolvedIntToken = `numa-sys-int-${resolvedPrimitive.intValue}`;
     const resolvedRemToken = `numa-sys-rem-${resolvedPrimitive.intValue}`;
-    const sizeAlias = `{${resolvedRemToken}}`;
-
     fontSizeTokens[`numa-text-size-${index}`] = {
       $type: "dimension",
-      $value: sizeAlias
+      $value: `{${resolvedRemToken}}`
     };
-
     report.fontSize[`numa-text-size-${index}`] = {
       originalCalculatedValue: Number(calculatedPx.toFixed(3)),
       resolvedIntPrimitive: resolvedIntToken,
@@ -133,7 +153,6 @@ function generateTypographyTokens() {
       $type: "dimension",
       $value: `{numa-sys-rem-${lineHeightPrimitive.intValue}}`
     };
-
     report.lineHeight[`numa-text-line-height-${index}`] = {
       originalCalculatedValue: Number(lineHeightPx.toFixed(3)),
       resolvedIntPrimitive: `numa-sys-int-${lineHeightPrimitive.intValue}`,
@@ -147,7 +166,6 @@ function generateTypographyTokens() {
       $type: "dimension",
       $value: `{numa-sys-rem-${spacingPrimitive.intValue}}`
     };
-
     report.letterSpacing[`numa-text-letter-spacing-${index}`] = {
       originalCalculatedValue: Number(letterSpacingPx.toFixed(3)),
       resolvedIntPrimitive: `numa-sys-int-${spacingPrimitive.intValue}`,
@@ -157,10 +175,7 @@ function generateTypographyTokens() {
   }
 
   const typographyTokens = {
-    "numa-text-family-primary": {
-      $type: "fontFamily",
-      $value: config.fontFamily
-    },
+    "numa-text-family-primary": { $type: "fontFamily", $value: config.fontFamily },
     "numa-text-weight-100": { $type: "fontWeight", $value: 100 },
     "numa-text-weight-200": { $type: "fontWeight", $value: 200 },
     "numa-text-weight-300": { $type: "fontWeight", $value: 300 },
@@ -188,10 +203,10 @@ function generateTypographyTokens() {
     ...letterSpacingTokens
   };
 
-  return { config, remTokens, typographyTokens, report };
+  return { remTokens, typographyTokens, report };
 }
 
-function buildReadme() {
+function buildReadme(config) {
   return `# Numa Typography Tokens
 
 This token set documents the primary web font source for Numa.
@@ -206,18 +221,54 @@ The CSS2 import uses the official Google Fonts URL and supports Rubik weights 30
 `;
 }
 
-(function main() {
-  const { config: currentConfig, remTokens, typographyTokens, report } = generateTypographyTokens();
+function serializeJson(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
 
-  fs.mkdirSync(typographyDir, { recursive: true });
-  fs.mkdirSync(textDir, { recursive: true });
+function createGeneratedFiles(config, numericTokens) {
+  const { remTokens, typographyTokens, report } = generateTypographyTokens(config, numericTokens);
+  return {
+    "tokens/primitive/rem.json": serializeJson(remTokens),
+    "tokens/typography/tokens.json": serializeJson(typographyTokens),
+    "tokens/typography/report.json": serializeJson(report),
+    "tokens/typography/README.md": buildReadme(config),
+    "tokens/text/config.json": serializeJson(config),
+    "tokens/text/typography.json": serializeJson(typographyTokens)
+  };
+}
 
-  writeJson(path.join(primitiveDir, "rem.json"), remTokens);
-  writeJson(path.join(typographyDir, "config.json"), currentConfig);
-  writeJson(path.join(typographyDir, "tokens.json"), typographyTokens);
-  writeJson(path.join(typographyDir, "report.json"), report);
-  writeJson(path.join(textDir, "typography.json"), typographyTokens);
-  writeJson(path.join(textDir, "config.json"), currentConfig);
+function writeGeneratedFiles(outputRoot, generatedFiles) {
+  for (const [relativePath, contents] of Object.entries(generatedFiles)) {
+    const filePath = path.join(outputRoot, relativePath);
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, contents);
+  }
+}
 
-  fs.writeFileSync(path.join(typographyDir, "README.md"), buildReadme());
-})();
+function generateRepositoryFiles(repositoryRoot = rootDir) {
+  const numericTokens = readJson(path.join(repositoryRoot, "tokens/primitive/numeric.json"));
+  const config = readJson(path.join(repositoryRoot, "tokens/typography/config.json"));
+  const generatedFiles = createGeneratedFiles(config, numericTokens);
+  writeGeneratedFiles(repositoryRoot, generatedFiles);
+  return generatedFiles;
+}
+
+if (require.main === module) {
+  try {
+    generateRepositoryFiles();
+  } catch (error) {
+    console.error(`Typography generation failed: ${error.message}`);
+    process.exitCode = 1;
+  }
+}
+
+module.exports = {
+  buildRemPrimitiveCollection,
+  createGeneratedFiles,
+  generateRepositoryFiles,
+  generateTypographyTokens,
+  getScaleRatio,
+  resolveClosestPrimitive,
+  validateConfig,
+  writeGeneratedFiles
+};

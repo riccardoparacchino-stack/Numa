@@ -20,19 +20,19 @@ Use this skill for changes or analysis involving Numa's tokens, primitives, typo
 - Inspect the relevant implementation and generated outputs before recommending or changing behavior.
 - Preserve existing namespaces, values, and categories. Do not invent token categories, semantic tokens, or component tokens.
 - Do not add dependencies or modify generation behavior without a clear, requested need.
-- Treat generated files as outputs; do not assume configuration snapshots are generator inputs.
+- Treat generated files as outputs; `tokens/typography/config.json` is the documented typography configuration input, while `tokens/text/config.json` is a generated mirror.
 
 ## Workflow
 
-1. Read the relevant [Foundation index](../../../docs/foundation/README.md), then the applicable [architecture](../../../docs/foundation/architecture.md), [token](../../../docs/foundation/tokens.md), [primitive](../../../docs/foundation/primitives.md), [typography](../../../docs/foundation/typography.md), or [tooling](../../../docs/foundation/tooling-and-workflow.md) document.
+1. Read the relevant [Foundation index](../../../docs/foundation/README.md), then the applicable [architecture](../../../docs/foundation/architecture.md), [token](../../../docs/foundation/tokens.md), [primitive](../../../docs/foundation/primitives.md), [gap](../../../docs/foundation/gap.md), [scale generator](../../../docs/foundation/scale-generator.md), [typography](../../../docs/foundation/typography.md), or [tooling](../../../docs/foundation/tooling-and-workflow.md) document.
 2. Inspect the relevant source JSON, script, package scripts, and generated files. Check whether a claimed capability exists in code rather than inferring it from a filename or plan.
 3. Identify source files versus generator outputs and any discrepancy between documented intent and current behavior.
 4. Keep requested changes within their stated scope. If an architectural choice is missing or ambiguous, document it as unresolved rather than silently deciding it.
-5. For generation-related work, review the generated diff and rounding report; do not add primitives automatically to make calculated values exact.
+5. For generation-related work, run `npm test`, review the generated diff and rounding report, and use `npm run generate:tokens` only when intentionally regenerating artifacts. Do not add primitives automatically to make calculated values exact.
 
 ## Validation
 
-- Run the narrowest applicable existing validation. For the current typography workflow, `npm test` regenerates files before running the validator; review the resulting diff.
+- Run `npm test` for Foundation changes. It validates checked-in outputs without modifying them. After editing gap config, run `npm run generate:gap` first and inspect both output files.
 - Verify aliases resolve to existing primitives and that generated files match the current generator when generation behavior is in scope.
 - For documentation edits, verify relative links and describe implemented and planned behavior separately.
 - Do not claim CSS, TypeScript, React, React Native, Figma, Penpot, or Style Dictionary integration unless the inspected implementation demonstrates it.
@@ -43,6 +43,8 @@ Use this skill for changes or analysis involving Numa's tokens, primitives, typo
 - [Token sources](../../../docs/foundation/tokens.md)
 - [Primitive collections](../../../docs/foundation/primitives.md)
 - [Typography implementation](../../../docs/foundation/typography.md)
+- [Dimensional scale generator](../../../docs/foundation/scale-generator.md)
+- [Gap collection](../../../docs/foundation/gap.md)
 - [Generation workflow](../../../docs/foundation/tooling-and-workflow.md)
 - [Primitive JSON](../../../tokens/primitive/)
 - [Typography generator](../../../scripts/generate-typography.js)

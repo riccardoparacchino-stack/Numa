@@ -2,6 +2,8 @@
 
 Primitive source files live in [`tokens/primitive/`](../../tokens/primitive/). The values below describe the checked-in collections; use the JSON files as the definitive value source.
 
+The independent gap scale is documented in [Gap primitives](gap.md). Its paired output files live in `tokens/gap/` rather than extending the broad integer and REM collections below.
+
 ## Colors
 
 Colors use the `numa-sys-col-{color}-{scale}` namespace and store HEX values as `$type: "color"` tokens. The repository contains these 22 Tailwind-style palette names:
