@@ -1,0 +1,42 @@
+{
+  "numa-radius-pebbles-xs": {
+    "$type": "number",
+    "$value": "{numa-sys-int-4}"
+  },
+  "numa-radius-pebbles-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-8}"
+  },
+  "numa-radius-pebbles-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-12}"
+  },
+  "numa-radius-bricks-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-24}"
+  },
+  "numa-radius-bricks-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-32}"
+  },
+  "numa-radius-bricks-l": {
+    "$type": "number",
+    "$value": "{numa-sys-int-40}"
+  },
+  "numa-radius-walls-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-48}"
+  },
+  "numa-radius-walls-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-72}"
+  },
+  "numa-radius-walls-l": {
+    "$type": "number",
+    "$value": "{numa-sys-int-80}"
+  },
+  "numa-radius-walls-xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-96}"
+  }
+}

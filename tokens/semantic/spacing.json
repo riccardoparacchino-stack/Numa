@@ -1,0 +1,66 @@
+{
+  "numa-spacing-pebbles-none": {
+    "$type": "number",
+    "$value": "{numa-sys-int-0}"
+  },
+  "numa-spacing-pebbles-xs": {
+    "$type": "number",
+    "$value": "{numa-sys-int-4}"
+  },
+  "numa-spacing-pebbles-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-8}"
+  },
+  "numa-spacing-pebbles-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-12}"
+  },
+  "numa-spacing-pebbles-l": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-spacing-pebbles-xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-20}"
+  },
+  "numa-spacing-bricks-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-24}"
+  },
+  "numa-spacing-bricks-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-32}"
+  },
+  "numa-spacing-bricks-l": {
+    "$type": "number",
+    "$value": "{numa-sys-int-40}"
+  },
+  "numa-spacing-bricks-xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-48}"
+  },
+  "numa-spacing-walls-s": {
+    "$type": "number",
+    "$value": "{numa-sys-int-56}"
+  },
+  "numa-spacing-walls-m": {
+    "$type": "number",
+    "$value": "{numa-sys-int-64}"
+  },
+  "numa-spacing-walls-l": {
+    "$type": "number",
+    "$value": "{numa-sys-int-72}"
+  },
+  "numa-spacing-walls-xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-80}"
+  },
+  "numa-spacing-walls-2xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-88}"
+  },
+  "numa-spacing-walls-3xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-96}"
+  }
+}
