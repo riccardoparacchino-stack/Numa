@@ -1,0 +1,35 @@
+.numa-content-compositor {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+}
+
+.numa-content-compositor__main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.numa-content-compositor--vertical .numa-content-compositor__main {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.numa-content-compositor__leading,
+.numa-content-compositor__trailing {
+  flex: 0 0 auto;
+}
+
+.numa-content-compositor__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.numa-content-compositor__footer {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

@@ -34,5 +34,9 @@
   "numa-radius-walls-l": {
     "$type": "number",
     "$value": "{numa-sys-int-80}"
+  },
+  "numa-radius-walls-xl": {
+    "$type": "number",
+    "$value": "{numa-sys-int-96}"
   }
 }

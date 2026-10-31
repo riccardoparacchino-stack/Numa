@@ -34,6 +34,7 @@ const expectedValues: Record<string, number> = {
   "numa-radius-walls-s": 48,
   "numa-radius-walls-m": 72,
   "numa-radius-walls-l": 80,
+  "numa-radius-walls-xl": 96,
 };
 
 function getPrimitiveReference(value: unknown): string {

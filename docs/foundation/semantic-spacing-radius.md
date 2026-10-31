@@ -20,10 +20,10 @@ These aliases preserve the primitive numbers; they do not declare a physical
 unit or perform conversion. Typography separately stores CSS `rem` dimensions
 in its own collection, but that is not an alternate spacing/radius source.
 There is no configured Style Dictionary build, CSS output pipeline, or React
-Native transform in this repository. Therefore these definitions do not yet
-emit CSS lengths or validated platform-specific output. A future consumer must
-establish and test the intended conversion for its platform; this document
-does not assume that a bare number means CSS pixels or React Native points.
+Native transform in this repository. The React Web adapter below defines the
+unit for the current components; other consumers must establish and test
+their own platform-specific conversion. The token source itself does not
+assume that a bare number means CSS pixels or React Native points.
 
 ## Spacing scale
 
@@ -75,6 +75,7 @@ by element dimensions and platform behavior.
 | Walls | `numa-radius-walls-s` | 48 |
 | Walls | `numa-radius-walls-m` | 72 |
 | Walls | `numa-radius-walls-l` | 80 |
+| Walls | `numa-radius-walls-xl` | 96 |
 
 ## Nested surfaces
 
@@ -98,6 +99,7 @@ next available radius that satisfies it.
 | 24 | 24 | 48 | Walls `s` (48) |
 | 32 | 32 | 64 | Walls `m` (72) |
 | 40 | 40 | 80 | Walls `l` (80) |
+| 64 | 32 | 96 | Walls `xl` (96) |
 
 This is not a universal geometric law or a token validation rule. Do not force
 it when it looks wrong for compact or unusual shapes. Asymmetric padding,
@@ -107,9 +109,17 @@ not enforce the guideline automatically.
 
 ## Scope and validation limits
 
-These are Foundation definitions only; no component tokens or component
-implementations consume them. Tests verify the documented inventory, exact
-primitive aliases, and 4px spacing scale. The repository has no token build or
-generated output, so Style Dictionary output, CSS units, React Web output, and
-React Native transforms cannot currently be validated. No shared Definition
-of Done document was present in the repository at implementation time.
+The [Tile](../../components/molecules/tile/README.md) and
+[Text Compositor](../../components/molecules/text-compositor/README.md)
+components consume these dimensions through
+[`foundation/semantic-dimensions.ts`](../../foundation/semantic-dimensions.ts).
+For this React Web integration, that adapter interprets the referenced
+unitless numeric values as CSS pixels. This is a consumption rule implemented
+by the adapter, not metadata stored in the primitive tokens.
+
+The repository still has no configured Style Dictionary build or generated
+output, so no standalone CSS artifact is produced. There is also no React
+Native transform or runtime, and no native conversion is claimed. Token tests
+verify the documented inventory and primitive aliases; adapter tests verify
+the Web pixel interpretation. No shared Definition of Done document was
+present in the repository at implementation time.

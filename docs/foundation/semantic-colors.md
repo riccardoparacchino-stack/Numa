@@ -16,8 +16,9 @@ separate two independent collections:
 - **`interactive`** describes surfaces, text, and outlines for interaction.
 
 No component-specific categories are defined. Components do not consume these
-tokens yet; the file is a Foundation source, not a generated stylesheet or
-component API.
+tokens through generated styles; the file remains a Foundation source rather
+than a generated stylesheet. React Web Tile, Container, and Card resolve
+context surface roles directly from the token source.
 
 ## Context colors
 
@@ -36,6 +37,21 @@ component API.
 
 The available light neutral ramp yields deliberately subtle surface steps.
 Border tokens reinforce their separation; shadows are not the only signal.
+
+### Weak/strong surface alternation
+
+Use `surface-level-1` (`slate-100`) as the weak surface and
+`surface-level-2` (`slate-200`) as the strong surface. Alternate contained
+layers rather than repeating one fill: a Container on the page background
+uses the weak surface, its Card uses the strong surface, and a nested Card
+child returns to the weak surface. A further contained layer returns to
+strong. This provides a subtle but explicit hierarchy against the page
+background; keep boundaries visible with the semantic border tokens rather
+than relying on shadow alone.
+
+The React Web `Container`, `Card`, and nested `Tile` implementations apply
+this alternation. Interactive hover/active/disabled states remain governed by
+the interactive surface tokens.
 
 ## Interactive colors
 

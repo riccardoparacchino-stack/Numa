@@ -1,0 +1,37 @@
+.numa-tile {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--numa-tile-border);
+  background: var(--numa-tile-surface);
+  color: var(--numa-tile-text);
+  text-align: start;
+  text-decoration: none;
+}
+
+.numa-tile--interactive {
+  cursor: pointer;
+  font: inherit;
+  appearance: none;
+}
+
+.numa-tile--interactive:hover:not(:disabled) {
+  background: var(--numa-tile-hover);
+}
+
+.numa-tile--interactive:active:not(:disabled) {
+  background: var(--numa-tile-active);
+}
+
+.numa-tile--interactive:focus-visible {
+  outline: 3px solid var(--numa-tile-focus);
+  outline-offset: 3px;
+}
+
+.numa-tile--interactive:disabled {
+  border-color: var(--numa-tile-disabled-border);
+  background: var(--numa-tile-disabled);
+  color: var(--numa-tile-disabled-text);
+  cursor: not-allowed;
+}

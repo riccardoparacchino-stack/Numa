@@ -6,7 +6,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "story": "vite --open /components/atoms/text/story.html"
+    "story": "vite --open /components/atoms/text/story.html",
+    "story:molecules": "vite --open /components/molecules/story.html"
   },
   "keywords": [],
   "author": "",
