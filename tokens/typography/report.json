@@ -1,0 +1,224 @@
+{
+  "fontSize": {
+    "numa-text-size-1": {
+      "originalCalculatedValue": 6.43,
+      "resolvedIntPrimitive": "numa-sys-int-8",
+      "correspondingRemPrimitive": "numa-sys-rem-8",
+      "absoluteRoundingDifference": 1.57
+    },
+    "numa-text-size-2": {
+      "originalCalculatedValue": 7.716,
+      "resolvedIntPrimitive": "numa-sys-int-8",
+      "correspondingRemPrimitive": "numa-sys-rem-8",
+      "absoluteRoundingDifference": 0.284
+    },
+    "numa-text-size-3": {
+      "originalCalculatedValue": 9.259,
+      "resolvedIntPrimitive": "numa-sys-int-8",
+      "correspondingRemPrimitive": "numa-sys-rem-8",
+      "absoluteRoundingDifference": 1.259
+    },
+    "numa-text-size-4": {
+      "originalCalculatedValue": 11.111,
+      "resolvedIntPrimitive": "numa-sys-int-12",
+      "correspondingRemPrimitive": "numa-sys-rem-12",
+      "absoluteRoundingDifference": 0.889
+    },
+    "numa-text-size-5": {
+      "originalCalculatedValue": 13.333,
+      "resolvedIntPrimitive": "numa-sys-int-12",
+      "correspondingRemPrimitive": "numa-sys-rem-12",
+      "absoluteRoundingDifference": 1.333
+    },
+    "numa-text-size-6": {
+      "originalCalculatedValue": 16.0,
+      "resolvedIntPrimitive": "numa-sys-int-16",
+      "correspondingRemPrimitive": "numa-sys-rem-16",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-size-7": {
+      "originalCalculatedValue": 19.2,
+      "resolvedIntPrimitive": "numa-sys-int-20",
+      "correspondingRemPrimitive": "numa-sys-rem-20",
+      "absoluteRoundingDifference": 0.8
+    },
+    "numa-text-size-8": {
+      "originalCalculatedValue": 23.04,
+      "resolvedIntPrimitive": "numa-sys-int-24",
+      "correspondingRemPrimitive": "numa-sys-rem-24",
+      "absoluteRoundingDifference": 0.96
+    },
+    "numa-text-size-9": {
+      "originalCalculatedValue": 27.648,
+      "resolvedIntPrimitive": "numa-sys-int-24",
+      "correspondingRemPrimitive": "numa-sys-rem-24",
+      "absoluteRoundingDifference": 3.648
+    },
+    "numa-text-size-10": {
+      "originalCalculatedValue": 33.178,
+      "resolvedIntPrimitive": "numa-sys-int-32",
+      "correspondingRemPrimitive": "numa-sys-rem-32",
+      "absoluteRoundingDifference": 1.178
+    },
+    "numa-text-size-11": {
+      "originalCalculatedValue": 39.813,
+      "resolvedIntPrimitive": "numa-sys-int-40",
+      "correspondingRemPrimitive": "numa-sys-rem-40",
+      "absoluteRoundingDifference": 0.187
+    },
+    "numa-text-size-12": {
+      "originalCalculatedValue": 47.776,
+      "resolvedIntPrimitive": "numa-sys-int-48",
+      "correspondingRemPrimitive": "numa-sys-rem-48",
+      "absoluteRoundingDifference": 0.224
+    }
+  },
+  "lineHeight": {
+    "numa-text-line-height-1": {
+      "originalCalculatedValue": 9.645,
+      "resolvedIntPrimitive": "numa-sys-int-8",
+      "correspondingRemPrimitive": "numa-sys-rem-8",
+      "absoluteRoundingDifference": 1.645
+    },
+    "numa-text-line-height-2": {
+      "originalCalculatedValue": 11.574,
+      "resolvedIntPrimitive": "numa-sys-int-12",
+      "correspondingRemPrimitive": "numa-sys-rem-12",
+      "absoluteRoundingDifference": 0.426
+    },
+    "numa-text-line-height-3": {
+      "originalCalculatedValue": 13.889,
+      "resolvedIntPrimitive": "numa-sys-int-12",
+      "correspondingRemPrimitive": "numa-sys-rem-12",
+      "absoluteRoundingDifference": 1.889
+    },
+    "numa-text-line-height-4": {
+      "originalCalculatedValue": 16.667,
+      "resolvedIntPrimitive": "numa-sys-int-16",
+      "correspondingRemPrimitive": "numa-sys-rem-16",
+      "absoluteRoundingDifference": 0.667
+    },
+    "numa-text-line-height-5": {
+      "originalCalculatedValue": 20.0,
+      "resolvedIntPrimitive": "numa-sys-int-20",
+      "correspondingRemPrimitive": "numa-sys-rem-20",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-line-height-6": {
+      "originalCalculatedValue": 24.0,
+      "resolvedIntPrimitive": "numa-sys-int-24",
+      "correspondingRemPrimitive": "numa-sys-rem-24",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-line-height-7": {
+      "originalCalculatedValue": 28.8,
+      "resolvedIntPrimitive": "numa-sys-int-32",
+      "correspondingRemPrimitive": "numa-sys-rem-32",
+      "absoluteRoundingDifference": 3.2
+    },
+    "numa-text-line-height-8": {
+      "originalCalculatedValue": 34.56,
+      "resolvedIntPrimitive": "numa-sys-int-36",
+      "correspondingRemPrimitive": "numa-sys-rem-36",
+      "absoluteRoundingDifference": 1.44
+    },
+    "numa-text-line-height-9": {
+      "originalCalculatedValue": 41.472,
+      "resolvedIntPrimitive": "numa-sys-int-40",
+      "correspondingRemPrimitive": "numa-sys-rem-40",
+      "absoluteRoundingDifference": 1.472
+    },
+    "numa-text-line-height-10": {
+      "originalCalculatedValue": 49.766,
+      "resolvedIntPrimitive": "numa-sys-int-48",
+      "correspondingRemPrimitive": "numa-sys-rem-48",
+      "absoluteRoundingDifference": 1.766
+    },
+    "numa-text-line-height-11": {
+      "originalCalculatedValue": 59.72,
+      "resolvedIntPrimitive": "numa-sys-int-56",
+      "correspondingRemPrimitive": "numa-sys-rem-56",
+      "absoluteRoundingDifference": 3.72
+    },
+    "numa-text-line-height-12": {
+      "originalCalculatedValue": 71.664,
+      "resolvedIntPrimitive": "numa-sys-int-72",
+      "correspondingRemPrimitive": "numa-sys-rem-72",
+      "absoluteRoundingDifference": 0.336
+    }
+  },
+  "letterSpacing": {
+    "numa-text-letter-spacing-1": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-2": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-3": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-4": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-5": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-6": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-7": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-8": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-9": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-10": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-11": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    },
+    "numa-text-letter-spacing-12": {
+      "originalCalculatedValue": 0.0,
+      "resolvedIntPrimitive": "numa-sys-int-0",
+      "correspondingRemPrimitive": "numa-sys-rem-0",
+      "absoluteRoundingDifference": 0.0
+    }
+  }
+}

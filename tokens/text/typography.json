@@ -1,0 +1,243 @@
+{
+  "numa-text-family-primary": {
+    "$type": "fontFamily",
+    "$value": [
+      "Rubik",
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif"
+    ]
+  },
+  "numa-text-weight-100": {
+    "$type": "fontWeight",
+    "$value": 100
+  },
+  "numa-text-weight-200": {
+    "$type": "fontWeight",
+    "$value": 200
+  },
+  "numa-text-weight-300": {
+    "$type": "fontWeight",
+    "$value": 300
+  },
+  "numa-text-weight-400": {
+    "$type": "fontWeight",
+    "$value": 400
+  },
+  "numa-text-weight-500": {
+    "$type": "fontWeight",
+    "$value": 500
+  },
+  "numa-text-weight-600": {
+    "$type": "fontWeight",
+    "$value": 600
+  },
+  "numa-text-weight-700": {
+    "$type": "fontWeight",
+    "$value": 700
+  },
+  "numa-text-weight-800": {
+    "$type": "fontWeight",
+    "$value": 800
+  },
+  "numa-text-weight-900": {
+    "$type": "fontWeight",
+    "$value": 900
+  },
+  "numa-text-style-normal": {
+    "$type": "fontStyle",
+    "$value": "normal"
+  },
+  "numa-text-style-italic": {
+    "$type": "fontStyle",
+    "$value": "italic"
+  },
+  "numa-text-decoration-none": {
+    "$type": "textDecoration",
+    "$value": "none"
+  },
+  "numa-text-decoration-underline": {
+    "$type": "textDecoration",
+    "$value": "underline"
+  },
+  "numa-text-decoration-line-through": {
+    "$type": "textDecoration",
+    "$value": "line-through"
+  },
+  "numa-text-transform-none": {
+    "$type": "textCase",
+    "$value": "none"
+  },
+  "numa-text-transform-uppercase": {
+    "$type": "textCase",
+    "$value": "uppercase"
+  },
+  "numa-text-transform-lowercase": {
+    "$type": "textCase",
+    "$value": "lowercase"
+  },
+  "numa-text-transform-capitalize": {
+    "$type": "textCase",
+    "$value": "capitalize"
+  },
+  "numa-text-align-start": {
+    "$type": "textAlign",
+    "$value": "start"
+  },
+  "numa-text-align-center": {
+    "$type": "textAlign",
+    "$value": "center"
+  },
+  "numa-text-align-end": {
+    "$type": "textAlign",
+    "$value": "end"
+  },
+  "numa-text-align-justify": {
+    "$type": "textAlign",
+    "$value": "justify"
+  },
+  "numa-text-size-1": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-8}"
+  },
+  "numa-text-size-2": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-8}"
+  },
+  "numa-text-size-3": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-8}"
+  },
+  "numa-text-size-4": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-12}"
+  },
+  "numa-text-size-5": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-12}"
+  },
+  "numa-text-size-6": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-16}"
+  },
+  "numa-text-size-7": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-20}"
+  },
+  "numa-text-size-8": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-24}"
+  },
+  "numa-text-size-9": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-24}"
+  },
+  "numa-text-size-10": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-32}"
+  },
+  "numa-text-size-11": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-40}"
+  },
+  "numa-text-size-12": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-48}"
+  },
+  "numa-text-line-height-1": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-8}"
+  },
+  "numa-text-line-height-2": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-12}"
+  },
+  "numa-text-line-height-3": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-12}"
+  },
+  "numa-text-line-height-4": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-16}"
+  },
+  "numa-text-line-height-5": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-20}"
+  },
+  "numa-text-line-height-6": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-24}"
+  },
+  "numa-text-line-height-7": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-32}"
+  },
+  "numa-text-line-height-8": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-36}"
+  },
+  "numa-text-line-height-9": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-40}"
+  },
+  "numa-text-line-height-10": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-48}"
+  },
+  "numa-text-line-height-11": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-56}"
+  },
+  "numa-text-line-height-12": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-72}"
+  },
+  "numa-text-letter-spacing-1": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-2": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-3": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-4": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-5": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-6": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-7": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-8": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-9": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-10": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-11": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  },
+  "numa-text-letter-spacing-12": {
+    "$type": "dimension",
+    "$value": "{numa-sys-rem-0}"
+  }
+}

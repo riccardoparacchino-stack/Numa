@@ -1,0 +1,16 @@
+{
+  "baseSize": 16,
+  "scaleRatioPreset": "Minor Third",
+  "scaleRatioPresetKey": "minor-third",
+  "scaleRatio": 1.2,
+  "numberOfScaleItems": 12,
+  "lineHeightRatio": 1.5,
+  "letterSpacing": 0,
+  "fontFamily": [
+    "Rubik",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif"
+  ],
+  "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+}

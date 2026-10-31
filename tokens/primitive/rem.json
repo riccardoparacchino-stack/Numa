@@ -1,0 +1,222 @@
+{
+  "numa-sys-rem-0": {
+    "$type": "dimension",
+    "$value": "0rem"
+  },
+  "numa-sys-rem-2": {
+    "$type": "dimension",
+    "$value": "0.125rem"
+  },
+  "numa-sys-rem-4": {
+    "$type": "dimension",
+    "$value": "0.250rem"
+  },
+  "numa-sys-rem-8": {
+    "$type": "dimension",
+    "$value": "0.500rem"
+  },
+  "numa-sys-rem-12": {
+    "$type": "dimension",
+    "$value": "0.750rem"
+  },
+  "numa-sys-rem-16": {
+    "$type": "dimension",
+    "$value": "1.000rem"
+  },
+  "numa-sys-rem-20": {
+    "$type": "dimension",
+    "$value": "1.250rem"
+  },
+  "numa-sys-rem-24": {
+    "$type": "dimension",
+    "$value": "1.500rem"
+  },
+  "numa-sys-rem-32": {
+    "$type": "dimension",
+    "$value": "2.000rem"
+  },
+  "numa-sys-rem-36": {
+    "$type": "dimension",
+    "$value": "2.250rem"
+  },
+  "numa-sys-rem-40": {
+    "$type": "dimension",
+    "$value": "2.500rem"
+  },
+  "numa-sys-rem-44": {
+    "$type": "dimension",
+    "$value": "2.750rem"
+  },
+  "numa-sys-rem-48": {
+    "$type": "dimension",
+    "$value": "3.000rem"
+  },
+  "numa-sys-rem-56": {
+    "$type": "dimension",
+    "$value": "3.500rem"
+  },
+  "numa-sys-rem-64": {
+    "$type": "dimension",
+    "$value": "4.000rem"
+  },
+  "numa-sys-rem-72": {
+    "$type": "dimension",
+    "$value": "4.500rem"
+  },
+  "numa-sys-rem-80": {
+    "$type": "dimension",
+    "$value": "5.000rem"
+  },
+  "numa-sys-rem-88": {
+    "$type": "dimension",
+    "$value": "5.500rem"
+  },
+  "numa-sys-rem-96": {
+    "$type": "dimension",
+    "$value": "6.000rem"
+  },
+  "numa-sys-rem-112": {
+    "$type": "dimension",
+    "$value": "7.000rem"
+  },
+  "numa-sys-rem-128": {
+    "$type": "dimension",
+    "$value": "8.000rem"
+  },
+  "numa-sys-rem-144": {
+    "$type": "dimension",
+    "$value": "9.000rem"
+  },
+  "numa-sys-rem-160": {
+    "$type": "dimension",
+    "$value": "10.000rem"
+  },
+  "numa-sys-rem-176": {
+    "$type": "dimension",
+    "$value": "11.000rem"
+  },
+  "numa-sys-rem-192": {
+    "$type": "dimension",
+    "$value": "12.000rem"
+  },
+  "numa-sys-rem-208": {
+    "$type": "dimension",
+    "$value": "13.000rem"
+  },
+  "numa-sys-rem-224": {
+    "$type": "dimension",
+    "$value": "14.000rem"
+  },
+  "numa-sys-rem-240": {
+    "$type": "dimension",
+    "$value": "15.000rem"
+  },
+  "numa-sys-rem-256": {
+    "$type": "dimension",
+    "$value": "16.000rem"
+  },
+  "numa-sys-rem-288": {
+    "$type": "dimension",
+    "$value": "18.000rem"
+  },
+  "numa-sys-rem-320": {
+    "$type": "dimension",
+    "$value": "20.000rem"
+  },
+  "numa-sys-rem-352": {
+    "$type": "dimension",
+    "$value": "22.000rem"
+  },
+  "numa-sys-rem-384": {
+    "$type": "dimension",
+    "$value": "24.000rem"
+  },
+  "numa-sys-rem-416": {
+    "$type": "dimension",
+    "$value": "26.000rem"
+  },
+  "numa-sys-rem-448": {
+    "$type": "dimension",
+    "$value": "28.000rem"
+  },
+  "numa-sys-rem-480": {
+    "$type": "dimension",
+    "$value": "30.000rem"
+  },
+  "numa-sys-rem-512": {
+    "$type": "dimension",
+    "$value": "32.000rem"
+  },
+  "numa-sys-rem-576": {
+    "$type": "dimension",
+    "$value": "36.000rem"
+  },
+  "numa-sys-rem-640": {
+    "$type": "dimension",
+    "$value": "40.000rem"
+  },
+  "numa-sys-rem-704": {
+    "$type": "dimension",
+    "$value": "44.000rem"
+  },
+  "numa-sys-rem-768": {
+    "$type": "dimension",
+    "$value": "48.000rem"
+  },
+  "numa-sys-rem-832": {
+    "$type": "dimension",
+    "$value": "52.000rem"
+  },
+  "numa-sys-rem-896": {
+    "$type": "dimension",
+    "$value": "56.000rem"
+  },
+  "numa-sys-rem-960": {
+    "$type": "dimension",
+    "$value": "60.000rem"
+  },
+  "numa-sys-rem-1024": {
+    "$type": "dimension",
+    "$value": "64.000rem"
+  },
+  "numa-sys-rem-1200": {
+    "$type": "dimension",
+    "$value": "75.000rem"
+  },
+  "numa-sys-rem-1400": {
+    "$type": "dimension",
+    "$value": "87.500rem"
+  },
+  "numa-sys-rem-1600": {
+    "$type": "dimension",
+    "$value": "100.000rem"
+  },
+  "numa-sys-rem-1800": {
+    "$type": "dimension",
+    "$value": "112.500rem"
+  },
+  "numa-sys-rem-2000": {
+    "$type": "dimension",
+    "$value": "125.000rem"
+  },
+  "numa-sys-rem-2400": {
+    "$type": "dimension",
+    "$value": "150.000rem"
+  },
+  "numa-sys-rem-2800": {
+    "$type": "dimension",
+    "$value": "175.000rem"
+  },
+  "numa-sys-rem-3200": {
+    "$type": "dimension",
+    "$value": "200.000rem"
+  },
+  "numa-sys-rem-3600": {
+    "$type": "dimension",
+    "$value": "225.000rem"
+  },
+  "numa-sys-rem-4000": {
+    "$type": "dimension",
+    "$value": "250.000rem"
+  }
+}
