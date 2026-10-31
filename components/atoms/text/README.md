@@ -106,9 +106,10 @@ untyped JavaScript callers.
 
 Foundation provides the Rubik, Helvetica Neue, Arial, sans-serif family and
 the default weights 400, 500, and 600. Font availability/loading is not
-implemented; consumers must provide the Rubik font where required. `color`
-accepts CSS color values because this repository has no semantic color-token
-API; no color token is invented by this component.
+implemented; consumers must provide the Rubik font where required. The `color`
+prop accepts CSS color values and is not token-resolved by the Text component.
+The interactive story uses the shared semantic color aliases for its
+documentation-page styling; it does not add color behavior to the Text API.
 
 ## Semantics and accessibility
 
@@ -184,7 +185,12 @@ are rejected.
 Run `npm run story` to open the [Text Atom story](./story.html) through Vite.
 The page renders its copy and specimens with the real `Text` component,
 resolves font sizes, weights, font family, and letter-spacing from Foundation,
-and reads its palette colors from the primitive color tokens. An interactive
-variant/size/element playground demonstrates the API and semantics. Page
-structure and controls remain native HTML elements where the Text component
-does not replace those primitives.
+and applies semantic color tokens for its page, surfaces, text, accents, and
+focus indicators. See [Foundation Semantic Colors](../../../docs/foundation/semantic-colors.md).
+An interactive variant/size/element playground demonstrates the API and
+semantics. The type-scale selector previews all variant/size pairs that use a
+generated scale for the selected harmonic ratio, anchored at a 16px base. It is
+an exploratory illustration and does not change Text's Foundation token
+mapping, which is listed alongside it. Page structure and controls remain
+native HTML elements where the Text component does not replace those
+primitives.

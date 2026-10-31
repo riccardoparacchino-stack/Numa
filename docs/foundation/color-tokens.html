@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Numa semantic and primitive color token reference">
+    <title>Color tokens · Numa Foundation</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: CanvasText;
+        background: Canvas;
+        accent-color: var(--color-primary, #4f46e5);
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: color-mix(in srgb, Canvas 96%, CanvasText 4%);
+      }
+
+      a { color: var(--color-link, #4338ca); }
+      code, .token-name, .token-value { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+      .page-header {
+        padding: 3.5rem max(1.25rem, calc((100vw - 1180px) / 2));
+        color: white;
+        background:
+          radial-gradient(ellipse at 85% 0%, rgb(255 255 255 / 18%), transparent 42%),
+          var(--color-primary, #4f46e5);
+      }
+
+      .eyebrow {
+        margin: 0 0 .75rem;
+        font-size: .75rem;
+        font-weight: 750;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        opacity: .78;
+      }
+
+      h1 { margin: 0; font-size: clamp(2.25rem, 6vw, 4rem); letter-spacing: -.055em; }
+      .lede { max-width: 46rem; margin: 1rem 0 0; font-size: 1.1rem; line-height: 1.65; opacity: .9; }
+
+      main { width: min(1180px, calc(100% - 2.5rem)); margin: 2rem auto 5rem; }
+
+      .toolbar {
+        position: sticky;
+        z-index: 2;
+        top: .75rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 0 2.5rem;
+        padding: .8rem 1rem;
+        border: 1px solid color-mix(in srgb, CanvasText 14%, transparent);
+        border-radius: .9rem;
+        background: color-mix(in srgb, Canvas 92%, transparent);
+        box-shadow: 0 .4rem 1.5rem rgb(15 23 42 / 8%);
+        backdrop-filter: blur(12px);
+      }
+
+      .toolbar label { flex: 0 0 auto; font-size: .875rem; font-weight: 700; }
+      .toolbar input {
+        width: 100%;
+        min-width: 0;
+        padding: .65rem .8rem;
+        border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+        border-radius: .55rem;
+        color: CanvasText;
+        background: Canvas;
+        font: inherit;
+      }
+      .toolbar input:focus-visible { outline: 3px solid var(--color-primary, #4f46e5); outline-offset: 2px; }
+
+      section { scroll-margin-top: 6rem; }
+      .major-section { margin: 0 0 4rem; }
+      .section-heading {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: .75rem 2rem;
+        margin: 0 0 1.25rem;
+        padding-bottom: .85rem;
+        border-bottom: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+      }
+      h2 { margin: 0; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.035em; }
+      h3 { margin: 0 0 .9rem; font-size: 1.05rem; }
+      .section-heading p, .section-intro { max-width: 50rem; margin: .5rem 0 0; color: color-mix(in srgb, CanvasText 72%, transparent); line-height: 1.6; }
+      .source-link { font-size: .85rem; font-weight: 650; }
+
+      .collection { margin: 2rem 0 0; }
+      .collection-title {
+        display: flex;
+        align-items: baseline;
+        gap: .75rem;
+        margin: 0 0 .35rem;
+      }
+      .collection-title h3 { margin: 0; font-size: 1.25rem; }
+      .collection-title span { color: color-mix(in srgb, CanvasText 62%, transparent); font-size: .85rem; }
+      .category { margin: 1.6rem 0 0; }
+      .category h4 {
+        margin: 0 0 .65rem;
+        color: color-mix(in srgb, CanvasText 68%, transparent);
+        font-size: .75rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      .token-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+        gap: .7rem;
+      }
+      .token-card {
+        display: grid;
+        grid-template-columns: 2.5rem minmax(0, 1fr);
+        align-items: center;
+        gap: .8rem;
+        min-width: 0;
+        padding: .8rem;
+        border: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+        border-radius: .8rem;
+        background: Canvas;
+      }
+      .swatch {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+        border-radius: .55rem;
+        background-color: transparent;
+        background-image: linear-gradient(45deg, #d9d9d9 25%, transparent 25%),
+          linear-gradient(-45deg, #d9d9d9 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #d9d9d9 75%),
+          linear-gradient(-45deg, transparent 75%, #d9d9d9 75%);
+        background-size: 10px 10px;
+        background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+        overflow: hidden;
+      }
+      .swatch-color { display: block; width: 100%; height: 100%; border-radius: inherit; }
+      .token-name { display: block; overflow-wrap: anywhere; font-size: .75rem; line-height: 1.45; }
+      .token-value { display: block; margin-top: .3rem; color: color-mix(in srgb, CanvasText 62%, transparent); font-size: .75rem; }
+      .token-alias { color: color-mix(in srgb, CanvasText 48%, transparent); }
+
+      .rules {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: .8rem;
+        margin: 1.4rem 0 2rem;
+        padding: 0;
+        list-style: none;
+      }
+      .rule {
+        min-height: 8rem;
+        padding: 1rem;
+        border: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+        border-radius: .8rem;
+        background: Canvas;
+      }
+      .rule strong { display: block; margin: 0 0 .4rem; }
+      .rule p { margin: 0; color: color-mix(in srgb, CanvasText 72%, transparent); font-size: .9rem; line-height: 1.55; }
+      .callout {
+        margin: 1.2rem 0;
+        padding: 1rem 1.15rem;
+        border-left: .25rem solid var(--color-primary, #4f46e5);
+        border-radius: .3rem .7rem .7rem .3rem;
+        background: color-mix(in srgb, var(--color-primary, #4f46e5) 8%, Canvas);
+        line-height: 1.6;
+      }
+
+      .primitive-families { display: grid; gap: 1.5rem; }
+      .primitive-family {
+        padding: 1rem;
+        border: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+        border-radius: .9rem;
+        background: Canvas;
+      }
+      .primitive-family h3 { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
+      .primitive-family h3 span { color: color-mix(in srgb, CanvasText 55%, transparent); font-size: .75rem; font-weight: 500; }
+      .primitive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: .5rem; }
+      .primitive-card {
+        display: grid;
+        grid-template-columns: 2rem minmax(0, 1fr);
+        align-items: center;
+        gap: .55rem;
+        padding: .45rem;
+        border: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+        border-radius: .6rem;
+      }
+      .primitive-card .swatch { width: 2rem; height: 2rem; }
+      .primitive-card .token-name { font-size: .65rem; }
+      .primitive-card .token-value { font-size: .7rem; }
+
+      .status { padding: 1rem; border-radius: .7rem; background: color-mix(in srgb, #f59e0b 13%, Canvas); line-height: 1.55; }
+      .status[hidden], [hidden] { display: none !important; }
+      footer { padding-top: 1.2rem; border-top: 1px solid color-mix(in srgb, CanvasText 16%, transparent); color: color-mix(in srgb, CanvasText 65%, transparent); font-size: .85rem; line-height: 1.6; }
+
+      @media (max-width: 600px) {
+        .page-header { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+        .toolbar { position: static; align-items: stretch; flex-direction: column; gap: .5rem; }
+        main { width: min(100% - 1.5rem, 1180px); }
+      }
+      @media print {
+        body { background: white; }
+        .toolbar { position: static; box-shadow: none; }
+        .page-header { padding: 1rem; color: black; background: white; border-bottom: 2px solid black; }
+        .token-card, .primitive-family, .rule { break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="eyebrow">Numa · Foundation</p>
+      <h1>Color tokens</h1>
+      <p class="lede">A practical reference for semantic color roles and the primitive palette behind them. Start with intent; use raw palette values only when the system layer needs them.</p>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <label for="token-search">Find a token</label>
+        <input id="token-search" type="search" placeholder="Search names, roles, or values" autocomplete="off">
+      </div>
+
+      <p id="load-status" class="status" role="status">Loading the canonical token sources…</p>
+
+      <section id="semantic" class="major-section" aria-labelledby="semantic-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="semantic-heading">01 · Semantic colors</h2>
+            <p>Use these tokens for product UI. Each name communicates purpose and resolves to an existing primitive. The context collection covers non-interactive surroundings.</p>
+          </div>
+          <a class="source-link" href="../../tokens/semantic/color.json">Semantic token source ↗</a>
+        </div>
+
+        <section class="collection" aria-labelledby="context-heading">
+          <div class="collection-title">
+            <h3 id="context-heading">Context</h3>
+            <span>Non-interactive environment</span>
+          </div>
+          <div id="semantic-context"></div>
+        </section>
+
+        <section class="collection" aria-labelledby="interactive-heading">
+          <div class="collection-title">
+            <h3 id="interactive-heading">Interactive</h3>
+            <span>Interactive surfaces, text, and outlines</span>
+          </div>
+          <div id="semantic-interactive"></div>
+        </section>
+      </section>
+
+      <section id="rules" class="major-section" aria-labelledby="rules-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="rules-heading">Rules of use</h2>
+            <p>Keep meaning stable while allowing primitive assignments to evolve. These rules describe the current light-theme token contract.</p>
+          </div>
+        </div>
+        <ul class="rules">
+          <li class="rule">
+            <strong>Choose semantic first</strong>
+            <p>Application and reusable component styles should use a semantic role. Do not select a raw shade such as <code>indigo-600</code> just because it looks right.</p>
+          </li>
+          <li class="rule">
+            <strong>Use primitives with intent</strong>
+            <p>Primitive tokens belong in Foundation mappings, token tooling, and exceptional UI that has no semantic role. Record the gap; do not silently create a component-specific alias.</p>
+          </li>
+          <li class="rule">
+            <strong>Keep values tokenized</strong>
+            <p>Do not hardcode hex, RGB, or opacity values in product UI. Semantic colors must alias primitives. Ghost surface feedback uses its paired color and percentage aliases.</p>
+          </li>
+          <li class="rule">
+            <strong>Keep names purpose-based</strong>
+            <p>Do not add roles named after components (button, input, card, or link) or typography (title, body, or label). Choose roles by environmental or interactive purpose.</p>
+          </li>
+          <li class="rule">
+            <strong>Apply state precedence</strong>
+            <p>Disabled suppresses hover, active, and selected. Active temporarily overrides selected while pressed; hover does not replace selected. Focus remains visible when a disabled control can receive focus.</p>
+          </li>
+          <li class="rule">
+            <strong>Preserve focus contrast</strong>
+            <p>Use the light-surface focus outline on neutral surfaces. Enabled primary surfaces use the two-color focus ring: light inside and dark outside.</p>
+          </li>
+          <li class="rule">
+            <strong>Check contrast in context</strong>
+            <p>Target at least 4.5:1 for normal text and 3:1 for non-text focus indicators. Validate the composed result, including overlays, not just the uncomposited token value.</p>
+          </li>
+          <li class="rule">
+            <strong>Do not infer a dark theme</strong>
+            <p>Only light mappings exist today. Keep semantic roles theme-neutral, but do not assume dark aliases or automatic theme switching are implemented.</p>
+          </li>
+        </ul>
+        <div class="callout"><strong>State order:</strong> disabled takes precedence; otherwise, active temporarily overrides selected; selected persists through hover; focus composes as an outline without changing the surface fill.</div>
+      </section>
+
+      <section id="primitives" class="major-section" aria-labelledby="primitive-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="primitive-heading">02 · Primitive palette</h2>
+            <p>Primitives are the source values used by semantic aliases. They describe color ramps, not product meaning. Avoid using them directly in component styles.</p>
+          </div>
+          <a class="source-link" href="../../tokens/primitive/color.json">Primitive token source ↗</a>
+        </div>
+        <div id="primitive-families" class="primitive-families"></div>
+      </section>
+
+      <footer>
+        Canonical sources: <a href="../../tokens/semantic/color.json">semantic color JSON</a> and <a href="../../tokens/primitive/color.json">primitive color JSON</a>. Ghost surface opacities also reference <a href="../../tokens/primitive/percentage.json">primitive percentages</a>. This page reads those files at runtime, so serve it over HTTP rather than opening it as a <code>file://</code> URL. No generated stylesheet or component integration is implied.
+      </footer>
+    </main>
+
+    <script>
+      const sourcePaths = {
+        semantic: "../../tokens/semantic/color.json",
+        colors: "../../tokens/primitive/color.json",
+        percentages: "../../tokens/primitive/percentage.json",
+      };
+      const status = document.querySelector("#load-status");
+      const search = document.querySelector("#token-search");
+
+      function element(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      }
+
+      function primitiveTarget(value) {
+        const match = /^\{([^{}]+)\}$/.exec(value);
+        if (!match) throw new Error(`Unsupported token value: ${value}`);
+        return match[1];
+      }
+
+      function tokenCard(name, token, primitiveTokens, isPrimitive = false) {
+        const card = element("article", isPrimitive ? "primitive-card token-card" : "token-card");
+        card.dataset.search = `${name} ${token.$value}`.toLowerCase();
+        const swatch = element("span", "swatch");
+        swatch.setAttribute("aria-hidden", "true");
+        const colorSwatch = element("span", "swatch-color");
+        const value = typeof token.$value === "string" ? token.$value : String(token.$value);
+        let displayValue = value;
+
+        if (token.$type === "color") {
+          const target = isPrimitive ? name : primitiveTarget(value);
+          const color = isPrimitive ? value : primitiveTokens[target]?.$value;
+          if (!color) throw new Error(`Missing color primitive ${target} for ${name}`);
+          colorSwatch.style.backgroundColor = color;
+          swatch.append(colorSwatch);
+          displayValue = isPrimitive ? color : `${target} · ${color}`;
+        } else if (!isPrimitive && name.endsWith("-opacity")) {
+          const colorName = name.slice(0, -"-opacity".length) + "-color";
+          const colorAlias = primitiveTarget(primitiveTokens.semantic[colorName]?.$value ?? "");
+          const color = primitiveTokens.colors[colorAlias]?.$value;
+          const percent = primitiveTokens.percentages[primitiveTarget(value)]?.$value;
+          if (!color || percent === undefined) throw new Error(`Incomplete color/opacity pair for ${name}`);
+          colorSwatch.style.backgroundColor = `rgb(from ${color} r g b / ${percent}%)`;
+          swatch.append(colorSwatch);
+          displayValue = `${primitiveTarget(value)} · ${percent}%`;
+        } else {
+          swatch.classList.add("swatch-empty");
+          swatch.setAttribute("aria-label", "No color swatch for this token");
+          displayValue = isPrimitive ? value : `${primitiveTarget(value)} · ${value}`;
+        }
+
+        const details = element("span");
+        details.append(element("code", "token-name", name));
+        details.append(element("span", "token-value", displayValue));
+        card.append(swatch, details);
+        return card;
+      }
+
+      function renderSemantic(semantic, primitives) {
+        const groups = {
+          context: document.querySelector("#semantic-context"),
+          interactive: document.querySelector("#semantic-interactive"),
+        };
+        const buckets = new Map();
+
+        for (const [name, token] of Object.entries(semantic).sort(([a], [b]) => a.localeCompare(b))) {
+          const parts = name.replace(/^numa-color-/, "").split("-");
+          const collection = parts.shift();
+          const category = parts.shift();
+          if (!groups[collection]) throw new Error(`Unknown semantic collection in token ${name}`);
+          const key = `${collection}/${category}`;
+          if (!buckets.has(key)) {
+            const section = element("section", "category");
+            section.append(element("h4", "", category));
+            const grid = element("div", "token-grid");
+            section.append(grid);
+            groups[collection].append(section);
+            buckets.set(key, grid);
+          }
+          buckets.get(key).append(tokenCard(name, token, {
+            ...primitives,
+            semantic,
+            colors: primitives.colors,
+            percentages: primitives.percentages,
+          }));
+        }
+      }
+
+      function renderPrimitives(colors) {
+        const families = new Map();
+        for (const [name, token] of Object.entries(colors)) {
+          const match = /^numa-sys-col-(.+)-(\d+)$/.exec(name);
+          if (!match) throw new Error(`Unexpected primitive color token name: ${name}`);
+          const [, family, shade] = match;
+          if (!families.has(family)) families.set(family, []);
+          families.get(family).push({ name, shade: Number(shade), token });
+        }
+
+        const container = document.querySelector("#primitive-families");
+        for (const [family, colorsInFamily] of [...families].sort(([a], [b]) => a.localeCompare(b))) {
+          const section = element("section", "primitive-family");
+          const heading = element("h3");
+          heading.append(document.createTextNode(family));
+          heading.append(element("span", "", `${colorsInFamily.length} shades`));
+          const grid = element("div", "primitive-grid");
+          colorsInFamily.sort((a, b) => a.shade - b.shade);
+          for (const { name, token } of colorsInFamily) {
+            grid.append(tokenCard(name, token, {}, true));
+          }
+          section.append(heading, grid);
+          container.append(section);
+        }
+      }
+
+      function applyFilter() {
+        const query = search.value.trim().toLowerCase();
+        for (const card of document.querySelectorAll(".token-card")) {
+          card.hidden = query !== "" && !card.dataset.search.includes(query);
+        }
+        for (const group of document.querySelectorAll(".category, .primitive-family")) {
+          group.hidden = !group.querySelector(".token-card:not([hidden])");
+        }
+      }
+
+      search.addEventListener("input", applyFilter);
+
+      async function loadTokens() {
+        const [semanticResponse, colorsResponse, percentagesResponse] = await Promise.all(
+          Object.values(sourcePaths).map((path) => fetch(path)),
+        );
+        for (const response of [semanticResponse, colorsResponse, percentagesResponse]) {
+          if (!response.ok) throw new Error(`Could not load token source (${response.status}): ${response.url}`);
+        }
+        const [semantic, colors, percentages] = await Promise.all([
+          semanticResponse.json(),
+          colorsResponse.json(),
+          percentagesResponse.json(),
+        ]);
+        renderSemantic(semantic, { ...colors, colors, percentages });
+        renderPrimitives(colors);
+        status.hidden = true;
+        applyFilter();
+      }
+
+      loadTokens().catch((error) => {
+        status.textContent = `Unable to load the Foundation token sources. Serve this page over HTTP from the repository root or a static site server. Details: ${error.message}`;
+      });
+    </script>
+  </body>
+</html>
