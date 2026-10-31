@@ -1,0 +1,42 @@
+{
+  "numa-sys-gap-2": {
+    "$type": "number",
+    "$value": 2
+  },
+  "numa-sys-gap-4": {
+    "$type": "number",
+    "$value": 4
+  },
+  "numa-sys-gap-6": {
+    "$type": "number",
+    "$value": 6
+  },
+  "numa-sys-gap-8": {
+    "$type": "number",
+    "$value": 8
+  },
+  "numa-sys-gap-12": {
+    "$type": "number",
+    "$value": 12
+  },
+  "numa-sys-gap-16": {
+    "$type": "number",
+    "$value": 16
+  },
+  "numa-sys-gap-24": {
+    "$type": "number",
+    "$value": 24
+  },
+  "numa-sys-gap-32": {
+    "$type": "number",
+    "$value": 32
+  },
+  "numa-sys-gap-48": {
+    "$type": "number",
+    "$value": 48
+  },
+  "numa-sys-gap-64": {
+    "$type": "number",
+    "$value": 64
+  }
+}

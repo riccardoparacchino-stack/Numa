@@ -10,7 +10,7 @@ The repository currently contains token JSON and Node.js typography tooling only
 
 Repository JSON files hold the token data. Figma and Penpot are intended to visualize and author design work, not to become separate authorities. Changes should be recorded and reviewed in Git. Generated files should remain distinguishable from maintained source data; see [tooling and workflow](tooling-and-workflow.md) for the current generator's outputs.
 
-The primitive JSON files are directly maintained collections. Typography token files and the REM collection are written by the generator. The generator also writes copies of typography data under both `tokens/typography/` and `tokens/text/`; the repository does not establish which copy downstream consumers should prefer.
+Color, integer, and percentage primitive JSON files are directly maintained collections. `tokens/typography/config.json` and `tokens/gap/config.json` are maintained generation inputs. Typography artifacts, broad REM primitives, and the two gap representations are generated. The generator writes copies of typography data under both `tokens/typography/` and `tokens/text/`; the repository does not establish which copy downstream consumers should prefer.
 
 ## Platform-independent architecture
 
@@ -34,7 +34,7 @@ The transformation layer and both platform outputs are planned. At present, `scr
 |---|---|---|
 | Canonical data | JSON token files under `tokens/` | Remain the platform-independent source |
 | Design tools | No integration code | Figma and Penpot as authoring/inspection environments |
-| Typography generation | Node.js script; configuration is hard-coded in that script | Reproducible, clearly configurable transformation |
+| Typography generation | Node.js script reads `tokens/typography/config.json` and emits JSON artifacts | Reproducible platform-independent transformation |
 | Web | No web app or generated output | CSS custom properties |
 | React Native | No app, bundled font assets, or generated output | TypeScript token objects and bundled platform fonts |
 | Style Dictionary | Listed in `package.json`; unused by current scripts | Planned transformation layer |

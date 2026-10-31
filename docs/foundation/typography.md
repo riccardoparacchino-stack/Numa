@@ -38,9 +38,9 @@ size = baseSize * ratio ^ (index - baseIndex)
 
 For each size, line height is the calculated size multiplied by the line-height ratio. Letter spacing is the calculated size multiplied by the configured letter-spacing value.
 
-### Configuration limitation
+### Configuration
 
-The generator has an internal configuration object, but does not read `tokens/typography/config.json` or `tokens/text/config.json`; both are outputs written by the generator. There is no CLI or supported external configuration interface. Although the ratio helper can parse a numeric candidate, generation currently passes the hard-coded preset key. The config files therefore describe the current output but cannot be edited to change generation.
+The generator reads [`tokens/typography/config.json`](../../tokens/typography/config.json) as its configuration input. `tokens/text/config.json` is a generated mirror, not an input. Set `baseSize`, `numberOfScaleItems`, `lineHeightRatio`, and `letterSpacing` in the input file to customize the scale. Set `scaleRatioPresetKey` to a preset key such as `minor-third` or a positive numeric ratio; a non-preset numeric value supports custom scales. `scaleRatio` remains the fallback value. Generation validates required settings and fails with a field-specific error when configuration is invalid.
 
 ## Quantization and references
 

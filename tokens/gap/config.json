@@ -1,0 +1,12 @@
+{
+  "baseValue": 2,
+  "multipliers": [1, 2, 3, 4, 6, 8, 12, 16, 24, 32],
+  "rounding": {
+    "strategy": "nearest",
+    "tieBreak": "down"
+  },
+  "unit": "rem",
+  "baseFontSize": 16,
+  "precision": 3,
+  "namePrefix": "numa-sys-gap-"
+}

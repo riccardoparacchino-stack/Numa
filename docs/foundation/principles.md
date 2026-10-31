@@ -18,7 +18,7 @@
 
 - Prefer simple, explicit, reproducible workflows.
 - Avoid manually maintaining duplicate generated values.
-- Keep generation configuration separate from generated output. In the current implementation, typography configuration is hard-coded in the generator and JSON configuration files are generated snapshots; treat this as a limitation, not a recommended pattern.
+- Keep generation configuration separate from generated output. Typography configuration is maintained in `tokens/typography/config.json`; generated files include a mirror at `tokens/text/config.json`.
 - Avoid new dependencies, frameworks, abstractions, and generation steps without a clear need.
 - Preserve existing naming and values unless a requested, reviewed change authorizes otherwise.
 

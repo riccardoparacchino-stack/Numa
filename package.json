@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "generate:tokens": "node scripts/generate-typography.js",
-    "test": "node scripts/generate-typography.js && node scripts/validate-typography.js"
+    "generate:gap": "node scripts/generate-gap.js",
+    "validate:tokens": "node scripts/validate-foundation.js",
+    "test": "npm run validate:tokens && node --test scripts/foundation.test.js"
   },
   "keywords": [],
   "author": "",
