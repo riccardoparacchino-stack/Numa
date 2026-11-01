@@ -8,6 +8,7 @@ import { Card } from "./card";
 import { ContentCompositor } from "./content-compositor";
 import { Container } from "./container";
 import { Page } from "./page";
+import { Stack } from "./stack";
 import { TextCompositor } from "./text-compositor";
 import { Tile } from "./tile";
 import "./showcase.css";
@@ -68,6 +69,56 @@ function Preview({ label, children }: { label: string; children: ReactNode }) {
 
 function MoleculeStory() {
   const [actionMessage, setActionMessage] = useState("Activate a button preview to test its action.");
+  const overviewTitle = (
+    <Text as="strong" variant="headline" size="s" id="overview-title">
+      Overview
+    </Text>
+  ) as any;
+  const overviewDescription = (
+    <Text as="span" variant="body" size="m" id="overview-description">
+      Shared context and status across the current workspace.
+    </Text>
+  ) as any;
+  const performanceTitle = (
+    <Text as="span" variant="title" size="m" id="performance-title">
+      Performance
+    </Text>
+  ) as any;
+  const performanceDescription = (
+    <Text as="small" variant="body" size="s" id="performance-description">
+      Fast delivery and stable interaction patterns for the current page.
+    </Text>
+  ) as any;
+  const accessTitle = (
+    <Text as="span" variant="label" size="s" id="access-title">
+      Access
+    </Text>
+  ) as any;
+  const accessDescription = (
+    <Text as="small" variant="body" size="m" id="access-description">
+      Permission changes are explicit, reviewed, and easy to audit.
+    </Text>
+  ) as any;
+  const reviewTitle = (
+    <Text as="span" variant="headline" size="s" id="review-title">
+      Review
+    </Text>
+  ) as any;
+  const reviewDescription = (
+    <Text as="span" variant="body" size="s" id="review-description">
+      The surrounding layout remains independent from the content semantics.
+    </Text>
+  ) as any;
+  const notesTitle = (
+    <Text as="span" variant="title" size="s" id="notes-title">
+      Notes
+    </Text>
+  ) as any;
+  const notesDescription = (
+    <Text as="p" variant="body" size="m" id="notes-description">
+      Each item can choose its own content semantics without changing Stack.
+    </Text>
+  ) as any;
 
   return (
     <Page className="molecule-story" style={theme}>
@@ -168,6 +219,104 @@ function MoleculeStory() {
           <Text variant="body" size="s" as="p" className="action-status" aria-live="polite">
             {actionMessage}
           </Text>
+        </section>
+
+        <section aria-labelledby="stack-heading">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">Stack</p>
+              <Text variant="headline" size="s" as="h2" id="stack-heading">
+                Direction × wrapping × mode
+              </Text>
+            </div>
+            <Text variant="body" size="m" as="p">
+              The layout remains neutral; the calling composition chooses the semantic content.
+            </Text>
+          </div>
+          <div className="preview-grid preview-grid--tile">
+            {(["vertical", "horizontal", "wrap-column", "wrap-row"] as const).map((direction) => (
+              <Preview key={direction} label={`Stack · ${direction}`}>
+                <Container mode={direction.includes("wrap") ? "spacious" : "compact"}>
+                  <Stack direction={direction} style={{ padding: "0.5rem" }}>
+                    {Array.from({ length: 4 }, (_, index) => (
+                      <span
+                        key={`${direction}-${index}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          minWidth: "2.5rem",
+                          minHeight: "2.5rem",
+                          padding: "0.5rem 0.75rem",
+                          borderRadius: "0.5rem",
+                          background: "var(--surface)",
+                          border: "1px solid var(--line)",
+                        }}
+                      >
+                        {index + 1}
+                      </span>
+                    ))}
+                  </Stack>
+                </Container>
+              </Preview>
+            ))}
+          </div>
+          <Preview label="Five TextCompositor items">
+            <Container mode="relaxed">
+              <Stack direction="vertical" data-testid="stack-text-compositors" style={{ width: "100%" }}>
+                <TextCompositor
+                  title={overviewTitle}
+                  description={overviewDescription}
+                  align="start"
+                  gap="numa-spacing-pebbles-s"
+                  titleTypography={{ variant: "headline", size: "s" }}
+                  descriptionTypography={{ variant: "body", size: "m" }}
+                  style={{ padding: "0.75rem 1rem", borderRadius: "0.75rem", background: "var(--surface)" }}
+                  aria-label="Overview summary"
+                />
+                <TextCompositor
+                  title={performanceTitle}
+                  description={performanceDescription}
+                  align="center"
+                  gap="numa-spacing-pebbles-xs"
+                  titleTypography={{ variant: "title", size: "m" }}
+                  descriptionTypography={{ variant: "body", size: "s" }}
+                  style={{ padding: "0.75rem 1rem", borderRadius: "0.75rem", border: "1px solid var(--line)" }}
+                  aria-label="Performance summary"
+                />
+                <TextCompositor
+                  title={accessTitle}
+                  description={accessDescription}
+                  align="start"
+                  gap="numa-spacing-pebbles-m"
+                  titleTypography={{ variant: "label", size: "s" }}
+                  descriptionTypography={{ variant: "body", size: "m" }}
+                  style={{ padding: "0.75rem 1rem", borderRadius: "0.75rem", background: "color-mix(in srgb, var(--surface) 72%, transparent)" }}
+                  aria-label="Access summary"
+                />
+                <TextCompositor
+                  title={reviewTitle}
+                  description={reviewDescription}
+                  align="end"
+                  gap="numa-spacing-pebbles-xs"
+                  titleTypography={{ variant: "headline", size: "s" }}
+                  descriptionTypography={{ variant: "body", size: "s" }}
+                  style={{ padding: "0.75rem 1rem", borderRadius: "0.75rem", border: "1px solid var(--line)", textTransform: "uppercase" }}
+                  aria-label="Review summary"
+                />
+                <TextCompositor
+                  title={notesTitle}
+                  description={notesDescription}
+                  align="start"
+                  gap="numa-spacing-pebbles-s"
+                  titleTypography={{ variant: "title", size: "s" }}
+                  descriptionTypography={{ variant: "body", size: "m" }}
+                  style={{ padding: "0.75rem 1rem", borderRadius: "0.75rem", background: "var(--surface)" }}
+                  aria-label="Notes summary"
+                />
+              </Stack>
+            </Container>
+          </Preview>
         </section>
 
         <section aria-labelledby="slots-heading">

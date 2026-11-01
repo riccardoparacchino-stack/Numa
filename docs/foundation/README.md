@@ -40,8 +40,8 @@ The repository contains primitive color/numeric/percentage data and shared
 typography, semantic color, spacing, and radius collections. Text's typography
 scale consumes Foundation values; its Button-label utility is component-local.
 Page consumes the semantic page background; Tile consumes generated
-dimensions and contained surfaces in React Web; Text Compositor uses semantic
-spacing. Container provides sizing only. Tokens remain
-source-only without generated outputs.
+dimensions and contained surfaces in React Web; Text Compositor and Stack use
+semantic spacing. Container provides sizing only; Stack inherits Container mode
+for axis gaps. Tokens remain source-only without generated outputs.
 React Native token outputs and component support remain out of scope and are
 not claimed.

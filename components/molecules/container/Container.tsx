@@ -20,6 +20,7 @@ import { resolveSpacingPx } from "../../../foundation/semantic-dimensions";
 import primitivePercentages from "../../../tokens/primitive/percentage.json";
 import { DisabledContext } from "../../disabled-context";
 import { TileNestingContext } from "../tile/tile-nesting-context";
+import { ContainerModeContext } from "./container-mode-context";
 import "./Container.css";
 
 type ContainerStyle = CSSProperties & {
@@ -138,9 +139,11 @@ export function Container({
       data-mode={mode ?? "auto"}
       data-effective-mode={effectiveMode}
     >
-      <TileNestingContext.Provider value={{ depth: 1, surfaceLevel: "level-1" }}>
-        {children}
-      </TileNestingContext.Provider>
+      <ContainerModeContext.Provider value={effectiveMode}>
+        <TileNestingContext.Provider value={{ depth: 1, surfaceLevel: "level-1" }}>
+          {children}
+        </TileNestingContext.Provider>
+      </ContainerModeContext.Provider>
     </div>
   );
 }

@@ -77,6 +77,23 @@ by element dimensions and platform behavior.
 | Walls | `numa-radius-walls-l` | 80 |
 | Walls | `numa-radius-walls-xl` | 96 |
 
+## Stack gap tokens
+
+The layout primitive `Stack` uses the same spacing scale but adds mode-specific
+values for the axis-driven gaps it applies to flex children. These tokens are
+stored in the semantic spacing catalog and resolved with the same Web adapter as
+other tokens; they are not a second spacing system.
+
+| Mode | Vertical gap | Horizontal gap |
+| --- | ---: | ---: |
+| `compact` | `numa-spacing-stack-compact-vertical` (`8`) | `numa-spacing-stack-compact-horizontal` (`12`) |
+| `relaxed` | `numa-spacing-stack-relaxed-vertical` (`12`) | `numa-spacing-stack-relaxed-horizontal` (`16`) |
+| `spacious` | `numa-spacing-stack-spacious-vertical` (`16`) | `numa-spacing-stack-spacious-horizontal` (`24`) |
+
+`Stack` follows the nearest ancestor `Container` mode when available; outside a
+Container it resolves to `compact` as the default, matching the repository's
+Tile sizing baseline.
+
 ## Nested surfaces
 
 For visually consistent nested corners, use the practical guideline:

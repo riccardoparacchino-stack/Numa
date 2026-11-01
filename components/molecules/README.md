@@ -8,6 +8,7 @@ Molecules compose existing atoms into reusable content patterns.
 | Content Compositor | [README](content-compositor/README.md) | [Representative slot compositions](showcase.html#slots-heading) | [Tests](content-compositor/ContentCompositor.runtime.test.tsx) |
 | Page | [README](page/README.md) | Used as the [showcase page shell](showcase.html) | [Tests](page/Page.runtime.test.tsx) |
 | Container | [README](container/README.md) | [Sizing modes and composition](showcase.html#tile-heading) | [Tests](container/Container.runtime.test.tsx) |
+| Stack | [README](stack/README.md) | [Stack direction and mode examples](showcase.html#stack-heading) | [Tests](stack/Stack.runtime.test.tsx) |
 | Card | [README](card/README.md) | [Nested Card composition](showcase.html#slots-heading) | [Tests](card/Card.runtime.test.tsx) |
 | Tile | [README](tile/README.md) | [Static, link, and button examples](showcase.html#tile-heading) | [Tests](tile/Tile.runtime.test.tsx) |
 
