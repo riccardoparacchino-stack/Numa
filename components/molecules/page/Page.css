@@ -1,0 +1,6 @@
+.numa-page {
+  margin: 0;
+  padding: var(--numa-page-padding-top) var(--numa-page-padding-inline)
+    var(--numa-page-padding-bottom);
+  background-color: var(--numa-page-background);
+}

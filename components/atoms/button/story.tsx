@@ -82,7 +82,7 @@ function StoryApp() {
             </div>
           </div>
 
-          <Container size="m">
+          <Container mode="relaxed">
             <div className="button-group">
               {buttonSizes.map((size) => (
                 <Button key={size} size={size} onClick={() => setClickCount((count) => count + 1)}>
@@ -152,7 +152,7 @@ function StoryApp() {
             </Preview>
 
             <Preview label="Tile surface">
-              <Tile variant="m">
+              <Tile>
                 <div className="button-stack">
                   <Button variant="outlined" size="m">
                     Outlined in context

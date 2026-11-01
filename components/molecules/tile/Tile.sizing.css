@@ -1,0 +1,30 @@
+.numa-container[data-mode="auto"] .numa-tile {
+  --numa-sizing-auto-step-0-padding: var(--numa-sizing-scale-step-0-padding);
+  --numa-sizing-auto-step-0-radius: var(--numa-sizing-scale-step-0-radius);
+  --numa-sizing-auto-step-2-padding: var(--numa-sizing-scale-step-2-padding);
+  --numa-sizing-auto-step-2-radius: var(--numa-sizing-scale-step-2-radius);
+  --numa-sizing-auto-step-4-padding: var(--numa-sizing-scale-step-4-padding);
+  --numa-sizing-auto-step-4-radius: var(--numa-sizing-scale-step-4-radius);
+}
+
+@container numa-sizing (min-width: 480px) {
+  .numa-container[data-mode="auto"] .numa-tile {
+    --numa-sizing-auto-step-0-padding: var(--numa-sizing-scale-step-1-padding);
+    --numa-sizing-auto-step-0-radius: var(--numa-sizing-scale-step-1-radius);
+    --numa-sizing-auto-step-2-padding: var(--numa-sizing-scale-step-3-padding);
+    --numa-sizing-auto-step-2-radius: var(--numa-sizing-scale-step-3-radius);
+    --numa-sizing-auto-step-4-padding: var(--numa-sizing-scale-step-5-padding);
+    --numa-sizing-auto-step-4-radius: var(--numa-sizing-scale-step-5-radius);
+  }
+}
+
+@container numa-sizing (min-width: 800px) {
+  .numa-container[data-mode="auto"] .numa-tile {
+    --numa-sizing-auto-step-0-padding: var(--numa-sizing-scale-step-2-padding);
+    --numa-sizing-auto-step-0-radius: var(--numa-sizing-scale-step-2-radius);
+    --numa-sizing-auto-step-2-padding: var(--numa-sizing-scale-step-4-padding);
+    --numa-sizing-auto-step-2-radius: var(--numa-sizing-scale-step-4-radius);
+    --numa-sizing-auto-step-4-padding: var(--numa-sizing-scale-step-6-padding);
+    --numa-sizing-auto-step-4-radius: var(--numa-sizing-scale-step-6-radius);
+  }
+}

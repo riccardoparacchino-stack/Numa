@@ -29,9 +29,11 @@ a Style Dictionary build, generated CSS, or React Native conversion in this
 change. The adapter is the React Web consumption contract, not platform
 metadata in the token files.
 
-Tile uses semantic spacing and radius for padding, layout gaps, and corner
-radius. Text Compositor uses semantic spacing for its title-description gap.
-Their component documentation describes the chosen token names and defaults.
+Text Compositor uses semantic spacing for its title-description gap. Tile
+dimensions are now generated from a parametric scale as documented in
+[ADR 0008](0008-parametric-tile-sizing.md), rather than resolving one of these
+semantic tokens per size. The shared resolver remains the Web pixel contract
+for components that consume semantic dimension tokens.
 
 ## Alternatives considered
 

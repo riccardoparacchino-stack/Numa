@@ -19,6 +19,7 @@ Scopes are explicit:
 - **`surface`** — contained fills and interactive fills.
 - **`content`** — text and icons.
 - **`outline`** — borders and focus strokes.
+- **`shadow`** — non-interactive depth tint.
 
 Use semantic emphasis modifiers such as `strong`, `weak`, `subtle`, and
 `default`. Interactive action roles use `action`; never encode component names
@@ -30,20 +31,33 @@ existing semantic role cannot express a distinct, required treatment.
 
 | Token | Primitive | Role |
 | --- | --- | --- |
-| `numa-color-context-background-default` | `slate-50` | Default light page environment |
+| `numa-color-context-background-default` | `slate-100` | Default page background |
 | `numa-color-context-background-sunken` | `slate-300` | Recessed environment |
-| `numa-color-context-surface-weak` | `slate-100` | First contained surface |
+| `numa-color-context-surface-weak` | `white` | First contained surface |
 | `numa-color-context-surface-strong` | `slate-200` | Nested contained surface |
 | `numa-color-context-content-strong` | `slate-950` | High-emphasis text and icons |
 | `numa-color-context-content-weak` | `slate-700` | Supporting text and icons |
 | `numa-color-context-outline-subtle` | `slate-200` | Low-emphasis boundary |
 | `numa-color-context-outline-default` | `slate-300` | Standard boundary |
+| `numa-color-context-shadow-subtle` | `slate-500` | Subtle non-interactive shadow tint |
 | `numa-color-accent-content-default` | `teal-800` | Non-interactive decorative icons, badges, and emphasis |
 
-Use `surface-weak` and `surface-strong` to alternate contained layers.
-Container uses weak; Card uses strong; a nested Card child returns to weak.
-The neutral surface steps are deliberately subtle, so boundaries should remain
-visible and must not rely on shadow alone.
+Page consumes `background-default` for its page fill. Container uses the
+first contained surface (`surface-weak`) and outline (`outline-subtle`).
+Standalone nested Tiles alternate `surface-weak` and `surface-strong`; inside
+a Container, the middle Tile uses `surface-strong` and its inner Tile returns
+to `surface-weak`. Card uses `surface-strong` with one nested child returning
+to weak. The Page uses slate-100 while the first contained surface uses white,
+matching their distinct roles and the white Container frame in the FigCraft
+foundation.
+
+The subtle and action surface examples map to
+`interactive-surface-subtle-default` (slate-200) and
+`interactive-surface-action-default` (indigo-600). The Ghost Tile border maps
+to `context-outline-default` (slate-300). Existing Tile nesting and action
+feedback remain independent of Page and Container.
+Container shadow color uses `context-shadow-subtle`; it is separate from all
+outline roles even though both can use neutral primitive colors.
 
 Accent is non-interactive: it communicates decoration or identity and must not
 be used to imply an action, success, warning, error, or informational state.

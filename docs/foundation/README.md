@@ -15,8 +15,8 @@ and their consumers.
   primitive aliases, nested-surface guidance, and platform limitations.
 - [Container-query responsiveness](container-queries.md) — shared React Web
   query containers and component-local responsive behavior.
-- [Surface hierarchy](surface-hierarchy.md) — page-level Containers, Cards,
-  card children, and the rationale for explicit surface roles.
+- [Surface hierarchy](surface-hierarchy.md) — generic sizing boundaries,
+  nested Tile roles, and Cards as content groups.
 - [Color token reference](color-tokens.html) — searchable HTML catalog with
   semantic colors first, primitive palettes second, and usage rules.
 - [Architecture decisions](../decisions/0001-foundation-text-typography.md) —
@@ -27,6 +27,8 @@ and their consumers.
   rationale for current color roles and container-query behavior.
 - [Inherited disabled mode](../decisions/0007-inherited-disabled-mode.md) —
   rationale for shared disabled color scopes and parent-to-child propagation.
+- [Parametric Tile sizing](../decisions/0008-parametric-tile-sizing.md) —
+  rationale for harmonic sizing and generic responsive Containers.
 - [Semantic spacing and radius decision](../decisions/0003-foundation-semantic-spacing-radius.md) —
   rationale and trade-offs for the semantic spacing and radius sources.
 - [React Web dimension adapter](../decisions/0004-react-web-dimension-adapter.md) —
@@ -38,7 +40,9 @@ and their consumers.
 
 The repository contains primitive color/numeric/percentage data and shared
 typography, semantic color, spacing, and radius collections. The Text Atom
-consumes typography; Tile and Text Compositor consume semantic spacing and
-radius in React Web. Semantic colors also feed Tile's surface and interaction
-styles. Tokens remain source-only without generated outputs. React Native
-token outputs and component support remain out of scope and are not claimed.
+consumes typography; Page consumes the semantic page background; Tile consumes
+generated dimensions and contained surfaces in React Web; Text Compositor
+uses semantic spacing. Container provides sizing only. Tokens remain
+source-only without generated outputs.
+React Native token outputs and component support remain out of scope and are
+not claimed.

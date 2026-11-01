@@ -27,7 +27,7 @@ layouts.
   status content colors. Status color is not sufficient as the only signal.
 - Keep light mappings and existing primitives; do not generate output, claim
   theme switching, or add component-specific tokens.
-- Make Container a named inline-size query container (`numa-page`) and let
+- Make Container a named inline-size query container (`numa-sizing`) and let
   ContentCompositor adapt against its own inline size (`numa-content`). Keep
   responsive component behavior in component styles, not viewport logic.
 

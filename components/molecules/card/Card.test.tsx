@@ -6,13 +6,9 @@ import { Card } from "./Card";
 afterEach(cleanup);
 
 describe("Card", () => {
-  it.each([
-    ["s", ["12px", "8px"], ["24px", "4px"]],
-    ["m", ["20px", "12px"], ["24px", "4px"]],
-    ["l", ["24px", "12px"], ["32px", "4px"]],
-  ] as const)("applies inherited %s size to Card and Card child", (size, paddings, radii) => {
+  it("uses generated middle and inner Tile dimensions and alternates surfaces", () => {
     const { container } = render(
-      <Container size={size}>
+      <Container mode="relaxed">
         <Card>
           <Card>Card child</Card>
         </Card>
@@ -21,10 +17,18 @@ describe("Card", () => {
     const cards = Array.from(container.querySelectorAll(".numa-card")) as HTMLDivElement[];
 
     expect(cards).toHaveLength(2);
-    expect(cards.map((card) => card.style.padding)).toEqual([...paddings]);
-    expect(cards.map((card) => card.style.borderRadius)).toEqual([...radii]);
-    expect(cards[0].className).toContain("numa-card--middle");
-    expect(cards[1].className).toContain("numa-card--inner");
+    expect(cards.map((card) => card.className.match(/numa-card--\w+/)?.[0])).toEqual([
+      "numa-card--middle",
+      "numa-card--inner",
+    ]);
+    expect(cards.map((card) => card.style.padding)).toEqual([
+      expect.stringContaining("--numa-sizing-selected-step-2-padding"),
+      expect.stringContaining("--numa-sizing-selected-step-0-padding"),
+    ]);
+    expect(cards.map((card) => card.style.borderRadius)).toEqual([
+      expect.stringContaining("--numa-sizing-selected-step-2-radius"),
+      expect.stringContaining("--numa-sizing-selected-step-0-radius"),
+    ]);
     expect(cards.map((card) => card.style.getPropertyValue("--numa-tile-surface"))).toEqual([
       "var(--numa-color-context-surface-strong)",
       "var(--numa-color-context-surface-weak)",
@@ -35,23 +39,27 @@ describe("Card", () => {
     ]);
   });
 
-  it("requires a Container parent", () => {
-    expect(() => render(<Card>Orphan card</Card>)).toThrow(
-      "Card must be placed inside a Container or another Card.",
+  it("works inside an arbitrary wrapper without requiring a Container", () => {
+    const { getByText } = render(
+      <section>
+        <Card>Independent card</Card>
+      </section>,
     );
+
+    expect(getByText("Independent card").closest(".numa-card")).toBeTruthy();
   });
 
   it("allows native card links and buttons", () => {
     const onClick = vi.fn();
     const { getByRole, rerender } = render(
-      <Container>
+      <Container mode="compact">
         <Card href="/profile">Profile link</Card>
       </Container>,
     );
     expect(getByRole("link", { name: "Profile link" }).getAttribute("href")).toBe("/profile");
 
     rerender(
-      <Container>
+      <Container mode="compact">
         <Card onClick={onClick}>Open profile</Card>
       </Container>,
     );
@@ -62,7 +70,7 @@ describe("Card", () => {
   it("allows one nested Card child only", () => {
     expect(() =>
       render(
-        <Container>
+        <Container mode="compact">
           <Card>
             <Card>
               <Card>Too deep</Card>

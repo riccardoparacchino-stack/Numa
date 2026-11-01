@@ -1,58 +1,70 @@
 import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { TextCompositor } from "../text-compositor";
+import { Container } from "../container";
 import { Tile } from "./Tile";
 
 afterEach(cleanup);
 
 describe("Tile", () => {
-  it.each([
-    ["s", "8px", "48px"],
-    ["m", "16px", "72px"],
-    ["l", "24px", "96px"],
-  ] as const)("applies size padding and outer radius for variant %s", (variant, padding, radius) => {
-    const { getByText } = render(
-      <Tile variant={variant}>
-        <TextCompositor title={`${variant} Tile`} />
-      </Tile>,
-    );
-    const tile = getByText(`${variant} Tile`).closest(".numa-tile") as HTMLDivElement;
+  it("uses generated outer dimensions by default and the middle role in a Container", () => {
+    const { getByText, rerender } = render(<Tile>Default Tile</Tile>);
+    const defaultTile = getByText("Default Tile").closest(".numa-tile") as HTMLDivElement;
 
-    expect(tile.tagName).toBe("DIV");
-    expect(tile.style.padding).toBe(padding);
-    expect(tile.style.borderRadius).toBe(radius);
-    expect(tile.className).toContain(`numa-tile--${variant}`);
-    expect(tile.className).toContain("numa-tile--surface-level-1");
-    expect(tile.style.getPropertyValue("--numa-tile-surface")).toBe(
-      "var(--numa-color-context-surface-weak)",
+    expect(defaultTile.style.padding).toBe(
+      "var(--numa-sizing-selected-step-4-padding, var(--numa-sizing-auto-step-4-padding, 16px))",
     );
-    expect(tile.style.getPropertyValue("--numa-color-context-surface-weak")).toBe("#f1f5f9");
+    expect(defaultTile.style.borderRadius).toBe(
+      "var(--numa-sizing-selected-step-4-radius, var(--numa-sizing-auto-step-4-radius, 44px))",
+    );
+
+    rerender(
+      <Container mode="spacious">
+        <Tile>
+          Spacious Tile
+          <Tile>Inner Tile</Tile>
+        </Tile>
+      </Container>,
+    );
+    const container = getByText("Spacious Tile").closest(".numa-container") as HTMLDivElement;
+    const spaciousTile = getByText("Spacious Tile").closest(".numa-tile") as HTMLDivElement;
+    const innerTile = getByText("Inner Tile").closest(".numa-tile") as HTMLDivElement;
+
+    expect(container.dataset.mode).toBe("spacious");
+    expect(container.style.getPropertyValue("--numa-sizing-selected-step-4-padding")).toBe("24px");
+    expect(container.style.getPropertyValue("--numa-sizing-selected-step-4-radius")).toBe("68px");
+    expect(spaciousTile.className).toContain("numa-tile--nesting-middle");
+    expect(spaciousTile.style.padding).toContain("--numa-sizing-selected-step-2-padding");
+    expect(innerTile.className).toContain("numa-tile--nesting-inner");
+    expect(innerTile.style.padding).toContain("--numa-sizing-selected-step-0-padding");
   });
 
-  it("allows explicit padding overrides without changing the Tile size variant", () => {
-    const { getByText } = render(
-      <Tile variant="s" style={{ padding: "24px" }}>
-        Custom padding
-      </Tile>,
-    );
+  it("allows explicit padding overrides without changing generated radius", () => {
+    const { getByText } = render(<Tile style={{ padding: "24px" }}>Custom padding</Tile>);
     const tile = getByText("Custom padding").closest(".numa-tile") as HTMLDivElement;
 
-    expect(tile.className).toContain("numa-tile--s");
     expect(tile.style.padding).toBe("24px");
+    expect(tile.style.borderRadius).toContain("--numa-sizing-selected-step-4-radius");
   });
 
-  it("uses a single generic children slot for nested or custom content", () => {
-    const { getByText } = render(
-      <Tile variant="s">
+  it("accepts arbitrary content and nests through outer, middle, and inner roles", () => {
+    const { container } = render(
+      <Tile>
         <section>
-          <TextCompositor title="Nested composition" />
-          <Tile variant="s">A nested Tile</Tile>
+          <p>Any HTML content</p>
+          <Tile>
+            <Tile>Inner content</Tile>
+          </Tile>
         </section>
       </Tile>,
     );
+    const tiles = Array.from(container.querySelectorAll(".numa-tile"));
 
-    expect(getByText("Nested composition")).toBeTruthy();
-    expect(getByText("A nested Tile").closest(".numa-tile--s")).toBeTruthy();
+    expect(container.querySelector("section p")?.textContent).toBe("Any HTML content");
+    expect(tiles.map((tile) => tile.className.match(/numa-tile--nesting-\w+/)?.[0])).toEqual([
+      "numa-tile--nesting-outer",
+      "numa-tile--nesting-middle",
+      "numa-tile--nesting-inner",
+    ]);
   });
 
   it("alternates weak and strong surface levels when Tiles are nested", () => {
@@ -77,34 +89,6 @@ describe("Tile", () => {
     ]);
   });
 
-  it.each([
-    ["s", ["24px", "12px", "8px"], ["48px", "24px", "4px"]],
-    ["m", ["40px", "20px", "12px"], ["72px", "24px", "4px"]],
-    ["l", ["64px", "24px", "12px"], ["96px", "32px", "4px"]],
-  ] as const)("applies radius-calculated nested dimensions for %s", (variant, paddings, radii) => {
-    const { container } = render(
-      <Tile variant={variant} style={{ padding: paddings[0] }}>
-        <Tile style={{ padding: paddings[1] }}>
-          <Tile style={{ padding: paddings[2] }}>Inner content</Tile>
-        </Tile>
-      </Tile>,
-    );
-    const tiles = Array.from(container.querySelectorAll(".numa-tile")) as HTMLDivElement[];
-
-    expect(tiles).toHaveLength(3);
-    expect(tiles.map((tile) => tile.style.padding)).toEqual([...paddings]);
-    expect(tiles.map((tile) => tile.style.borderRadius)).toEqual([...radii]);
-    const [outerRadius, middleRadius, innerRadius] = radii.map((radius) => Number.parseInt(radius, 10));
-    const [outerPadding, middlePadding] = paddings.map((padding) => Number.parseInt(padding, 10));
-    expect(outerRadius).toBeGreaterThanOrEqual(outerPadding + middleRadius);
-    expect(middleRadius).toBeGreaterThanOrEqual(middlePadding + innerRadius);
-    expect(tiles.map((tile) => tile.className.match(/numa-tile--nesting-\w+/)?.[0])).toEqual([
-      "numa-tile--nesting-outer",
-      "numa-tile--nesting-middle",
-      "numa-tile--nesting-inner",
-    ]);
-  });
-
   it("rejects a fourth nested Tile", () => {
     expect(() =>
       render(
@@ -119,16 +103,6 @@ describe("Tile", () => {
     ).toThrow("Tiles can be nested three levels maximum.");
   });
 
-  it("rejects a nested Tile variant that conflicts with the outer size", () => {
-    expect(() =>
-      render(
-        <Tile variant="m">
-          <Tile variant="s">Conflicting size</Tile>
-        </Tile>,
-      ),
-    ).toThrow("Nested Tiles inherit the outer Tile variant.");
-  });
-
   it("uses a native button for actions and prevents activation when disabled", () => {
     const onClick = vi.fn();
     const { getByRole, rerender } = render(<Tile onClick={onClick}>Save</Tile>);
@@ -138,7 +112,11 @@ describe("Tile", () => {
     fireEvent.click(button);
     expect(onClick).toHaveBeenCalledOnce();
 
-    rerender(<Tile onClick={onClick} disabled>Save</Tile>);
+    rerender(
+      <Tile onClick={onClick} disabled>
+        Save
+      </Tile>,
+    );
     const disabledButton = getByRole("button", { name: "Save" }) as HTMLButtonElement;
     expect(disabledButton.disabled).toBe(true);
     fireEvent.click(disabledButton);
@@ -164,7 +142,7 @@ describe("Tile", () => {
     ]);
   });
 
-  it("uses a native link for navigation and preserves keyboard focusability", () => {
+  it("uses a native link and forwards link attributes", () => {
     const { getByRole } = render(
       <Tile href="/details" aria-label="View details" target="_blank" rel="noreferrer">
         Details

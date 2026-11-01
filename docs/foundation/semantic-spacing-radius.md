@@ -104,18 +104,20 @@ next available radius that satisfies it.
 This is not a universal geometric law or a token validation rule. Do not force
 it when it looks wrong for compact or unusual shapes. Asymmetric padding,
 clipping, dimensions, corner shape, and optical adjustments can all affect the
-result. Do not add tokens just to satisfy every possible combination, and do
-not enforce the guideline automatically.
+result. Do not add tokens just to satisfy every possible combination. The
+parametric Tile scale applies this as a component-specific constraint between
+nested roles; it is not enforced for arbitrary token combinations.
 
 ## Scope and validation limits
 
-The [Tile](../../components/molecules/tile/README.md) and
-[Text Compositor](../../components/molecules/text-compositor/README.md)
-components consume these dimensions through
+The [Text Compositor](../../components/molecules/text-compositor/README.md)
+consumes semantic spacing through
 [`foundation/semantic-dimensions.ts`](../../foundation/semantic-dimensions.ts).
-For this React Web integration, that adapter interprets the referenced
-unitless numeric values as CSS pixels. This is a consumption rule implemented
-by the adapter, not metadata stored in the primitive tokens.
+Tile dimensions are generated separately from a configurable base and
+harmonic ratio; see [parametric Tile sizing](../../components/molecules/tile/README.md).
+The React Web adapter interprets referenced unitless numeric values as CSS
+pixels. This is a consumption rule implemented by the adapter, not metadata
+stored in the primitive tokens.
 
 The repository still has no configured Style Dictionary build or generated
 output, so no standalone CSS artifact is produced. There is also no React

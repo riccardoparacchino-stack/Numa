@@ -1,81 +1,54 @@
 # Container
 
-`Container` is the first surface layer on a page background. Place it directly
-in the page composition, then compose fieldsets, forms, sections, Cards, and
-other page content inside its single `children` slot.
+Container is a React Web layout element that establishes a named inline-size
+query boundary, applies the first Tile surface, and occupies the outermost
+step in the shared harmonic sizing progression. It renders a `div` and accepts
+arbitrary children.
 
 ## API
 
 | Prop | Type | Default | Behavior |
 |---|---|---|---|
-| `children` | `ReactNode` | — | Page-level composition; may include fieldsets and Cards. |
-| `size` | `"s" \| "m" \| "l"` | `"m"` | Selects inherited size and the Container's outer radius. Descendant Cards inherit it. |
-| Native/ARIA/data attributes | `HTMLAttributes<HTMLDivElement>` | — | Forwarded to the Container surface. |
-| `className`, `style` | React Web values | — | Customize styling; `style.padding` can override the default. Radius, width, and minimum width are token-controlled. |
+| `children` | `ReactNode` | — | Arbitrary children. |
+| `mode` | `"compact" \| "relaxed" \| "spacious"` | Automatic | Selects the Container's own dimensions and the descendant sizing environment. When omitted, the Container observes its inline size. |
+| `basePadding` | `number` | `8` | Positive base padding in CSS pixels for the generated scale. |
+| `harmonicRatio` | `number` | `1.2` | Positive scale multiplier, independent of mode. |
+| `radiusMultiplier` | `number` | `2` | Positive multiplier used by the shared sizing scale. |
+| HTML attributes | `HTMLAttributes<HTMLDivElement>` | — | Forwarded to the Container element. |
+| `className`, `style` | React Web values | — | Adds classes or controls layout; explicit style values override generated styles. |
 
-| Size | Default padding | Outer radius |
-|---|---:|---:|
-| `s` | 24px | 48px |
-| `m` | 40px | 72px |
-| `l` | 64px | 96px |
+Container applies generated padding and radius from the shared scale and uses
+the weak semantic surface with the subtle context outline. Its shadow uses the
+`context-shadow-subtle` semantic color, semantic spacing values for its
+geometry, and the existing 20% primitive percentage. It takes the
+former outer Tile's step 4 and surface level 1. Its Tile nesting context
+starts at the middle role. The first nested Tile uses step 2 and
+`surface-strong`; its inner Tile uses step 0 and `surface-weak`. Modes offset
+this progression by steps 0, 1, and 2. The Container also exposes the
+generated dimensions to descendants as CSS custom properties. The inner Tile
+is the final Tile level inside a Container; nested Tiles beneath it are
+rejected.
 
-Container uses the weak `numa-color-context-surface-weak` surface against
-the page background. Its first Card uses the strong surface; a Card child
-alternates back to weak. This follows the Foundation
-[weak/strong surface rule](../../../docs/foundation/semantic-colors.md).
-
-Container is also a named inline-size query container (`numa-page`). Descendant
-components can respond to the width they receive from this surface rather than
-the viewport; see [container-query guidance](../../../docs/foundation/container-queries.md).
-
-## Hierarchy and rationale
-
-Use the surface hierarchy `page background → Container → Card → Card child`.
-The Container is the one broad first-layer surface that groups a page region;
-its content is not assumed to be a card. Fieldsets, forms, toolbars, and
-multi-section compositions belong directly inside it when that matches their
-semantics. Cards identify cohesive, independently scannable content within
-that region. A Card nested in another Card is a child-card surface, not another
-page container.
-
-This distinction keeps page structure and content grouping explicit instead
-of assigning meaning by counting generic Tile elements. It also avoids
-wrapping form fieldsets or arbitrary compositions in card styling merely
-because they happen to be grouped together. Containers cannot nest, and a
-fourth surface level is rejected. A Container must be a direct page-level
-surface; use normal layout elements to position multiple sibling Containers.
-
-The outer Container chooses `s`, `m`, or `l`; Cards inherit that size and
-radius progression. Padding tapers by role to keep the surface contours
-balanced:
-
-| Size | Container / Card / Card child padding | Container / Card / Card child radius |
-|---|---|---|
-| `s` | 24 / 12 / 8px | 48 / 24 / 4px |
-| `m` | 40 / 20 / 12px | 72 / 24 / 4px |
-| `l` | 64 / 24 / 12px | 96 / 32 / 4px |
-
-At each nested boundary, follow the practical radius guidance
-`R_outer >= P_outer + R_inner`; for example, `96 >= 64 + 32` and
-`32 >= 24 + 4` for size `l`. Values resolve through existing semantic spacing
-and radius tokens, including `numa-radius-walls-xl` for the 96px radius.
-
-## Example
+The query container is named `numa-sizing`. In automatic mode, a
+`ResizeObserver` selects the progression mode from the Container's inline
+size and updates its own dimensions and the selected-step variables inherited
+by descendant Tiles. Widths below 480px use compact, widths from 480px use
+relaxed, and widths from 800px use spacious. Explicit modes are unaffected by
+width. CSS container queries remain as a fallback for descendant Tiles when
+`ResizeObserver` is unavailable. Nested Containers establish independent
+sizing boundaries and start a fresh Tile composition.
 
 ```tsx
-<Container size="l">
-  <fieldset>
-    <legend>Account settings</legend>
-    <Card>
-      <TextCompositor title="Profile" description="Name and contact details" />
-      <Card>
-        <TextCompositor title="Contact details" description="Email and phone" />
-      </Card>
-    </Card>
-  </fieldset>
-</Container>
+<Page>
+  <Container mode="spacious">
+    <Tile>
+      Middle content
+      <Tile>Innermost content</Tile>
+    </Tile>
+  </Container>
+</Page>
 ```
 
-`Container` is a React Web component. It renders a non-interactive `div`;
-choose native semantics in its children. See [Card](../card/README.md) for
-card-level composition and the [live molecule previews](../story.html).
+See the [Page documentation](../page/README.md), [Tile sizing
+documentation](../tile/README.md), and
+[interactive sizing demo](../../../demos/tile-parametric.html).
