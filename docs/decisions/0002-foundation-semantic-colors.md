@@ -55,9 +55,11 @@ hierarchy, and shadows are not the only cue. Context text uses `slate-950`,
 ramps documented in [Semantic colors](../foundation/semantic-colors.md).
 
 Use WCAG AA normal-text contrast of 4.5:1 and non-text focus contrast of 3:1
-as validation thresholds. Check disabled text as well. Add tests for primitive
-alias validity, ghost opacity aliases, and the documented text/focus
-combinations.
+as validation thresholds. Disabled text is exempt from the normal-text
+threshold. Use gray-200 for disabled surfaces, gray-500 for disabled text, and
+the subtler gray-300 for disabled outlines. Disabled outlines are decorative,
+not a required non-text contrast cue. Add tests for primitive alias validity,
+ghost opacity aliases, and the documented enabled text/focus combinations.
 
 ## Alternatives considered
 
@@ -88,9 +90,11 @@ combinations.
 - A future component must apply disabled precedence, preserve focus where
   focusability permits, and use the focus color appropriate to the rendered
   surface.
-- Light mappings meet the tested text/focus thresholds, but visual validation
-  in component compositions remains necessary. The current light surface
-  steps are intentionally subtle.
+- Enabled light mappings meet the tested text/focus thresholds. Disabled text
+  uses gray-500 and disabled outlines gray-300 on gray-200 disabled surfaces;
+  disabled text is exempt from text contrast requirements and outlines are
+  intentionally subdued. Visual validation in component compositions remains
+  necessary. The current light surface steps are intentionally subtle.
 - No dark theme, React Native output, generated CSS, or automatic theme
   switching is implemented.
 

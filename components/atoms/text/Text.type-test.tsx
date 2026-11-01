@@ -11,6 +11,9 @@ const valid = (
     <Text variant="label" size="s" as="span" data-kind="label">
       Label
     </Text>
+    <Text variant="button" size="m" as="span">
+      Button text
+    </Text>
   </>
 );
 

@@ -13,3 +13,11 @@ typography values come from [Foundation Typography](../../docs/foundation/typogr
 the component maps token names to each supported variant/size pair. Open the
 [interactive Text story](text/story.html) with `npm run story` to preview
 variants and the scale using the actual component and Foundation tokens.
+
+## Button
+
+[Button](button/README.md) is the design-system action atom. It renders a native
+`button`, applies Numa semantic colors and spacing, and supports size, variant,
+icon, loading, disabled, and full-width behavior without introducing custom
+styles or duplicate design tokens. Open the [interactive Button story](button/story.html)
+with `npm run story:button` to preview the actual component.

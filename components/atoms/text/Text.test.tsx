@@ -60,6 +60,34 @@ const cases = [
     fontWeight: "400",
   },
   {
+    name: "button/s",
+    element: <Text variant="button" size="s">Example</Text>,
+    fontSize: "0.875rem",
+    lineHeight: "100%",
+    fontWeight: "500",
+  },
+  {
+    name: "button/m",
+    element: <Text variant="button" size="m">Example</Text>,
+    fontSize: "1rem",
+    lineHeight: "100%",
+    fontWeight: "500",
+  },
+  {
+    name: "button/l",
+    element: <Text variant="button" size="l">Example</Text>,
+    fontSize: "1.25rem",
+    lineHeight: "100%",
+    fontWeight: "500",
+  },
+  {
+    name: "button/xl",
+    element: <Text variant="button" size="xl">Example</Text>,
+    fontSize: "1.5rem",
+    lineHeight: "100%",
+    fontWeight: "500",
+  },
+  {
     name: "title/s",
     element: <Text variant="title" size="s">Example</Text>,
     fontSize: "1rem",
@@ -135,9 +163,10 @@ describe("Text", () => {
       expect(renderedElement.style.lineHeight).toBe(lineHeight);
       expect(renderedElement.style.fontWeight).toBe(fontWeight);
       const fontSizePx = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
-      expect(renderedElement.style.letterSpacing).toBe(
-        letterSpacingBySize[fontSizePx as keyof typeof letterSpacingBySize].relaxed,
-      );
+      const expectedLetterSpacing = fontSizePx in letterSpacingBySize
+        ? letterSpacingBySize[fontSizePx as keyof typeof letterSpacingBySize].relaxed
+        : "0em";
+      expect(renderedElement.style.letterSpacing).toBe(expectedLetterSpacing);
     },
   );
 

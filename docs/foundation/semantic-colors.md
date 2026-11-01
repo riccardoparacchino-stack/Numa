@@ -57,8 +57,8 @@ the interactive surface tokens.
 
 | Role | Default | Hover | Active | Selected | Disabled |
 | --- | --- | --- | --- | --- | --- |
-| `surface.primary` | `indigo-600` | `indigo-700` | `indigo-800` | `indigo-700` | `slate-200` |
-| `surface.subtle` | `slate-100` | `slate-200` | `slate-300` | `slate-300` | `slate-200` |
+| `surface.primary` | `indigo-600` | `indigo-700` | `indigo-800` | `indigo-700` | `gray-200` |
+| `surface.subtle` | `slate-200` | `slate-300` | `slate-400` | `slate-300` | `gray-200` |
 | `surface.ghost` | transparent | near-black at 5% | near-black at 10% | near-black at 5% | no overlay |
 
 The primary selected treatment reuses hover's color, and subtle selected
@@ -78,11 +78,14 @@ no token build or runtime composition pipeline.
 | `text.on-primary` | `gray-50` | Text over enabled primary surfaces |
 | `text.subtle` | `slate-800` | Text over subtle surfaces |
 | `text.ghost` | `indigo-700` | Text over ghost surfaces |
-| `text.disabled` | `slate-600` | Disabled interactive text |
+| `text.disabled` | `gray-500` | Disabled interactive text |
 
-Outline roles use `indigo-600` for primary, `slate-500` for subtle and disabled,
-and zero opacity for the ghost default. Focus uses `indigo-700` on light
-surfaces. Enabled indigo primary surfaces use a two-color focus ring:
+Outline roles use `indigo-600` for primary, `slate-500` for subtle, `gray-300`
+for disabled, and zero opacity for the ghost default. Disabled text uses
+`gray-500`, separate from its deliberately subdued `gray-300` outline; disabled
+surfaces use `gray-200`. The disabled outline is decorative and does not meet
+the 3:1 non-text contrast threshold. Focus uses `indigo-700` on light surfaces.
+Enabled indigo primary surfaces use a two-color focus ring:
 `gray-50` on the inner edge and `slate-950` on the outer edge. One color alone
 cannot remain visible against both the primary fill and its light surroundings.
 A focusable disabled control uses the light-surface focus color because its
@@ -99,18 +102,17 @@ with selected and overlays the family treatment rather than changing it.
 Selected is persistent and active is temporary. Hover never replaces a
 selected treatment. While a selected control is pressed, active temporarily
 overrides its selected treatment and selection returns on release. This
-changes primary from `indigo-700` to `indigo-800` and ghost from 5% to 10%;
-subtle uses `slate-300` for both and therefore has no additional color change.
-Do not create a new token for every state combination; compose the state
-treatments using this precedence.
+changes primary from `indigo-700` to `indigo-800`, subtle from `slate-300` to
+`slate-400`, and ghost from 5% to 10%. Do not create a new token for every
+state combination; compose the state treatments using this precedence.
 
 ## Accessibility and validation
 
-Text mappings are checked against the WCAG AA normal-text threshold of 4.5:1;
-focus indicators are checked against the 3:1 non-text contrast threshold.
-Disabled text is also checked rather than assumed exempt. The token tests
-resolve aliases to primitive hex values and calculate these ratios for the
-documented text and focus combinations.
+Enabled text mappings are checked against the WCAG AA normal-text threshold of
+4.5:1; focus indicators are checked against the 3:1 non-text contrast
+threshold. Disabled controls are exempt from WCAG text contrast requirements.
+The token tests verify the disabled text/outline distinction and treat the
+subdued disabled outline as decorative rather than a required contrast cue.
 
 The light-theme selection meets the tested text criteria. Indigo focus on light
 surfaces and `gray-50` focus on enabled primary surfaces each exceed the
