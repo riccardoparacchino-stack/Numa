@@ -19,10 +19,14 @@ other page content inside its single `children` slot.
 | `m` | 40px | 72px |
 | `l` | 64px | 96px |
 
-Container uses the weak `numa-color-context-surface-level-1` surface against
-the page background. Its first Card uses the strong level-2 surface; a Card
-child alternates back to weak level 1. This follows the Foundation
+Container uses the weak `numa-color-context-surface-weak` surface against
+the page background. Its first Card uses the strong surface; a Card child
+alternates back to weak. This follows the Foundation
 [weak/strong surface rule](../../../docs/foundation/semantic-colors.md).
+
+Container is also a named inline-size query container (`numa-page`). Descendant
+components can respond to the width they receive from this surface rather than
+the viewport; see [container-query guidance](../../../docs/foundation/container-queries.md).
 
 ## Hierarchy and rationale
 

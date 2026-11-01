@@ -109,10 +109,10 @@ export function getTextTypography(variant: string, size: string): {
   };
 }
 
-export function getPrimaryFontFamily(): string {
-  const family = getTypographyTokenValue("numa-text-family-primary");
+export function getDefaultFontFamily(): string {
+  const family = getTypographyTokenValue("numa-text-family-default");
   if (!Array.isArray(family) || family.some((name) => typeof name !== "string")) {
-    throw new TypeError("Foundation primary font family must be an array of strings.");
+    throw new TypeError("Foundation default font family must be an array of strings.");
   }
 
   return family.join(", ");

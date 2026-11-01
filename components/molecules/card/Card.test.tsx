@@ -26,8 +26,8 @@ describe("Card", () => {
     expect(cards[0].className).toContain("numa-card--middle");
     expect(cards[1].className).toContain("numa-card--inner");
     expect(cards.map((card) => card.style.getPropertyValue("--numa-tile-surface"))).toEqual([
-      "#e2e8f0",
-      "#f1f5f9",
+      "var(--numa-color-context-surface-strong)",
+      "var(--numa-color-context-surface-weak)",
     ]);
     expect(cards.map((card) => card.className.match(/numa-tile--surface-level-\d/)?.[0])).toEqual([
       "numa-tile--surface-level-2",

@@ -2,6 +2,7 @@ import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { useContext } from "react";
 import { SurfaceCompositionContext, containerPadding } from "../surface-context";
 import { TileNestingContext, type TileStyleOverrides, type TileVariant, Tile } from "../tile/Tile";
+import "./Container.css";
 
 export type ContainerProps = Omit<
   HTMLAttributes<HTMLDivElement>,

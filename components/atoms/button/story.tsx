@@ -5,7 +5,7 @@ import semanticColors from "../../../tokens/semantic/color.json";
 import { Container } from "../../molecules/container";
 import { Tile } from "../../molecules/tile";
 import { Text } from "../text";
-import { getPrimaryFontFamily } from "../text/text.variants";
+import { getDefaultFontFamily } from "../text/text.variants";
 import { Button, buttonSizes, buttonVariants } from "./Button";
 import "./story.css";
 
@@ -34,12 +34,12 @@ function resolveSemanticColor(name: keyof typeof semanticColors): string {
 
 const theme: ThemeStyle = {
   "--paper": resolveSemanticColor("numa-color-context-background-default"),
-  "--surface": resolveSemanticColor("numa-color-context-surface-level-1"),
-  "--ink": resolveSemanticColor("numa-color-context-text-primary"),
-  "--muted": resolveSemanticColor("numa-color-context-text-secondary"),
-  "--line": resolveSemanticColor("numa-color-context-border-subtle"),
-  "--accent": resolveSemanticColor("numa-color-interactive-text-primary"),
-  "--font-family": getPrimaryFontFamily(),
+  "--surface": resolveSemanticColor("numa-color-context-surface-weak"),
+  "--ink": resolveSemanticColor("numa-color-context-content-strong"),
+  "--muted": resolveSemanticColor("numa-color-context-content-weak"),
+  "--line": resolveSemanticColor("numa-color-context-outline-subtle"),
+  "--accent": resolveSemanticColor("numa-color-accent-content-default"),
+  "--font-family": getDefaultFontFamily(),
 };
 
 function Preview({ label, children }: { label: string; children: ReactNode }) {
@@ -145,7 +145,7 @@ function StoryApp() {
           <div className="preview-grid">
             <Preview label="Full width">
               <div className="full-width-demo">
-                <Button variant="primary" size="m" fullWidth>
+                <Button variant="action" size="m" fullWidth>
                   Full-width action
                 </Button>
               </div>
@@ -154,8 +154,8 @@ function StoryApp() {
             <Preview label="Tile surface">
               <Tile variant="m">
                 <div className="button-stack">
-                  <Button variant="secondary" size="m">
-                    Secondary in context
+                  <Button variant="outlined" size="m">
+                    Outlined in context
                   </Button>
                   <Button variant="ghost" size="m">
                     Ghost action

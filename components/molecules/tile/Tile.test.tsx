@@ -23,7 +23,10 @@ describe("Tile", () => {
     expect(tile.style.borderRadius).toBe(radius);
     expect(tile.className).toContain(`numa-tile--${variant}`);
     expect(tile.className).toContain("numa-tile--surface-level-1");
-    expect(tile.style.getPropertyValue("--numa-tile-surface")).toBe("#f1f5f9");
+    expect(tile.style.getPropertyValue("--numa-tile-surface")).toBe(
+      "var(--numa-color-context-surface-weak)",
+    );
+    expect(tile.style.getPropertyValue("--numa-color-context-surface-weak")).toBe("#f1f5f9");
   });
 
   it("allows explicit padding overrides without changing the Tile size variant", () => {
@@ -68,9 +71,9 @@ describe("Tile", () => {
       "numa-tile--surface-level-1",
     ]);
     expect(tiles.map((tile) => tile.style.getPropertyValue("--numa-tile-surface"))).toEqual([
-      "#f1f5f9",
-      "#e2e8f0",
-      "#f1f5f9",
+      "var(--numa-color-context-surface-weak)",
+      "var(--numa-color-context-surface-strong)",
+      "var(--numa-color-context-surface-weak)",
     ]);
   });
 
@@ -142,6 +145,25 @@ describe("Tile", () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
+  it("inherits disabled colors through nested static Tiles", () => {
+    const { container } = render(
+      <Tile disabled>
+        <Tile>Nested disabled surface</Tile>
+      </Tile>,
+    );
+    const tiles = Array.from(container.querySelectorAll(".numa-tile")) as HTMLDivElement[];
+
+    expect(tiles).toHaveLength(2);
+    expect(tiles.map((tile) => tile.style.getPropertyValue("--numa-color-context-background-default"))).toEqual([
+      "#f3f4f6",
+      "#f3f4f6",
+    ]);
+    expect(tiles.map((tile) => tile.style.getPropertyValue("--numa-color-context-surface-strong"))).toEqual([
+      "#e5e7eb",
+      "#e5e7eb",
+    ]);
+  });
+
   it("uses a native link for navigation and preserves keyboard focusability", () => {
     const { getByRole } = render(
       <Tile href="/details" aria-label="View details" target="_blank" rel="noreferrer">
@@ -155,7 +177,9 @@ describe("Tile", () => {
     expect(link.rel).toBe("noreferrer");
     expect(link.tabIndex).toBe(0);
     expect(link.className).toContain("numa-tile--interactive");
-    expect(link.style.getPropertyValue("--numa-tile-surface")).toBe("#f1f5f9");
+    expect(link.style.getPropertyValue("--numa-tile-surface")).toBe(
+      "var(--numa-color-context-surface-weak)",
+    );
   });
 
   it("forwards content attributes and has no implicit interactive semantics when static", () => {

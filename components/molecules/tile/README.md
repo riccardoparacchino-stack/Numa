@@ -13,7 +13,7 @@ native button action. For page and card surfaces, prefer the semantic
 | `variant` | `"s" \| "m" \| "l"` | `"m"` | Selects token-based padding. Nested Tiles inherit the outer Tile's variant. |
 | `href` | `string` | — | Renders a native anchor. Mutually exclusive with `onClick`. |
 | `onClick` | Button click handler | — | Renders a native button. Mutually exclusive with `href`. |
-| `disabled` | `boolean` | `false` | Native disabled action-button behavior. |
+| `disabled` | `boolean` | `false` | Establishes disabled mode for descendants. On a static Tile, it applies the shared disabled palette and propagates mode; on a button Tile, it also applies native disabled behavior. Links do not accept this prop. |
 | Native/ARIA/data attributes | Element attributes | — | Forwarded to the rendered `div`, `a`, or `button`. |
 | `className`, `style` | React Web values | — | Customizes styling; `style.padding` can adjust a Tile's padding independently of its size variant. Radius, width, and minimum width remain token-controlled. |
 
@@ -71,11 +71,19 @@ Card, which enforce the Foundation hierarchy.
 ## Interaction rules
 
 - Use static Tile for grouped content, a native link for navigation, and a
-  native button for one primary action.
+  native button for one action.
 - Never place another interactive element inside a link or button Tile.
   Use a static Tile for several independent actions.
 - Static Tiles are not focusable. Interactive Tiles use native keyboard
   activation and a visible focus outline.
+- Disabled mode on a static Tile is a composition boundary: descendant Numa
+  controls with a `disabled` API become natively disabled, while all
+  token-based content inherits the shared disabled colors. A disabled button
+  Tile remains a native disabled button; do not place independent controls
+  inside it.
+- Disabled mode does not turn arbitrary custom content into an inert or
+  accessible disabled control. Use semantic color variables for custom content
+  that should inherit its appearance; raw colors cannot be overridden.
 - Button-Tile children must be valid phrasing content; use a static Tile when
   the composition requires block-level content or nested containers.
 - Selection and disclosure are not Tile variants. Use native controls for

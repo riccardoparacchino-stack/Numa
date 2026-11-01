@@ -7,10 +7,10 @@ import type {
   ReactNode,
 } from "react";
 import { createContext, useContext } from "react";
+import { getSemanticColorStyle, semanticColorVariable } from "../../../foundation/colors/semantic-color-style";
 import { resolveRadiusPx, resolveSpacingPx } from "../../../foundation/semantic-dimensions";
+import { DisabledContext } from "../../disabled-context";
 import { SurfaceCompositionContext } from "../surface-context";
-import semanticColors from "../../../tokens/semantic/color.json";
-import primitiveColors from "../../../tokens/primitive/color.json";
 import "./Tile.css";
 
 type TileCommonProps = Omit<
@@ -44,7 +44,7 @@ export type TileStyleOverrides = Omit<
 type StaticTileProps = TileCommonProps & {
   href?: never;
   onClick?: never;
-  disabled?: never;
+  disabled?: boolean;
   target?: never;
   rel?: never;
   type?: never;
@@ -66,8 +66,9 @@ type LinkTileProps = TileCommonProps &
   };
 
 type ButtonTileProps = TileCommonProps &
-  Pick<ButtonHTMLAttributes<HTMLButtonElement>, "disabled" | "type" | "name" | "value" | "form"> & {
+  Pick<ButtonHTMLAttributes<HTMLButtonElement>, "type" | "name" | "value" | "form"> & {
     onClick: MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
     href?: never;
     target?: never;
     rel?: never;
@@ -77,6 +78,7 @@ type ButtonTileProps = TileCommonProps &
 export type TileProps = StaticTileProps | LinkTileProps | ButtonTileProps;
 
 type TileStyle = CSSProperties & {
+  [key: `--${string}`]: string | number | undefined;
   "--numa-tile-surface": string;
   "--numa-tile-border": string;
   "--numa-tile-hover": string;
@@ -118,28 +120,10 @@ const dimensions: Record<
   },
 };
 
-function resolveColor(name: keyof typeof semanticColors): string {
-  const token = semanticColors[name];
-  if (token.$type !== "color" || typeof token.$value !== "string") {
-    throw new TypeError(`Expected a semantic color token: ${name}`);
-  }
-
-  const match = /^\{([^{}]+)\}$/.exec(token.$value);
-  if (!match) {
-    throw new TypeError(`Expected a primitive color alias: ${name}`);
-  }
-
-  const primitive = primitiveColors[match[1] as keyof typeof primitiveColors];
-  if (!primitive || primitive.$type !== "color") {
-    throw new Error(`Missing primitive color referenced by ${name}`);
-  }
-
-  return primitive.$value;
-}
-
 export function Tile(props: TileProps) {
   const parentNesting = useContext(TileNestingContext);
   const surfaceComposition = useContext(SurfaceCompositionContext);
+  const inheritedDisabled = useContext(DisabledContext);
   const {
     children,
     variant: requestedVariant,
@@ -176,6 +160,7 @@ export function Tile(props: TileProps) {
     throw new RangeError("Tiles can be nested three levels maximum.");
   }
   const interactive = href !== undefined || onClick !== undefined;
+  const isDisabled = inheritedDisabled || disabled === true;
   if (surfaceLevel !== "level-1" && surfaceLevel !== "level-2") {
     throw new RangeError(`Unsupported Tile surface level: ${surfaceLevel}`);
   }
@@ -195,30 +180,33 @@ export function Tile(props: TileProps) {
 
   const role = (["outer", "middle", "inner"] as const)[depth];
   const tokenStyle: TileStyle = {
-    "--numa-tile-surface": resolveColor(
-      surfaceLevel === "level-1"
-        ? "numa-color-context-surface-level-1"
-        : "numa-color-context-surface-level-2",
+    ...getSemanticColorStyle(isDisabled),
+    "--numa-tile-surface": semanticColorVariable(
+      surfaceLevel === "level-1" ? "numa-color-context-surface-weak" : "numa-color-context-surface-strong",
     ),
-    "--numa-tile-border": resolveColor(
+    "--numa-tile-border": semanticColorVariable(
       interactive
         ? "numa-color-interactive-outline-subtle"
-        : "numa-color-context-border-subtle",
+        : "numa-color-context-outline-subtle",
     ),
-    "--numa-tile-hover": resolveColor("numa-color-interactive-surface-subtle-hover"),
-    "--numa-tile-active": resolveColor("numa-color-interactive-surface-subtle-active"),
-    "--numa-tile-disabled": resolveColor("numa-color-interactive-surface-subtle-disabled"),
-    "--numa-tile-disabled-border": resolveColor("numa-color-interactive-outline-disabled"),
-    "--numa-tile-disabled-text": resolveColor("numa-color-interactive-text-disabled"),
-    "--numa-tile-focus": resolveColor("numa-color-interactive-outline-focus"),
-    "--numa-tile-text": resolveColor("numa-color-context-text-primary"),
+    "--numa-tile-hover": semanticColorVariable("numa-color-interactive-surface-subtle-hover"),
+    "--numa-tile-active": semanticColorVariable("numa-color-interactive-surface-subtle-active"),
+    "--numa-tile-disabled": semanticColorVariable("numa-color-interactive-surface-disabled"),
+    "--numa-tile-disabled-border": semanticColorVariable("numa-color-interactive-outline-disabled"),
+    "--numa-tile-disabled-text": semanticColorVariable("numa-color-interactive-content-disabled"),
+    "--numa-tile-focus": semanticColorVariable("numa-color-interactive-outline-focus"),
+    "--numa-tile-text": semanticColorVariable("numa-color-context-content-strong"),
     padding: dimensions[variant].padding,
     borderRadius: dimensions[variant].radii[role],
     ...style,
   };
 
   const nestedContext = { variant, depth: depth + 1, surfaceLevel };
-  const content = <TileNestingContext.Provider value={nestedContext}>{children}</TileNestingContext.Provider>;
+  const content = (
+    <DisabledContext.Provider value={isDisabled}>
+      <TileNestingContext.Provider value={nestedContext}>{children}</TileNestingContext.Provider>
+    </DisabledContext.Provider>
+  );
 
   if (href !== undefined) {
     return (
@@ -243,7 +231,7 @@ export function Tile(props: TileProps) {
         className={classes}
         style={tokenStyle}
         onClick={onClick}
-        disabled={disabled}
+        disabled={isDisabled}
         type={type ?? "button"}
         name={name}
         value={value}

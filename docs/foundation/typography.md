@@ -3,7 +3,7 @@
 ## Source of truth
 
 [`tokens/typography/text.json`](../../tokens/typography/text.json) defines the
-shared typography values used by the Text Atom. It contains the primary font
+shared typography values used by the Text Atom. It contains the default font
 family fallback stack, default font weights, named font-size and line-height
 dimensions, and named letter-spacing dimensions.
 

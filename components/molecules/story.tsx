@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import primitiveColors from "../../tokens/primitive/color.json";
 import semanticColors from "../../tokens/semantic/color.json";
 import { Text } from "../atoms/text";
-import { getPrimaryFontFamily } from "../atoms/text/text.variants";
+import { getDefaultFontFamily } from "../atoms/text/text.variants";
 import { resolveRadiusPx, resolveSpacingPx } from "../../foundation/semantic-dimensions";
 import { Card } from "./card";
 import { ContentCompositor } from "./content-compositor";
@@ -37,12 +37,12 @@ function resolveSemanticColor(name: keyof typeof semanticColors): string {
 
 const theme: ThemeStyle = {
   "--paper": resolveSemanticColor("numa-color-context-background-default"),
-  "--surface": resolveSemanticColor("numa-color-context-surface-level-1"),
-  "--ink": resolveSemanticColor("numa-color-context-text-primary"),
-  "--muted": resolveSemanticColor("numa-color-context-text-secondary"),
-  "--line": resolveSemanticColor("numa-color-context-border-subtle"),
-  "--accent": resolveSemanticColor("numa-color-interactive-text-primary"),
-  "--font-family": getPrimaryFontFamily(),
+  "--surface": resolveSemanticColor("numa-color-context-surface-weak"),
+  "--ink": resolveSemanticColor("numa-color-context-content-strong"),
+  "--muted": resolveSemanticColor("numa-color-context-content-weak"),
+  "--line": resolveSemanticColor("numa-color-context-outline-subtle"),
+  "--accent": resolveSemanticColor("numa-color-accent-content-default"),
+  "--font-family": getDefaultFontFamily(),
 };
 
 const alignments = ["start", "center", "end"] as const;
