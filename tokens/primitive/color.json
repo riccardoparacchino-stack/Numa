@@ -1,4 +1,5 @@
 {
+  "numa-sys-col-white": { "$type": "color", "$value": "#ffffff" },
   "numa-sys-col-slate-50": { "$type": "color", "$value": "#f8fafc" },
   "numa-sys-col-slate-100": { "$type": "color", "$value": "#f1f5f9" },
   "numa-sys-col-slate-200": { "$type": "color", "$value": "#e2e8f0" },

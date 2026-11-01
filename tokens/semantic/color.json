@@ -5,11 +5,11 @@
   },
   "numa-color-context-background-default": {
     "$type": "color",
-    "$value": "{numa-sys-col-slate-50}"
+    "$value": "{numa-sys-col-slate-100}"
   },
   "numa-color-context-surface-weak": {
     "$type": "color",
-    "$value": "{numa-sys-col-slate-100}"
+    "$value": "{numa-sys-col-white}"
   },
   "numa-color-context-surface-strong": {
     "$type": "color",
@@ -26,6 +26,10 @@
   "numa-color-context-outline-subtle": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-200}"
+  },
+  "numa-color-context-shadow-subtle": {
+    "$type": "color",
+    "$value": "{numa-sys-col-slate-500}"
   },
   "numa-color-context-outline-default": {
     "$type": "color",

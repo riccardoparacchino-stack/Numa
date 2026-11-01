@@ -4,10 +4,10 @@ import primitiveColors from "../../tokens/primitive/color.json";
 import semanticColors from "../../tokens/semantic/color.json";
 import { Text } from "../atoms/text";
 import { getDefaultFontFamily } from "../atoms/text/text.variants";
-import { resolveRadiusPx, resolveSpacingPx } from "../../foundation/semantic-dimensions";
 import { Card } from "./card";
 import { ContentCompositor } from "./content-compositor";
 import { Container } from "./container";
+import { Page } from "./page";
 import { TextCompositor } from "./text-compositor";
 import { Tile } from "./tile";
 import "./story.css";
@@ -52,21 +52,7 @@ const gaps = [
   "numa-spacing-pebbles-m",
   "numa-spacing-pebbles-l",
 ] as const;
-const tileVariants = ["s", "m", "l"] as const;
-const nestedTileDimensions = {
-  s: {
-    padding: ["numa-spacing-bricks-s", "numa-spacing-pebbles-m", "numa-spacing-pebbles-s"],
-    radius: ["numa-radius-walls-s", "numa-radius-bricks-s", "numa-radius-pebbles-xs"],
-  },
-  m: {
-    padding: ["numa-spacing-bricks-l", "numa-spacing-bricks-m", "numa-spacing-pebbles-m"],
-    radius: ["numa-radius-walls-m", "numa-radius-bricks-s", "numa-radius-pebbles-xs"],
-  },
-  l: {
-    padding: ["numa-spacing-walls-m", "numa-spacing-bricks-s", "numa-spacing-pebbles-m"],
-    radius: ["numa-radius-walls-xl", "numa-radius-bricks-m", "numa-radius-pebbles-xs"],
-  },
-} as const;
+const tileModes = ["compact", "relaxed", "spacious"] as const;
 const actionKinds = ["static", "link", "button"] as const;
 
 function Preview({ label, children }: { label: string; children: ReactNode }) {
@@ -84,7 +70,7 @@ function MoleculeStory() {
   const [actionMessage, setActionMessage] = useState("Activate a button preview to test its action.");
 
   return (
-    <div className="molecule-story" style={theme}>
+    <Page className="molecule-story" style={theme}>
       <header className="hero">
         <div className="shell">
           <Text variant="display" size="m" as="h1">
@@ -133,46 +119,48 @@ function MoleculeStory() {
             <div>
               <p className="eyebrow">Tile</p>
               <Text variant="headline" size="s" as="h2" id="tile-heading">
-                Variant × behavior
+                Density mode × behavior
               </Text>
             </div>
             <Text variant="body" size="m" as="p">
-              All nine combinations: three size variants and static, link, or button behavior.
+              All nine combinations: three container modes and static, link, or button behavior.
             </Text>
           </div>
           <div className="preview-grid preview-grid--tile">
-            {tileVariants.flatMap((variant) =>
+            {tileModes.flatMap((mode) =>
               actionKinds.map((kind) => (
-                <Preview key={`${variant}-${kind}`} label={`Tile ${variant} · ${kind}`}>
-                  {kind === "link" ? (
-                    <Tile variant={variant} href="#rules">
-                      <ContentCompositor
-                        leading={<span aria-hidden="true">✦</span>}
-                        trailing={<span aria-hidden="true">→</span>}
-                      >
-                        <TextCompositor
-                          title="A tile link"
-                          description="Native anchor semantics and keyboard behavior."
-                        />
-                      </ContentCompositor>
-                    </Tile>
-                  ) : kind === "button" ? (
-                    <Tile variant={variant} onClick={() => setActionMessage(`Activated ${variant} button Tile.`)}>
-                      <ContentCompositor as="span" leading={<span aria-hidden="true">＋</span>}>
-                        <TextCompositor title={`Activate ${variant} Tile`} />
-                      </ContentCompositor>
-                    </Tile>
-                  ) : (
-                    <Tile variant={variant}>
-                      <ContentCompositor
-                        leading={<span aria-hidden="true">◈</span>}
-                        trailing={<span aria-hidden="true">•</span>}
-                        footer="Optional footer"
-                      >
-                        <TextCompositor title="A static tile" description="Grouped, non-interactive content." />
-                      </ContentCompositor>
-                    </Tile>
-                  )}
+                <Preview key={`${mode}-${kind}`} label={`Tile · ${mode} · ${kind}`}>
+                  <Container mode={mode}>
+                    {kind === "link" ? (
+                      <Tile href="#rules">
+                        <ContentCompositor
+                          leading={<span aria-hidden="true">✦</span>}
+                          trailing={<span aria-hidden="true">→</span>}
+                        >
+                          <TextCompositor
+                            title="A tile link"
+                            description="Native anchor semantics and keyboard behavior."
+                          />
+                        </ContentCompositor>
+                      </Tile>
+                    ) : kind === "button" ? (
+                      <Tile onClick={() => setActionMessage(`Activated ${mode} button Tile.`)}>
+                        <ContentCompositor as="span" leading={<span aria-hidden="true">＋</span>}>
+                          <TextCompositor title={`Activate ${mode} Tile`} />
+                        </ContentCompositor>
+                      </Tile>
+                    ) : (
+                      <Tile>
+                        <ContentCompositor
+                          leading={<span aria-hidden="true">◈</span>}
+                          trailing={<span aria-hidden="true">•</span>}
+                          footer="Optional footer"
+                        >
+                          <TextCompositor title="A static tile" description="Grouped, non-interactive content." />
+                        </ContentCompositor>
+                      </Tile>
+                    )}
+                  </Container>
                 </Preview>
               )),
             )}
@@ -196,29 +184,29 @@ function MoleculeStory() {
           </div>
           <div className="preview-grid preview-grid--tile">
             <Preview label="Main content only">
-              <Tile variant="m">
+              <Tile>
                 <ContentCompositor>
                   <TextCompositor title="Content only" description="No leading or trailing region." />
                 </ContentCompositor>
               </Tile>
             </Preview>
             <Preview label="Leading only">
-              <Tile variant="s">
+              <Tile>
                 <ContentCompositor leading={<span aria-hidden="true">★</span>} />
               </Tile>
             </Preview>
             <Preview label="Trailing only">
-              <Tile variant="s">
+              <Tile>
                 <ContentCompositor trailing={<span aria-hidden="true">✓</span>} />
               </Tile>
             </Preview>
             <Preview label="Footer only">
-              <Tile variant="s">
+              <Tile>
                 <ContentCompositor footer="The footer works without a main region." />
               </Tile>
             </Preview>
             <Preview label="Custom content">
-              <Tile variant="m">
+              <Tile>
                 <ContentCompositor
                   layout="vertical"
                   leading={<span aria-hidden="true">✦</span>}
@@ -234,7 +222,7 @@ function MoleculeStory() {
               </Tile>
             </Preview>
             <Preview label="Page Container with fieldset composition">
-              <Container size="s">
+              <Container mode="compact">
                 <fieldset>
                   <legend>Account settings</legend>
                   <p>Fieldsets and page-level compositions can sit directly in a Container.</p>
@@ -244,29 +232,26 @@ function MoleculeStory() {
                 </fieldset>
               </Container>
             </Preview>
-            {tileVariants.map((variant) => {
-              const dimensions = nestedTileDimensions[variant];
-              const padding = dimensions.padding.map((token) => resolveSpacingPx(token));
-              const radius = dimensions.radius.map((token) => resolveRadiusPx(token));
+            {tileModes.map((mode) => {
               return (
-                <Preview key={`nested-${variant}`} label={`Container, Card, and child Card · ${variant}`}>
-                  <Container size={variant}>
+                <Preview key={`nested-${mode}`} label={`Container, Card, and child Card · ${mode}`}>
+                  <Container mode={mode}>
                     <ContentCompositor layout="vertical">
                       <TextCompositor
                         title="Page Container"
-                        description={`${variant.toUpperCase()} · ${padding[0]}px padding · ${radius[0]}px radius`}
+                        description={`Container sizing mode: ${mode}`}
                       />
                       <Card>
                         <ContentCompositor layout="vertical">
                           <TextCompositor
                             title="Card"
-                            description={`${variant} · ${padding[1]}px padding · ${radius[1]}px radius`}
+                            description="A cohesive content group."
                           />
                           <Card>
                             <ContentCompositor>
                               <TextCompositor
                                 title="Card child"
-                                description={`${variant} · ${padding[2]}px padding · ${radius[2]}px radius`}
+                                description="A nested card group."
                               />
                             </ContentCompositor>
                           </Card>
@@ -295,7 +280,7 @@ function MoleculeStory() {
             </li>
             <li>
               <Text variant="body" size="m" as="span">
-                Use Container directly in the page for the first surface layer; use Card for cohesive groups and one nested Card for card children.
+                Use Container as a sizing/query boundary; use Card for cohesive groups and one nested Card for child groups.
               </Text>
             </li>
             <li>
@@ -305,17 +290,17 @@ function MoleculeStory() {
             </li>
             <li>
               <Text variant="body" size="m" as="span">
-                Container selects the shared size; Cards inherit it. Padding tapers by depth while radii follow the nesting calculation at each boundary.
+                Container sets the inherited density mode; Tile padding and radius are generated from the harmonic scale.
               </Text>
             </li>
             <li>
               <Text variant="body" size="m" as="span">
-                Alternate weak level-1 and strong level-2 surfaces: Container is weak, Card strong, and Card child weak.
+                Use Page for the semantic page background, Container for sizing, and Tile for contained surfaces.
               </Text>
             </li>
             <li>
               <Text variant="body" size="m" as="span">
-                Use Tile as the low-level surface primitive; prefer Container and Card when the page/card hierarchy applies.
+                Use Tile as the low-level surface primitive and Container as an optional responsive sizing boundary.
               </Text>
             </li>
             <li>
@@ -336,7 +321,7 @@ function MoleculeStory() {
           </ul>
         </section>
       </main>
-    </div>
+    </Page>
   );
 }
 

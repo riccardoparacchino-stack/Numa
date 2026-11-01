@@ -64,6 +64,31 @@ const contextBackgrounds = [
 ] as const;
 
 describe("semantic color tokens", () => {
+  it("maps Page and the FigCraft surface examples to their established roles", () => {
+    expect(semanticColors["numa-color-context-background-default"].$value).toBe(
+      "{numa-sys-col-slate-100}",
+    );
+    expect(semanticColors["numa-color-context-surface-weak"].$value).toBe(
+      "{numa-sys-col-white}",
+    );
+    expect(primitiveColors["numa-sys-col-white"].$value).toBe("#ffffff");
+    expect(semanticColors["numa-color-context-surface-strong"].$value).toBe(
+      "{numa-sys-col-slate-200}",
+    );
+    expect(semanticColors["numa-color-interactive-surface-subtle-default"].$value).toBe(
+      "{numa-sys-col-slate-200}",
+    );
+    expect(semanticColors["numa-color-interactive-surface-action-default"].$value).toBe(
+      "{numa-sys-col-indigo-600}",
+    );
+    expect(semanticColors["numa-color-context-outline-default"].$value).toBe(
+      "{numa-sys-col-slate-300}",
+    );
+    expect(semanticColors["numa-color-context-shadow-subtle"].$value).toBe(
+      "{numa-sys-col-slate-500}",
+    );
+  });
+
   it.each(Object.entries(semanticColors))(
     "%s aliases an existing primitive of the same type",
     (_name, token) => {
@@ -80,7 +105,7 @@ describe("semantic color tokens", () => {
     const allTokenNames = [...names, ...Object.keys(typographyTokens)];
 
     expect(allTokenNames.every((name) => !/(primary|secondary)/i.test(name))).toBe(true);
-    expect(names.every((name) => /-(background|surface|content|outline)-/.test(name))).toBe(true);
+    expect(names.every((name) => /-(background|surface|content|outline|shadow)-/.test(name))).toBe(true);
   });
 
   it("uses only the existing percentage primitives for ghost feedback", () => {
@@ -182,10 +207,11 @@ describe("semantic color tokens", () => {
       const scope = name.slice("numa-color-".length).split("-")[1] as keyof typeof disabledColorByScope;
       const variableName = `--${name}` as keyof typeof disabledStyle;
       const focusToken = name.includes("-outline-focus");
+      const expectedColor = focusToken || !(scope in disabledColorByScope)
+        ? enabledStyle[variableName]
+        : disabledColorByScope[scope];
 
-      expect(disabledStyle[variableName]).toBe(
-        focusToken ? enabledStyle[variableName] : disabledColorByScope[scope],
-      );
+      expect(disabledStyle[variableName]).toBe(expectedColor);
     }
   });
 

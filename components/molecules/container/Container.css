@@ -1,4 +1,9 @@
 .numa-container {
-  container-name: numa-page;
+  container-name: numa-sizing;
   container-type: inline-size;
+  box-sizing: border-box;
+  border: 1px solid var(--numa-container-border);
+  background: var(--numa-container-surface);
+  color: var(--numa-container-text);
+  box-shadow: var(--numa-container-shadow);
 }

@@ -1,28 +1,21 @@
-import type { CSSProperties, ReactNode } from "react";
-import { useContext } from "react";
-import { cardPadding, SurfaceCompositionContext } from "../surface-context";
-import {
-  Tile,
-  TileNestingContext,
-  type TileProps,
-  type TileStyleOverrides,
-} from "../tile/Tile";
+import type { ReactNode } from "react";
+import { createContext, useContext } from "react";
+import { Tile, type TileProps, type TileStyleOverrides } from "../tile/Tile";
+import { TileNestingContext } from "../tile/tile-nesting-context";
 
-type WithoutVariant<T> = T extends unknown ? Omit<T, "variant" | "surfaceLevel"> : never;
+type WithoutSurfaceLevel<T> = T extends unknown ? Omit<T, "surfaceLevel"> : never;
 
-export type CardProps = WithoutVariant<TileProps> & {
+export type CardProps = WithoutSurfaceLevel<TileProps> & {
   children?: ReactNode;
   className?: string;
   style?: TileStyleOverrides;
 };
 
+const CardDepthContext = createContext(0);
+
 export function Card(props: CardProps) {
-  const composition = useContext(SurfaceCompositionContext);
-  const tileNesting = useContext(TileNestingContext);
-  if (!composition) {
-    throw new Error("Card must be placed inside a Container or another Card.");
-  }
-  if (composition.cardDepth > 1) {
+  const parentDepth = useContext(CardDepthContext);
+  if (parentDepth > 1) {
     throw new RangeError("Cards can have one nested card-child level maximum.");
   }
 
@@ -32,27 +25,18 @@ export function Card(props: CardProps) {
     style,
     ...tileProps
   } = props;
-  const role = composition.cardDepth === 0 ? "middle" : "inner";
-  const parentSurfaceLevel = tileNesting?.surfaceLevel ?? composition.surfaceLevel;
-  const surfaceLevel = parentSurfaceLevel === "level-1" ? "level-2" : "level-1";
+  const role = parentDepth === 0 ? "middle" : "inner";
+  const surfaceLevel = parentDepth === 0 ? "level-2" : "level-1";
+  const depth = parentDepth + 1;
   const classes = ["numa-card", `numa-card--${role}`, className].filter(Boolean).join(" ");
-  const cardStyle: CSSProperties = {
-    padding: cardPadding[composition.size][role],
-    ...style,
-  };
 
   return (
-    <Tile
-      {...tileProps}
-      surfaceLevel={surfaceLevel}
-      className={classes}
-      style={cardStyle}
-    >
-      <SurfaceCompositionContext.Provider
-        value={{ ...composition, cardDepth: composition.cardDepth + 1, surfaceLevel }}
-      >
-        {children}
-      </SurfaceCompositionContext.Provider>
-    </Tile>
+    <CardDepthContext.Provider value={depth}>
+      <TileNestingContext.Provider value={{ depth, surfaceLevel }}>
+        <Tile {...tileProps} surfaceLevel={surfaceLevel} className={classes} style={style}>
+          {children}
+        </Tile>
+      </TileNestingContext.Provider>
+    </CardDepthContext.Provider>
   );
 }

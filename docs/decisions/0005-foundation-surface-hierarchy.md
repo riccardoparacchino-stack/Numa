@@ -1,7 +1,7 @@
 # ADR 0005: Foundation Surface Hierarchy
 
 - **Date:** 2026-10-31
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0008](0008-parametric-tile-sizing.md)
 
 ## Context
 

@@ -6,11 +6,16 @@ import type {
   MouseEventHandler,
   ReactNode,
 } from "react";
-import { createContext, useContext } from "react";
+import { useContext } from "react";
 import { getSemanticColorStyle, semanticColorVariable } from "../../../foundation/colors/semantic-color-style";
-import { resolveRadiusPx, resolveSpacingPx } from "../../../foundation/semantic-dimensions";
 import { DisabledContext } from "../../disabled-context";
-import { SurfaceCompositionContext } from "../surface-context";
+import { TileNestingContext, type TileSurfaceLevel } from "./tile-nesting-context";
+import {
+  generateTileDimensions,
+  TILE_NESTING_STEP_OFFSETS,
+  type TileNestingRole,
+} from "./tile-sizing";
+import "./Tile.sizing.css";
 import "./Tile.css";
 
 type TileCommonProps = Omit<
@@ -18,23 +23,15 @@ type TileCommonProps = Omit<
   "children" | "className" | "style" | "onClick"
 > & {
   children?: ReactNode;
-  variant?: TileVariant;
   surfaceLevel?: TileSurfaceLevel;
   className?: string;
   style?: TileStyleOverrides;
 };
 
-export type TileVariant = "s" | "m" | "l";
-export type TileSurfaceLevel = "level-1" | "level-2";
-type TileNestingRole = "outer" | "middle" | "inner";
+export type { TileSurfaceLevel } from "./tile-nesting-context";
 
-type TileNestingContextValue = {
-  variant: TileVariant;
-  depth: number;
-  surfaceLevel: TileSurfaceLevel;
-};
-
-export const TileNestingContext = createContext<TileNestingContextValue | null>(null);
+const nestingRoles: TileNestingRole[] = ["outer", "middle", "inner"];
+const defaultSizing = generateTileDimensions();
 
 export type TileStyleOverrides = Omit<
   CSSProperties,
@@ -90,43 +87,11 @@ type TileStyle = CSSProperties & {
   "--numa-tile-text": string;
 };
 
-const dimensions: Record<
-  TileVariant,
-  { padding: string; radii: Record<TileNestingRole, string> }
-> = {
-  s: {
-    padding: `${resolveSpacingPx("numa-spacing-pebbles-s")}px`,
-    radii: {
-      outer: `${resolveRadiusPx("numa-radius-walls-s")}px`,
-      middle: `${resolveRadiusPx("numa-radius-bricks-s")}px`,
-      inner: `${resolveRadiusPx("numa-radius-pebbles-xs")}px`,
-    },
-  },
-  m: {
-    padding: `${resolveSpacingPx("numa-spacing-pebbles-l")}px`,
-    radii: {
-      outer: `${resolveRadiusPx("numa-radius-walls-m")}px`,
-      middle: `${resolveRadiusPx("numa-radius-bricks-s")}px`,
-      inner: `${resolveRadiusPx("numa-radius-pebbles-xs")}px`,
-    },
-  },
-  l: {
-    padding: `${resolveSpacingPx("numa-spacing-bricks-s")}px`,
-    radii: {
-      outer: `${resolveRadiusPx("numa-radius-walls-xl")}px`,
-      middle: `${resolveRadiusPx("numa-radius-bricks-m")}px`,
-      inner: `${resolveRadiusPx("numa-radius-pebbles-xs")}px`,
-    },
-  },
-};
-
 export function Tile(props: TileProps) {
   const parentNesting = useContext(TileNestingContext);
-  const surfaceComposition = useContext(SurfaceCompositionContext);
   const inheritedDisabled = useContext(DisabledContext);
   const {
     children,
-    variant: requestedVariant,
     surfaceLevel: requestedSurfaceLevel,
     className,
     style,
@@ -142,10 +107,8 @@ export function Tile(props: TileProps) {
     form,
     ...elementProps
   } = props;
-  const inheritedVariant = surfaceComposition?.size ?? parentNesting?.variant;
-  const variant = inheritedVariant ?? requestedVariant ?? "m";
-  const depth = parentNesting?.depth ?? (surfaceComposition ? surfaceComposition.cardDepth + 1 : 0);
-  const parentSurfaceLevel = parentNesting?.surfaceLevel ?? surfaceComposition?.surfaceLevel;
+  const depth = parentNesting?.depth ?? 0;
+  const parentSurfaceLevel = parentNesting?.surfaceLevel;
   const surfaceLevel =
     requestedSurfaceLevel ??
     (parentSurfaceLevel === undefined
@@ -153,9 +116,6 @@ export function Tile(props: TileProps) {
       : parentSurfaceLevel === "level-1"
         ? "level-2"
         : "level-1");
-  if (inheritedVariant && requestedVariant !== undefined && requestedVariant !== inheritedVariant) {
-    throw new TypeError("Nested Tiles inherit the outer Tile variant.");
-  }
   if (depth > 2) {
     throw new RangeError("Tiles can be nested three levels maximum.");
   }
@@ -164,21 +124,17 @@ export function Tile(props: TileProps) {
   if (surfaceLevel !== "level-1" && surfaceLevel !== "level-2") {
     throw new RangeError(`Unsupported Tile surface level: ${surfaceLevel}`);
   }
-  if (!(variant in dimensions)) {
-    throw new RangeError(`Unsupported Tile variant: ${variant}`);
-  }
+  const role = nestingRoles[depth];
   const classes = [
     "numa-tile",
-    `numa-tile--${variant}`,
     `numa-tile--surface-${surfaceLevel}`,
-    `numa-tile--nesting-${(["outer", "middle", "inner"] as const)[depth]}`,
+    `numa-tile--nesting-${role}`,
     interactive ? "numa-tile--interactive" : "",
     className ?? "",
   ]
     .filter(Boolean)
     .join(" ");
 
-  const role = (["outer", "middle", "inner"] as const)[depth];
   const tokenStyle: TileStyle = {
     ...getSemanticColorStyle(isDisabled),
     "--numa-tile-surface": semanticColorVariable(
@@ -196,12 +152,12 @@ export function Tile(props: TileProps) {
     "--numa-tile-disabled-text": semanticColorVariable("numa-color-interactive-content-disabled"),
     "--numa-tile-focus": semanticColorVariable("numa-color-interactive-outline-focus"),
     "--numa-tile-text": semanticColorVariable("numa-color-context-content-strong"),
-    padding: dimensions[variant].padding,
-    borderRadius: dimensions[variant].radii[role],
+    padding: `var(--numa-sizing-selected-step-${TILE_NESTING_STEP_OFFSETS[role]}-padding, var(--numa-sizing-auto-step-${TILE_NESTING_STEP_OFFSETS[role]}-padding, ${defaultSizing[role].padding}px))`,
+    borderRadius: `var(--numa-sizing-selected-step-${TILE_NESTING_STEP_OFFSETS[role]}-radius, var(--numa-sizing-auto-step-${TILE_NESTING_STEP_OFFSETS[role]}-radius, ${defaultSizing[role].radius}px))`,
     ...style,
   };
 
-  const nestedContext = { variant, depth: depth + 1, surfaceLevel };
+  const nestedContext = { depth: depth + 1, surfaceLevel };
   const content = (
     <DisabledContext.Provider value={isDisabled}>
       <TileNestingContext.Provider value={nestedContext}>{children}</TileNestingContext.Provider>

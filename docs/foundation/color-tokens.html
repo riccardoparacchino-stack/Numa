@@ -415,11 +415,11 @@
       function renderPrimitives(colors) {
         const families = new Map();
         for (const [name, token] of Object.entries(colors)) {
-          const match = /^numa-sys-col-(.+)-(\d+)$/.exec(name);
+          const match = /^numa-sys-col-(.+?)(?:-(\d+))?$/.exec(name);
           if (!match) throw new Error(`Unexpected primitive color token name: ${name}`);
           const [, family, shade] = match;
           if (!families.has(family)) families.set(family, []);
-          families.get(family).push({ name, shade: Number(shade), token });
+          families.get(family).push({ name, shade: shade === undefined ? undefined : Number(shade), token });
         }
 
         const container = document.querySelector("#primitive-families");
@@ -427,9 +427,11 @@
           const section = element("section", "primitive-family");
           const heading = element("h3");
           heading.append(document.createTextNode(family));
-          heading.append(element("span", "", `${colorsInFamily.length} shades`));
+          heading.append(
+            element("span", "", `${colorsInFamily.length} ${colorsInFamily.length === 1 ? "color" : "colors"}`),
+          );
           const grid = element("div", "primitive-grid");
-          colorsInFamily.sort((a, b) => a.shade - b.shade);
+          colorsInFamily.sort((a, b) => (a.shade ?? -1) - (b.shade ?? -1));
           for (const { name, token } of colorsInFamily) {
             grid.append(tokenCard(name, token, {}, true));
           }

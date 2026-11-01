@@ -45,10 +45,10 @@ Independent use:
 />
 ```
 
-Inside a page Container and Card link:
+Inside a sizing Container and Card link:
 
 ```tsx
-<Container size="m">
+<Container mode="relaxed">
   <Card href="/settings">
     <ContentCompositor
       as="span"

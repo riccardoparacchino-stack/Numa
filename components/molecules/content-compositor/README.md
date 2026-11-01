@@ -23,11 +23,11 @@ vertical layout remains vertical at every width.
 
 The compositor is an inline-size query container. Its own content adapts to
 that width, so it remains responsive when reused in a narrow Card or a wide
-page. A parent Container also exposes the named `numa-page` query context to
-other descendants.
+page. A parent Container exposes the named `numa-sizing` query context to Tile
+descendants.
 
 ```tsx
-<Container size="m">
+<Container mode="relaxed">
   <ContentCompositor
     leading={<Icon aria-hidden="true" />}
     trailing={<Chevron aria-hidden="true" />}
@@ -40,10 +40,12 @@ other descendants.
 
 Use `as="span"` when the composition is inside a button Tile or Card; the
 action must still contain only phrasing content and no independent
-interactive controls. Prefer Container and Card for semantic page surfaces.
+interactive controls. Container is a sizing boundary and the first surface in
+the Page composition. Its Tile children continue with middle then inner
+surface roles. Use Card for cohesive visual groups.
 
 Use [Text Compositor](../text-compositor/README.md) for title/description
-content and [Container](../container/README.md) or
-[Card](../card/README.md) for semantic page surfaces. The low-level
-[Tile](../tile/README.md) remains available when those roles do not apply. The
+content, [Container](../container/README.md) for an optional sizing boundary,
+and [Card](../card/README.md) for cohesive visual groups. The low-level
+[Tile](../tile/README.md) remains available for other surface roles. The
 [live molecule preview](../story.html) exercises composition and surface roles.
