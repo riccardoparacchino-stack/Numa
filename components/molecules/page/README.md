@@ -30,3 +30,6 @@ surrounding application; Page does not add a role or select an HTML landmark.
 
 See the [semantic color roles](../../../docs/foundation/semantic-colors.md)
 and [surface hierarchy](../../../docs/foundation/surface-hierarchy.md).
+The component is used as the page shell in the
+[molecule showcase](../showcase.html). Its behavior is covered by
+[runtime tests](Page.runtime.test.tsx).

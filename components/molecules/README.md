@@ -2,22 +2,18 @@
 
 Molecules compose existing atoms into reusable content patterns.
 
-- [Text Compositor](text-compositor/README.md) combines a title and optional
-  description with logical alignment and token-based spacing.
-- [Content Compositor](content-compositor/README.md) composes leading, main,
-  trailing, and footer content inside one Tile content slot.
-- [Page](page/README.md) applies the semantic page background without imposing
-  layout or child-component requirements.
-- [Container](container/README.md) is the first semantic surface and
-  inline-size query boundary in a Page composition, with inherited sizing.
-- [Card](card/README.md) groups cohesive content, with one optional nested
-  Card for child content.
-- [Tile](tile/README.md) is a single-slot surface for static content or one
-  native link/button action, with independent semantic surface and parametric
-  sizing behavior.
+| Component | Documentation | Showcase coverage | Runtime tests |
+|---|---|---|---|
+| Text Compositor | [README](text-compositor/README.md) | [Alignment and gap examples](showcase.html#text-compositor-heading) | [Tests](text-compositor/TextCompositor.runtime.test.tsx) |
+| Content Compositor | [README](content-compositor/README.md) | [Representative slot compositions](showcase.html#slots-heading) | [Tests](content-compositor/ContentCompositor.runtime.test.tsx) |
+| Page | [README](page/README.md) | Used as the [showcase page shell](showcase.html) | [Tests](page/Page.runtime.test.tsx) |
+| Container | [README](container/README.md) | [Sizing modes and composition](showcase.html#tile-heading) | [Tests](container/Container.runtime.test.tsx) |
+| Card | [README](card/README.md) | [Nested Card composition](showcase.html#slots-heading) | [Tests](card/Card.runtime.test.tsx) |
+| Tile | [README](tile/README.md) | [Static, link, and button examples](showcase.html#tile-heading) | [Tests](tile/Tile.runtime.test.tsx) |
 
-Open the [live molecule previews](story.html) with
-`npm run story:molecules`. The page exercises the supported component options
-using the actual implementations.
-The [Tile parametric sizing demo](../../demos/tile-parametric.html) includes
-interactive sizing controls.
+The shared [Molecule showcase](showcase.html) is a React/Vite page that renders
+the real components and Foundation tokens. It offers representative examples,
+not a per-prop playground or an exhaustive API matrix. Run it with
+`npm run story:molecules`; the [showcase index](../showcase.html) links all
+standard pages. The [Tile parametric demo](../../demos/tile-parametric.html)
+is a separate exploratory tool, not the standard component showcase.

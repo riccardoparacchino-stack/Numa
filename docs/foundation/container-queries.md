@@ -27,6 +27,6 @@ the middle role, with the nested inner Tile as the final level.
 
 This is the React Web implementation. The repository does not include a React
 Native adapter or generated styles.
-The story pages are standalone demonstrations and may use viewport media
-queries for their own page framing; reusable component behavior belongs in
-component styles and should use container queries.
+Showcase pages are standalone previews and may use viewport media queries for
+their own page framing; reusable component behavior belongs in component
+styles and should use container queries.

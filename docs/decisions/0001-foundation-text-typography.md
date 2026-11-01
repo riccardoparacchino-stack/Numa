@@ -1,7 +1,7 @@
 # ADR 0001: Foundation Typography for the Text Atom
 
 - **Date:** 2026-10-31
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 

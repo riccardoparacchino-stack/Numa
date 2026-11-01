@@ -1,15 +1,15 @@
 # ADR 0006: Foundation Color Scopes and Responsive Containers
 
 - **Date:** 2026-11-01
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 
 The initial semantic color collection used text/border naming that did not
 make scope explicit, included ordinal action terms, and defined state tokens
 that supported no component. Reusable components also had no shared
-container-query convention; responsive CSS was limited to viewport-based story
-layouts.
+container-query convention; responsive CSS was limited to viewport-based
+showcase layouts.
 
 ## Decision
 
@@ -47,4 +47,4 @@ layouts.
 - [Foundation Semantic Colors](../foundation/semantic-colors.md)
 - [Container-query responsiveness](../foundation/container-queries.md)
 - [`tokens/semantic/color.json`](../../tokens/semantic/color.json)
-- [`foundation/colors/semantic-color-tokens.test.ts`](../../foundation/colors/semantic-color-tokens.test.ts)
+- [`foundation/colors/semantic-color-tokens.foundation.test.ts`](../../foundation/colors/semantic-color-tokens.foundation.test.ts)

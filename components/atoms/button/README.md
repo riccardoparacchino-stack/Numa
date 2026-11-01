@@ -4,9 +4,9 @@
 semantic native buttons, shared Foundations tokens, and the existing `Text` atom
 for its label typography.
 
-## Preview
+## Showcase
 
-Open the interactive preview at [story.html](./story.html) or run:
+Open the [Button showcase](./showcase.html) or run:
 
 ```bash
 npm run story:button
@@ -28,7 +28,7 @@ import { Button } from "./components/atoms/button";
 | `loading` | `boolean` | Adds a spinner and blocks duplicate activation. |
 | `fullWidth` | `boolean` | Expands the button to the available width of its container. |
 | `leadingIcon` / `trailingIcon` | React node | Renders a compatible icon before or after the label. |
-| `iconOnly` | `boolean` | Uses an icon-only layout and requires an accessible name. |
+| `iconOnly` | `boolean` | Uses an icon-only layout. Supply `aria-label` for a meaningful accessible name; absent a label, the implementation falls back to string content or `"Button"`. |
 | `label` / `children` | React node | Provides the button content. |
 | `onClick` | event handler | Native click handler for enabled buttons. |
 
@@ -45,3 +45,21 @@ Disabled content and outlines use separate subdued roles.
 A disabled mode inherited from a parent is combined with the Button's own
 `disabled` and `loading` states. The native button is disabled if any of these
 states is active; a child cannot re-enable itself inside a disabled subtree.
+
+The showcase covers all four sizes and variants plus representative icon-only,
+full-width, disabled, loading, and click-feedback states. It uses the shipped
+Button and Text components with semantic Foundation colors; it is not an
+exhaustive control for every prop.
+
+## Semantics, accessibility, and limits
+
+Button renders a native `<button>` with `type="button"` by default and forwards
+native button attributes. Use `aria-label` when the visible content does not
+provide a suitable accessible name, especially for icon-only buttons. Loading
+and disabled states prevent activation; inherited disabled mode cannot be
+canceled by the child. React Native and platform parity are not implemented.
+
+## Tests
+
+[Runtime tests](Button.runtime.test.tsx) cover native activation, size and
+variant token mapping, disabled inheritance, and loading behavior.

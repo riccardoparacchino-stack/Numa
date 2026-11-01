@@ -14,13 +14,16 @@ import { Text } from "./components/atoms/text";
 ```
 
 `Text` renders a `span` by default. `variant` and `size` are required and
-TypeScript constrains valid pairs:
+TypeScript constrains valid pairs. Five typography variants form the 13-pair
+Foundation-backed scale. A sixth `button` variant exposes the four fixed
+button-label sizes used by the Button atom; those dimensions use CSS values
+defined in `text.variants.ts`, not typography tokens:
 
 The component exports `TextProps<T extends ElementType = "span">`,
 `TextVariant`, `TextSize<V extends TextVariant>`, `TextVariantSize`, and
 `TextLetterSpacing` (an alias for Foundation's `LetterSpacingOption`).
-`TextVariant` is the union `"label" | "body" | "title" | "headline" |
-"display"`. `TextSize` is derived from the actual variant map, so its result
+`TextVariant` includes `"label" | "body" | "title" | "headline" | "display" |
+"button"`. `TextSize` is derived from the actual variant map, so its result
 depends on `V`; `TextVariantSize` forms the discriminated union of valid
 variant/size pairs shown below.
 
@@ -33,7 +36,7 @@ Those computed dimensions are applied after caller styles.
 | Prop | Type | Behavior |
 |---|---|---|
 | `variant` | `TextVariant` | Selects visual typography; does not determine semantics. |
-| `size` | Variant-specific union above | Selects Foundation font size and line height. |
+| `size` | Variant-specific union above | Selects a Foundation font-size/line-height pair or one of the `button` utility sizes. |
 | `as` | React element type; defaults to `"span"` | Selects the rendered element independently. |
 | `fontFamily` | `CSSProperties["fontFamily"]` | Optional override; defaults to Foundation Rubik stack. |
 | `fontWeight` | `CSSProperties["fontWeight"]` | Optional override; otherwise uses the variant default. |
@@ -59,19 +62,8 @@ duplicate values or component tokens.
 
 `letterSpacing` defaults to `relaxed`; each option resolves from Foundation
 using the selected pair's font-size token. Values are expressed in `em`, so
-spacing is relative to the effective font size. The complete matrix is:
-
-| Font size | Line height | `compact` | `relaxed` (default) | `spacious` |
-|---:|---:|---:|---:|---:|
-| 12px | 16px | 0em | +0.01em | +0.02em |
-| 14px | 20px | 0em | +0.005em | +0.01em |
-| 16px | 24px | -0.005em | 0em | +0.01em |
-| 22px | 28px | -0.02em | -0.01em | 0em |
-| 24px | 32px | -0.02em | -0.01em | 0em |
-| 32px | 40px | -0.025em | -0.015em | -0.005em |
-| 36px | 44px | -0.03em | -0.02em | -0.01em |
-| 45px | 52px | -0.03em | -0.02em | -0.01em |
-| 57px | 64px | -0.03em | -0.02em | -0.01em |
+spacing is relative to the effective font size. The complete shared token
+matrix is documented in [Foundation Typography](../../../docs/foundation/typography.md).
 
 Omitting `letterSpacing` selects `relaxed`. The effective size comes from the
 variant/size mapping; letter spacing is not derived from line height. Line
@@ -97,7 +89,9 @@ tracking overrides are not part of this API and were not previously supported.
 | `display` | `m` | 45px / 2.8125rem | 52px / 3.25rem | Regular / 400 |
 | `display` | `l` | 57px / 3.5625rem | 64px / 4rem | Regular / 400 |
 
-The explicit table contains **13** valid combinations. The initial brief called
+The Foundation-backed table contains **13** valid combinations. `button`
+supports `s`, `m`, `l`, and `xl` (14px, 16px, 20px, and 24px respectively),
+with `100%` line height and Medium / 500 weight. The initial brief called
 these “12” combinations, but its variant/size table specifies 13 rows; this
 implementation follows every explicitly listed row. `title/l`,
 `headline/l`, unknown variants, and unknown sizes are invalid. TypeScript
@@ -108,7 +102,7 @@ Foundation provides the Rubik, Helvetica Neue, Arial, sans-serif family and
 the default weights 400, 500, and 600. Font availability/loading is not
 implemented; consumers must provide the Rubik font where required. The `color`
 prop accepts CSS color values and is not token-resolved by the Text component.
-The interactive story uses the shared semantic color aliases for its
+The interactive showcase uses the shared semantic color aliases for its
 documentation-page styling; it does not add color behavior to the Text API.
 
 ## Semantics and accessibility
@@ -172,25 +166,26 @@ in [ADR 0001](../../../docs/decisions/0001-foundation-text-typography.md).
 Foundation scope and token discrepancy details are in
 [Foundation Typography](../../../docs/foundation/typography.md).
 
-## Tests
+## Showcase
 
-`Text.test.tsx` covers every valid pair, font defaults and overrides,
-semantic independence, attribute forwarding, runtime invalid-pair handling,
-and protected dimensions. `Text.type-test.tsx` is included in TypeScript
-checking to verify invalid variant/size pairs and independent dimension props
-are rejected.
-
-## Interactive story
-
-Run `npm run story` to open the [Text Atom story](./story.html) through Vite.
+Run `npm run story:text` to open the [Text Atom showcase](./showcase.html)
+through Vite, or `npm run story` for the
+[showcase index](../../showcase.html).
 The page renders its copy and specimens with the real `Text` component,
 resolves font sizes, weights, font family, and letter-spacing from Foundation,
 and applies semantic color tokens for its page, surfaces, text, accents, and
 focus indicators. See [Foundation Semantic Colors](../../../docs/foundation/semantic-colors.md).
-An interactive variant/size/element playground demonstrates the API and
-semantics. The type-scale selector previews all variant/size pairs that use a
+The showcase renders the five typography variants, the separate Button-label
+scale, and an interactive variant/size/element playground. The type-scale
+selector previews all typography variant/size pairs that use a
 generated scale for the selected harmonic ratio, anchored at a 16px base. It is
 an exploratory illustration and does not change Text's Foundation token
 mapping, which is listed alongside it. Page structure and controls remain
 native HTML elements where the Text component does not replace those
 primitives.
+
+## Tests
+
+- [Runtime behavior](Text.runtime.test.tsx) covers the supported pairs,
+  Foundation tracking, semantics, attributes, and runtime validation.
+- [Type contract](Text.type-test.tsx) is checked by `npm run typecheck`.

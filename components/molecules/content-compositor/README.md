@@ -47,5 +47,6 @@ surface roles. Use Card for cohesive visual groups.
 Use [Text Compositor](../text-compositor/README.md) for title/description
 content, [Container](../container/README.md) for an optional sizing boundary,
 and [Card](../card/README.md) for cohesive visual groups. The low-level
-[Tile](../tile/README.md) remains available for other surface roles. The
-[live molecule preview](../story.html) exercises composition and surface roles.
+[Tile](../tile/README.md) remains available for other surface roles. The [Content Compositor example](../showcase.html#slots-heading) exercises
+representative slot combinations. See
+[runtime tests](ContentCompositor.runtime.test.tsx).

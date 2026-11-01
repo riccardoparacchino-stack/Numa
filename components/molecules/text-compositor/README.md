@@ -64,5 +64,6 @@ Inside a sizing Container and Card link:
 The gap maps semantic tokens to CSS pixels through the shared Foundation
 dimension adapter. See the [semantic spacing and radius documentation](../../../docs/foundation/semantic-spacing-radius.md)
 for the unit decision and supported tokens. TextCompositor is independent of
-Tile and can be used in other layouts. See the [live molecule previews](../story.html)
-for all alignment/gap combinations and title-only behavior.
+Tile and can be used in other layouts. See the
+[Text Compositor example](../showcase.html#text-compositor-heading) and
+[runtime tests](TextCompositor.runtime.test.tsx).

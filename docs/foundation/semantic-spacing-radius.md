@@ -119,9 +119,8 @@ The React Web adapter interprets referenced unitless numeric values as CSS
 pixels. This is a consumption rule implemented by the adapter, not metadata
 stored in the primitive tokens.
 
-The repository still has no configured Style Dictionary build or generated
+the repository still has no configured Style Dictionary build or generated
 output, so no standalone CSS artifact is produced. There is also no React
 Native transform or runtime, and no native conversion is claimed. Token tests
 verify the documented inventory and primitive aliases; adapter tests verify
-the Web pixel interpretation. No shared Definition of Done document was
-present in the repository at implementation time.
+the Web pixel interpretation.

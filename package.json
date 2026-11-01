@@ -6,9 +6,11 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "story": "vite --open /components/atoms/text/story.html",
-    "story:button": "vite --open /components/atoms/button/story.html",
-    "story:molecules": "vite --open /components/molecules/story.html"
+    "story": "vite --open /components/showcase.html",
+    "story:text": "vite --open /components/atoms/text/showcase.html",
+    "story:button": "vite --open /components/atoms/button/showcase.html",
+    "story:molecules": "vite --open /components/molecules/showcase.html",
+    "demo:tile": "vite --open /demos/tile-parametric.html"
   },
   "keywords": [],
   "author": "",

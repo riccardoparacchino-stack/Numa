@@ -10,7 +10,7 @@ import { Container } from "./container";
 import { Page } from "./page";
 import { TextCompositor } from "./text-compositor";
 import { Tile } from "./tile";
-import "./story.css";
+import "./showcase.css";
 
 type ThemeStyle = CSSProperties & {
   [key: `--${string}`]: string;
@@ -77,7 +77,7 @@ function MoleculeStory() {
             Molecules
           </Text>
           <Text variant="body" size="m" as="p">
-            Live previews for Tile and Text Compositor. These use the shipped React Web components.
+            Representative compositions for the shipped React Web molecules. Examples use the real components and Foundation tokens; they are not an exhaustive control panel for every prop.
           </Text>
         </div>
       </header>
