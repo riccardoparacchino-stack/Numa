@@ -1,0 +1,70 @@
+.numa-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  border: 0 solid transparent;
+  background-color: var(--numa-button-background);
+  border-color: var(--numa-button-border);
+  color: var(--numa-button-text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.numa-button:disabled,
+.numa-button[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.numa-button:not(:disabled):not([aria-disabled="true"]):hover {
+  background-color: var(--numa-button-hover-background);
+  border-color: var(--numa-button-hover-border, var(--numa-button-border));
+}
+
+.numa-button:not(:disabled):not([aria-disabled="true"]):active {
+  background-color: var(--numa-button-active-background);
+  border-color: var(--numa-button-active-border, var(--numa-button-border));
+}
+
+.numa-button:focus-visible {
+  outline: 2px solid var(--numa-button-focus-ring);
+  outline-offset: 2px;
+}
+
+.numa-button--full-width {
+  width: 100%;
+}
+
+.numa-button--icon-only {
+  padding: 0;
+}
+
+.numa-button__icon,
+.numa-button__spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.numa-button__spinner {
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 999px;
+  animation: numa-button-spin 0.7s linear infinite;
+}
+
+.numa-button--loading {
+  cursor: progress;
+}
+
+@keyframes numa-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

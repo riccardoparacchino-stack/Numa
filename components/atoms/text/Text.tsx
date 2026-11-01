@@ -58,10 +58,9 @@ export function Text<T extends ElementType = "span">(props: TextProps<T>) {
   } = props;
   const typography = getTextTypography(variant, size);
   const resolvedWeight = fontWeight ?? getDefaultTextWeight(variant);
-  const resolvedLetterSpacing = resolveLetterSpacing(
-    typography.fontSizeToken,
-    letterSpacing,
-  );
+  const resolvedLetterSpacing = typography.fontSizeToken
+    ? resolveLetterSpacing(typography.fontSizeToken, letterSpacing)
+    : "0em";
 
   const resolvedStyle: CSSProperties = {
     ...style,
