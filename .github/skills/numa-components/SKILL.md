@@ -87,6 +87,14 @@ implemented behavior from proposals.
   Update Foundation documentation only when its definitions or consumption
   relationship changes; do not move component-specific API details into
   Foundation.
+- Keep standard Vite previews beside their component as `showcase.html`,
+  `showcase.tsx`, and `showcase.css`; link them from component and category
+  indexes. Render the real component and consume Foundation values rather than
+  making a parallel HTML/CSS illustration. Keep parameter experiments in
+  `demos/`, visibly labeled as exploratory.
+- Use `docs/README.md` for documentation navigation and `docs/testing.md` for
+  test naming and verification commands. Add links to relevant local tests;
+  do not duplicate test cases in documentation.
 - Record rationale, alternatives, trade-offs, impact, and status for meaningful
   decisions. Use an ADR for long-lived system architecture decisions; keep
   component-level decisions in the component README when that is sufficient.

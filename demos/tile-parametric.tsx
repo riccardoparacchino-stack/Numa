@@ -75,6 +75,13 @@ function TileParametricDemo() {
         radiusMultiplier={radiusMultiplier}
       >
         <h1>Numa Tile sizing</h1>
+        <Tile>
+          <p>
+            <strong>Experimental demo</strong> — these controls explore the
+            sizing algorithm. This is not the standard Tile showcase or a
+            complete specification of supported API behavior.
+          </p>
+        </Tile>
         <form
           ref={controlsRef}
           className="tile-demo__controls"

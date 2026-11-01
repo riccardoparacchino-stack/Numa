@@ -38,4 +38,5 @@ boundaries, without requiring form structures or arbitrary compositions to
 be wrapped in Cards.
 
 `Card` is a React Web component. See the [Tile sizing guide](../tile/README.md)
-and [live molecule previews](../story.html).
+and [representative molecule compositions](../showcase.html#slots-heading).
+Behavior is covered by [runtime tests](Card.runtime.test.tsx).

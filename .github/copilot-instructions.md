@@ -18,3 +18,10 @@
   exports, and tests.
 - See the [Numa Components skill](skills/numa-components/SKILL.md) for the
   component-development workflow.
+- Use [docs/README.md](../docs/README.md) to navigate user and contributor
+  documentation, and [docs/testing.md](../docs/testing.md) for verification
+  commands and test naming.
+- Keep shared definitions in `docs/foundation/`, historical decisions in
+  `docs/decisions/`, component API details in local READMEs, and Vite previews
+  in component-local `showcase.*` files. Experimental parameter explorations
+  belong in `demos/` and must be identified as experiments.
