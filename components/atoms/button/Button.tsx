@@ -4,15 +4,17 @@ import type {
   MouseEventHandler,
   ReactNode,
 } from "react";
+import { useContext } from "react";
+import { getSemanticColorStyle, semanticColorVariable } from "../../../foundation/colors/semantic-color-style";
 import { resolveRadiusPx, resolveSpacingPx } from "../../../foundation/semantic-dimensions";
-import primitiveColors from "../../../tokens/primitive/color.json";
+import { DisabledContext } from "../../disabled-context";
 import primitivePercentages from "../../../tokens/primitive/percentage.json";
 import semanticColors from "../../../tokens/semantic/color.json";
 import { Text } from "../text/Text";
 import "./Button.css";
 
 export const buttonSizes = ["s", "m", "l", "xl"] as const;
-export const buttonVariants = ["primary", "secondary", "subtle", "ghost"] as const;
+export const buttonVariants = ["action", "outlined", "subtle", "ghost"] as const;
 
 export type ButtonSize = (typeof buttonSizes)[number];
 export type ButtonVariant = (typeof buttonVariants)[number];
@@ -40,13 +42,10 @@ type ButtonTokenSet = {
   background: string;
   backgroundHover: string;
   backgroundActive: string;
-  backgroundDisabled: string;
   text: string;
-  textDisabled: string;
   border: string;
   borderHover: string;
   borderActive: string;
-  borderDisabled: string;
   focus: string;
 };
 
@@ -85,22 +84,7 @@ const sizeMetadata: Record<
 };
 
 function resolveColor(name: keyof typeof semanticColors): string {
-  const token = semanticColors[name];
-  if (token.$type !== "color" || typeof token.$value !== "string") {
-    throw new TypeError(`Expected a semantic color token: ${name}`);
-  }
-
-  const match = /^\{([^{}]+)\}$/.exec(token.$value);
-  if (!match) {
-    throw new TypeError(`Expected a primitive color alias: ${name}`);
-  }
-
-  const primitive = primitiveColors[match[1] as keyof typeof primitiveColors];
-  if (!primitive || primitive.$type !== "color" || typeof primitive.$value !== "string") {
-    throw new Error(`Missing primitive color referenced by ${name}`);
-  }
-
-  return primitive.$value;
+  return semanticColorVariable(name);
 }
 
 function resolveOpacity(name: keyof typeof semanticColors): number {
@@ -127,78 +111,64 @@ function resolveOverlay(name: keyof typeof semanticColors, opacityName: keyof ty
 }
 
 const tokensByVariant: Record<ButtonVariant, ButtonTokenSet> = {
-  primary: {
-    background: resolveColor("numa-color-interactive-surface-primary-default"),
-    backgroundHover: resolveColor("numa-color-interactive-surface-primary-hover"),
-    backgroundActive: resolveColor("numa-color-interactive-surface-primary-active"),
-    backgroundDisabled: resolveColor("numa-color-interactive-surface-primary-disabled"),
-    text: resolveColor("numa-color-interactive-text-on-primary"),
-    textDisabled: resolveColor("numa-color-interactive-text-disabled"),
+  action: {
+    background: resolveColor("numa-color-interactive-surface-action-default"),
+    backgroundHover: resolveColor("numa-color-interactive-surface-action-hover"),
+    backgroundActive: resolveColor("numa-color-interactive-surface-action-active"),
+    text: resolveColor("numa-color-interactive-content-on-action"),
     border: "transparent",
     borderHover: "transparent",
     borderActive: "transparent",
-    borderDisabled: resolveColor("numa-color-interactive-outline-disabled"),
     focus: resolveColor("numa-color-interactive-outline-focus"),
   },
-  secondary: {
-    background: resolveColor("numa-color-context-surface-level-1"),
+  outlined: {
+    background: resolveColor("numa-color-context-surface-weak"),
     backgroundHover: resolveColor("numa-color-interactive-surface-subtle-hover"),
     backgroundActive: resolveColor("numa-color-interactive-surface-subtle-active"),
-    backgroundDisabled: resolveColor("numa-color-interactive-surface-subtle-disabled"),
-    text: resolveColor("numa-color-interactive-text-primary"),
-    textDisabled: resolveColor("numa-color-interactive-text-disabled"),
-    border: resolveColor("numa-color-interactive-outline-primary"),
-    borderHover: resolveColor("numa-color-interactive-outline-primary"),
-    borderActive: resolveColor("numa-color-interactive-outline-primary"),
-    borderDisabled: resolveColor("numa-color-interactive-outline-disabled"),
+    text: resolveColor("numa-color-interactive-content-action"),
+    border: resolveColor("numa-color-interactive-outline-action"),
+    borderHover: resolveColor("numa-color-interactive-outline-action"),
+    borderActive: resolveColor("numa-color-interactive-outline-action"),
     focus: resolveColor("numa-color-interactive-outline-focus"),
   },
   subtle: {
     background: resolveColor("numa-color-interactive-surface-subtle-default"),
     backgroundHover: resolveColor("numa-color-interactive-surface-subtle-hover"),
     backgroundActive: resolveColor("numa-color-interactive-surface-subtle-active"),
-    backgroundDisabled: resolveColor("numa-color-interactive-surface-subtle-disabled"),
-    text: resolveColor("numa-color-context-text-primary"),
-    textDisabled: resolveColor("numa-color-interactive-text-disabled"),
+    text: resolveColor("numa-color-context-content-strong"),
     border: "transparent",
     borderHover: "transparent",
     borderActive: "transparent",
-    borderDisabled: resolveColor("numa-color-interactive-outline-disabled"),
     focus: resolveColor("numa-color-interactive-outline-focus"),
   },
   ghost: {
     background: resolveOverlay(
-      "numa-color-interactive-surface-ghost-default-color",
-      "numa-color-interactive-surface-ghost-default-opacity",
+      "numa-color-interactive-surface-ghost-color",
+      "numa-color-interactive-surface-ghost-opacity-default",
     ),
     backgroundHover: resolveOverlay(
-      "numa-color-interactive-surface-ghost-hover-color",
-      "numa-color-interactive-surface-ghost-hover-opacity",
+      "numa-color-interactive-surface-ghost-color",
+      "numa-color-interactive-surface-ghost-opacity-hover",
     ),
     backgroundActive: resolveOverlay(
-      "numa-color-interactive-surface-ghost-active-color",
-      "numa-color-interactive-surface-ghost-active-opacity",
+      "numa-color-interactive-surface-ghost-color",
+      "numa-color-interactive-surface-ghost-opacity-active",
     ),
-    backgroundDisabled: resolveOverlay(
-      "numa-color-interactive-surface-ghost-disabled-color",
-      "numa-color-interactive-surface-ghost-disabled-opacity",
-    ),
-    text: resolveColor("numa-color-interactive-text-primary"),
-    textDisabled: resolveColor("numa-color-interactive-text-disabled"),
+    text: resolveColor("numa-color-interactive-content-action"),
     border: "transparent",
     borderHover: "transparent",
     borderActive: "transparent",
-    borderDisabled: resolveColor("numa-color-interactive-outline-disabled"),
     focus: resolveColor("numa-color-interactive-outline-focus"),
   },
 };
 
 export function Button(props: ButtonProps) {
+  const inheritedDisabled = useContext(DisabledContext);
   const {
     children,
     label,
     size = "m",
-    variant = "primary",
+    variant = "action",
     disabled = false,
     loading = false,
     fullWidth = false,
@@ -214,17 +184,13 @@ export function Button(props: ButtonProps) {
     ...elementProps
   } = props;
 
-  const isDisabled = disabled || loading;
+  const isDisabled = disabled || loading || inheritedDisabled;
   const content = label ?? children;
   const resolvedLabel = typeof content === "string" || typeof content === "number" ? String(content) : content;
   const accessibleName =
     ariaLabel ?? ariaLabelledBy ?? (iconOnly && typeof resolvedLabel === "string" ? resolvedLabel : undefined) ?? "Button";
   const metadata = sizeMetadata[size];
   const palette = tokensByVariant[variant];
-  const currentBackground = isDisabled ? palette.backgroundDisabled : palette.background;
-  const currentText = isDisabled ? palette.textDisabled : palette.text;
-  const currentBorder = isDisabled ? palette.borderDisabled : palette.border;
-
   const classes = [
     "numa-button",
     `numa-button--${size}`,
@@ -238,9 +204,10 @@ export function Button(props: ButtonProps) {
     .join(" ");
 
   const buttonStyle: CSSProperties & {
-    [key: `--numa-button-${string}`]: string;
+    [key: `--${string}`]: string | number | undefined;
   } = {
-    borderWidth: variant === "secondary" ? 1 : 0,
+    ...getSemanticColorStyle(isDisabled),
+    borderWidth: variant === "outlined" ? 1 : 0,
     borderRadius: `${metadata.radius}px`,
     borderStyle: "solid",
     padding: iconOnly ? "0" : `0 ${metadata.horizontalPadding}px`,
@@ -249,14 +216,18 @@ export function Button(props: ButtonProps) {
     width: fullWidth && !iconOnly ? "100%" : undefined,
     minWidth: iconOnly ? `${metadata.height}px` : undefined,
     gap: iconOnly ? "0" : `${metadata.gap}px`,
-    "--numa-button-background": currentBackground,
+    "--numa-button-background": isDisabled
+      ? resolveColor("numa-color-interactive-surface-disabled")
+      : palette.background,
     "--numa-button-hover-background": palette.backgroundHover,
     "--numa-button-active-background": palette.backgroundActive,
-    "--numa-button-text": currentText,
-    "--numa-button-border": currentBorder,
+    "--numa-button-text": palette.text,
+    "--numa-button-border": palette.border,
     "--numa-button-hover-border": palette.borderHover,
     "--numa-button-active-border": palette.borderActive,
     "--numa-button-focus-ring": palette.focus,
+    "--numa-button-focus-inner": resolveColor("numa-color-interactive-outline-focus-on-action-inner"),
+    "--numa-button-focus-outer": resolveColor("numa-color-interactive-outline-focus-on-action-outer"),
     ...style,
   };
 

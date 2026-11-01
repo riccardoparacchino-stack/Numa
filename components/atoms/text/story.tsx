@@ -4,7 +4,7 @@ import colorTokens from "../../../tokens/primitive/color.json";
 import semanticColorTokens from "../../../tokens/semantic/color.json";
 import {
   getDefaultTextWeight,
-  getPrimaryFontFamily,
+  getDefaultFontFamily,
   getTextTypography,
   textVariants,
   type TextVariant,
@@ -72,17 +72,17 @@ function resolveSemanticColor(name: keyof typeof semanticColorTokens): string {
 }
 
 const palette = {
-  ink: resolveSemanticColor("numa-color-context-text-primary"),
-  muted: resolveSemanticColor("numa-color-context-text-secondary"),
-  tertiary: resolveSemanticColor("numa-color-context-text-tertiary"),
-  line: resolveSemanticColor("numa-color-context-border-subtle"),
+  ink: resolveSemanticColor("numa-color-context-content-strong"),
+  muted: resolveSemanticColor("numa-color-context-content-weak"),
+  tertiary: resolveSemanticColor("numa-color-context-content-weak"),
+  line: resolveSemanticColor("numa-color-context-outline-subtle"),
   paper: resolveSemanticColor("numa-color-context-background-default"),
-  surface: resolveSemanticColor("numa-color-context-surface-level-1"),
-  accent: resolveSemanticColor("numa-color-interactive-text-primary"),
-  accentSurface: resolveSemanticColor("numa-color-interactive-surface-primary-default"),
-  accentText: resolveSemanticColor("numa-color-interactive-text-on-primary"),
+  surface: resolveSemanticColor("numa-color-context-surface-weak"),
+  accent: resolveSemanticColor("numa-color-accent-content-default"),
+  accentSurface: resolveSemanticColor("numa-color-interactive-surface-action-default"),
+  accentText: resolveSemanticColor("numa-color-interactive-content-on-action"),
   focus: resolveSemanticColor("numa-color-interactive-outline-focus"),
-  focusOnAccent: resolveSemanticColor("numa-color-interactive-outline-focus-on-primary-inner"),
+  focusOnAccent: resolveSemanticColor("numa-color-interactive-outline-focus-on-action-inner"),
   subtleHover: resolveSemanticColor("numa-color-interactive-surface-subtle-hover"),
 } as const;
 
@@ -99,7 +99,7 @@ const themeStyle: ThemeProperties = {
   "--focus": palette.focus,
   "--focus-on-accent": palette.focusOnAccent,
   "--subtle-hover": palette.subtleHover,
-  "--font-family": getPrimaryFontFamily(),
+  "--font-family": getDefaultFontFamily(),
 };
 
 const variants = Object.keys(textVariants) as TextVariant[];

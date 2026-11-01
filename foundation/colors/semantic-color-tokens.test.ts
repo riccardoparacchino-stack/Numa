@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import primitiveColors from "../../tokens/primitive/color.json";
 import primitivePercentages from "../../tokens/primitive/percentage.json";
 import semanticColors from "../../tokens/semantic/color.json";
+import typographyTokens from "../../tokens/typography/text.json";
+import { getSemanticColorStyle } from "./semantic-color-style";
 
 const primitiveTokens = new Map<string, { type: string; value: unknown }>();
 for (const [name, token] of Object.entries({ ...primitiveColors, ...primitivePercentages })) {
@@ -54,6 +56,13 @@ function getContrastRatio(foreground: string, background: string): number {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+const contextBackgrounds = [
+  "numa-color-context-background-sunken",
+  "numa-color-context-background-default",
+  "numa-color-context-surface-weak",
+  "numa-color-context-surface-strong",
+] as const;
+
 describe("semantic color tokens", () => {
   it.each(Object.entries(semanticColors))(
     "%s aliases an existing primitive of the same type",
@@ -66,13 +75,19 @@ describe("semantic color tokens", () => {
     },
   );
 
-  it("uses the existing percentage primitives for ghost state opacity", () => {
+  it("uses explicit color scopes and avoids ordinal color or typography token names", () => {
+    const names = Object.keys(semanticColors);
+    const allTokenNames = [...names, ...Object.keys(typographyTokens)];
+
+    expect(allTokenNames.every((name) => !/(primary|secondary)/i.test(name))).toBe(true);
+    expect(names.every((name) => /-(background|surface|content|outline)-/.test(name))).toBe(true);
+  });
+
+  it("uses only the existing percentage primitives for ghost feedback", () => {
     const expected = {
-      "numa-color-interactive-surface-ghost-default-opacity": 0,
-      "numa-color-interactive-surface-ghost-hover-opacity": 5,
-      "numa-color-interactive-surface-ghost-active-opacity": 10,
-      "numa-color-interactive-surface-ghost-selected-opacity": 5,
-      "numa-color-interactive-surface-ghost-disabled-opacity": 0,
+      "numa-color-interactive-surface-ghost-opacity-default": 0,
+      "numa-color-interactive-surface-ghost-opacity-hover": 5,
+      "numa-color-interactive-surface-ghost-opacity-active": 10,
     } as const;
 
     for (const [name, value] of Object.entries(expected)) {
@@ -83,180 +98,129 @@ describe("semantic color tokens", () => {
     }
   });
 
-  it("keeps persistent selected surfaces distinct from their defaults", () => {
-    expect(resolveColor("numa-color-interactive-surface-primary-selected")).not.toBe(
-      resolveColor("numa-color-interactive-surface-primary-default"),
-    );
-    expect(resolveColor("numa-color-interactive-surface-subtle-selected")).not.toBe(
-      resolveColor("numa-color-interactive-surface-subtle-default"),
-    );
-    expect(
-      semanticColors["numa-color-interactive-surface-ghost-selected-opacity"].$value,
-    ).not.toBe(
-      semanticColors["numa-color-interactive-surface-ghost-default-opacity"].$value,
-    );
-  });
-
-  it("uses progressively darker subtle surfaces for default, hover, and active states", () => {
-    const expected = {
-      "numa-color-interactive-surface-subtle-default": "#e2e8f0",
-      "numa-color-interactive-surface-subtle-hover": "#cbd5e1",
-      "numa-color-interactive-surface-subtle-active": "#94a3b8",
-    } as const;
-
-    for (const [name, value] of Object.entries(expected)) {
-      expect(resolveColor(name as keyof typeof semanticColors)).toBe(value);
+  it("meets WCAG AA contrast for contextual content and interactive content", () => {
+    for (const content of [
+      "numa-color-context-content-strong",
+      "numa-color-context-content-weak",
+      "numa-color-interactive-content-action",
+      "numa-color-interactive-content-status-success",
+      "numa-color-interactive-content-status-warning",
+      "numa-color-interactive-content-status-error",
+      "numa-color-interactive-content-status-info",
+    ] as const) {
+      for (const background of contextBackgrounds) {
+        expect(getContrastRatio(resolveColor(content), resolveColor(background))).toBeGreaterThanOrEqual(4.5);
+      }
     }
 
-    expect(resolveColor("numa-color-interactive-surface-subtle-default")).not.toBe(
-      resolveColor("numa-color-context-surface-level-1"),
+    expect(semanticColors["numa-color-accent-content-default"].$value).toBe(
+      "{numa-sys-col-teal-800}",
     );
-    expect(resolveColor("numa-color-interactive-surface-subtle-active")).not.toBe(
-      resolveColor("numa-color-interactive-surface-subtle-hover"),
-    );
+    for (const background of contextBackgrounds) {
+      expect(
+        getContrastRatio(resolveColor("numa-color-accent-content-default"), resolveColor(background)),
+      ).toBeGreaterThanOrEqual(3);
+    }
+
+    for (const surface of [
+      "numa-color-interactive-surface-action-default",
+      "numa-color-interactive-surface-action-hover",
+      "numa-color-interactive-surface-action-active",
+    ] as const) {
+      expect(
+        getContrastRatio(resolveColor("numa-color-interactive-content-on-action"), resolveColor(surface)),
+      ).toBeGreaterThanOrEqual(4.5);
+    }
+
+    for (const surface of [
+      "numa-color-interactive-surface-subtle-default",
+      "numa-color-interactive-surface-subtle-hover",
+      "numa-color-interactive-surface-subtle-active",
+    ] as const) {
+      expect(
+        getContrastRatio(resolveColor("numa-color-interactive-content-subtle"), resolveColor(surface)),
+      ).toBeGreaterThanOrEqual(4.5);
+    }
   });
 
-  it("uses the gray palette for disabled surfaces, text, and outlines", () => {
-    expect(semanticColors["numa-color-interactive-surface-primary-disabled"].$value).toBe(
-      "{numa-sys-col-gray-200}",
-    );
-    expect(semanticColors["numa-color-interactive-surface-subtle-disabled"].$value).toBe(
-      "{numa-sys-col-gray-200}",
-    );
-    expect(semanticColors["numa-color-interactive-text-disabled"].$value).toBe(
+  it("uses one gray token for each disabled scope", () => {
+    const disabledAliases = {
+      "numa-color-interactive-background-disabled": "{numa-sys-col-gray-100}",
+      "numa-color-interactive-surface-disabled": "{numa-sys-col-gray-200}",
+      "numa-color-interactive-content-disabled": "{numa-sys-col-gray-500}",
+      "numa-color-interactive-outline-disabled": "{numa-sys-col-gray-300}",
+    } as const;
+
+    expect(
+      Object.keys(semanticColors).filter((name) => name.endsWith("-disabled")),
+    ).toEqual(Object.keys(disabledAliases));
+    for (const [name, value] of Object.entries(disabledAliases)) {
+      expect(semanticColors[name as keyof typeof semanticColors].$value).toBe(value);
+    }
+
+    expect(semanticColors["numa-color-interactive-content-disabled"].$value).toBe(
       "{numa-sys-col-gray-500}",
     );
     expect(semanticColors["numa-color-interactive-outline-disabled"].$value).toBe(
       "{numa-sys-col-gray-300}",
     );
-    expect(semanticColors["numa-color-interactive-outline-disabled"].$value).not.toBe(
-      semanticColors["numa-color-interactive-text-disabled"].$value,
-    );
   });
 
-  it("meets WCAG AA text contrast for contextual roles and intended surfaces", () => {
-    const backgrounds = [
-      "numa-color-context-background-sunken",
-      "numa-color-context-background-default",
-      "numa-color-context-surface-level-1",
-      "numa-color-context-surface-level-2",
-    ] as const;
-    const textRoles = [
-      "numa-color-context-text-primary",
-      "numa-color-context-text-secondary",
-      "numa-color-context-text-tertiary",
-    ] as const;
+  it("maps every semantic color scope to the shared disabled token and preserves focus colors", () => {
+    const disabledStyle = getSemanticColorStyle(true);
+    const enabledStyle = getSemanticColorStyle(false);
+    const disabledColorByScope = {
+      background: "#f3f4f6",
+      surface: "#e5e7eb",
+      content: "#6b7280",
+      outline: "#d1d5db",
+    } as const;
 
-    for (const text of textRoles) {
-      for (const background of backgrounds) {
-        expect(getContrastRatio(resolveColor(text), resolveColor(background))).toBeGreaterThanOrEqual(4.5);
-      }
+    for (const name of Object.keys(semanticColors) as (keyof typeof semanticColors)[]) {
+      const token = semanticColors[name];
+      if (token.$type !== "color") continue;
+      const scope = name.slice("numa-color-".length).split("-")[1] as keyof typeof disabledColorByScope;
+      const variableName = `--${name}` as keyof typeof disabledStyle;
+      const focusToken = name.includes("-outline-focus");
+
+      expect(disabledStyle[variableName]).toBe(
+        focusToken ? enabledStyle[variableName] : disabledColorByScope[scope],
+      );
     }
   });
 
-  it("meets WCAG AA text contrast for interactive families and states", () => {
-    const contextualBackgrounds = [
-      "numa-color-context-background-sunken",
-      "numa-color-context-background-default",
-      "numa-color-context-surface-level-1",
-      "numa-color-context-surface-level-2",
-    ] as const;
-    const primarySurfaces = [
-      "numa-color-interactive-surface-primary-default",
-      "numa-color-interactive-surface-primary-hover",
-      "numa-color-interactive-surface-primary-active",
-      "numa-color-interactive-surface-primary-selected",
-    ] as const;
-    const subtleSurfaces = [
-      "numa-color-interactive-surface-subtle-default",
-      "numa-color-interactive-surface-subtle-hover",
-      "numa-color-interactive-surface-subtle-active",
-      "numa-color-interactive-surface-subtle-selected",
-    ] as const;
-
-    for (const background of contextualBackgrounds) {
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-text-primary"), resolveColor(background)),
-      ).toBeGreaterThanOrEqual(4.5);
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-text-ghost"), resolveColor(background)),
-      ).toBeGreaterThanOrEqual(4.5);
-    }
-
-    for (const surface of primarySurfaces) {
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-text-on-primary"), resolveColor(surface)),
-      ).toBeGreaterThanOrEqual(4.5);
-    }
-
-    for (const surface of subtleSurfaces) {
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-text-subtle"), resolveColor(surface)),
-      ).toBeGreaterThanOrEqual(4.5);
-    }
-
+  it("keeps focus indicators distinguishable across light, action, and disabled surfaces", () => {
     for (const surface of [
-      "numa-color-interactive-surface-primary-disabled",
-      "numa-color-interactive-surface-subtle-disabled",
-    ] as const) {
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-outline-disabled"), resolveColor(surface)),
-      ).toBeLessThan(3);
-    }
-  });
-
-  it("keeps focus indicators distinguishable across light, primary, and disabled surfaces", () => {
-    const lightSurfaces = [
-      "numa-color-context-background-sunken",
-      "numa-color-context-background-default",
-      "numa-color-context-surface-level-1",
-      "numa-color-context-surface-level-2",
+      ...contextBackgrounds,
       "numa-color-interactive-surface-subtle-default",
       "numa-color-interactive-surface-subtle-hover",
       "numa-color-interactive-surface-subtle-active",
-    ] as const;
-    const primarySurfaces = [
-      "numa-color-interactive-surface-primary-default",
-      "numa-color-interactive-surface-primary-hover",
-      "numa-color-interactive-surface-primary-active",
-      "numa-color-interactive-surface-primary-selected",
-    ] as const;
-
-    for (const surface of lightSurfaces) {
+      "numa-color-interactive-surface-disabled",
+    ] as const) {
       expect(
         getContrastRatio(resolveColor("numa-color-interactive-outline-focus"), resolveColor(surface)),
       ).toBeGreaterThanOrEqual(3);
     }
 
-    for (const surface of primarySurfaces) {
+    for (const surface of [
+      "numa-color-interactive-surface-action-default",
+      "numa-color-interactive-surface-action-hover",
+      "numa-color-interactive-surface-action-active",
+    ] as const) {
       expect(
         getContrastRatio(
-          resolveColor("numa-color-interactive-outline-focus-on-primary-inner"),
+          resolveColor("numa-color-interactive-outline-focus-on-action-inner"),
           resolveColor(surface),
         ),
       ).toBeGreaterThanOrEqual(3);
     }
 
-    for (const surface of [
-      "numa-color-context-background-sunken",
-      "numa-color-context-background-default",
-      "numa-color-context-surface-level-1",
-      "numa-color-context-surface-level-2",
-    ] as const) {
+    for (const surface of contextBackgrounds) {
       expect(
         getContrastRatio(
-          resolveColor("numa-color-interactive-outline-focus-on-primary-outer"),
+          resolveColor("numa-color-interactive-outline-focus-on-action-outer"),
           resolveColor(surface),
         ),
-      ).toBeGreaterThanOrEqual(3);
-    }
-
-    for (const surface of [
-      "numa-color-interactive-surface-primary-disabled",
-      "numa-color-interactive-surface-subtle-disabled",
-    ] as const) {
-      expect(
-        getContrastRatio(resolveColor("numa-color-interactive-outline-focus"), resolveColor(surface)),
       ).toBeGreaterThanOrEqual(3);
     }
   });

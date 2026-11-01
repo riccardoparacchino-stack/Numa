@@ -36,6 +36,13 @@
   outline-offset: 2px;
 }
 
+.numa-button--action:focus-visible:not(:disabled):not([aria-disabled="true"]) {
+  outline: 0;
+  box-shadow:
+    0 0 0 2px var(--numa-button-focus-inner),
+    0 0 0 4px var(--numa-button-focus-outer);
+}
+
 .numa-button--full-width {
   width: 100%;
 }

@@ -1,5 +1,5 @@
 {
-  "numa-text-family-primary": {
+  "numa-text-family-default": {
     "$type": "fontFamily",
     "$value": ["Rubik", "Helvetica Neue", "Arial", "sans-serif"]
   },

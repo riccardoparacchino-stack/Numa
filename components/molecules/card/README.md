@@ -21,8 +21,8 @@ token-controlled.
 | `l` | 24px / 32px | 12px / 4px |
 
 Cards alternate semantic surface levels: the Card inside a Container uses
-strong `numa-color-context-surface-level-2`; its nested Card child uses weak
-level 1. See the Foundation
+`numa-color-context-surface-strong`; its nested Card child uses weak
+`numa-color-context-surface-weak`. See the Foundation
 [weak/strong surface rule](../../../docs/foundation/semantic-colors.md).
 
 ## Rules and rationale

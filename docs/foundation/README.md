@@ -9,8 +9,12 @@ and their consumers.
   integration, and known platform limits.
 - [Semantic colors](semantic-colors.md) — semantic color roles, primitive
   aliases, interactive states, contrast decisions, and implementation limits.
+- [Semantic color token structure](semantic-token-structure.md) — a diagram of
+  collections, scopes, roles, modifiers, and naming rules.
 - [Semantic spacing and radius](semantic-spacing-radius.md) — semantic scales,
   primitive aliases, nested-surface guidance, and platform limitations.
+- [Container-query responsiveness](container-queries.md) — shared React Web
+  query containers and component-local responsive behavior.
 - [Surface hierarchy](surface-hierarchy.md) — page-level Containers, Cards,
   card children, and the rationale for explicit surface roles.
 - [Color token reference](color-tokens.html) — searchable HTML catalog with
@@ -18,7 +22,11 @@ and their consumers.
 - [Architecture decisions](../decisions/0001-foundation-text-typography.md) —
   rationale for the initial typography collection and Text integration.
 - [Semantic color decisions](../decisions/0002-foundation-semantic-colors.md) —
-  rationale and trade-offs for the semantic color architecture.
+  record of the initial semantic color architecture.
+- [Foundation color scopes and responsive containers](../decisions/0006-foundation-color-scopes-and-responsive-containers.md) —
+  rationale for current color roles and container-query behavior.
+- [Inherited disabled mode](../decisions/0007-inherited-disabled-mode.md) —
+  rationale for shared disabled color scopes and parent-to-child propagation.
 - [Semantic spacing and radius decision](../decisions/0003-foundation-semantic-spacing-radius.md) —
   rationale and trade-offs for the semantic spacing and radius sources.
 - [React Web dimension adapter](../decisions/0004-react-web-dimension-adapter.md) —

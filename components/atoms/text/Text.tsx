@@ -6,7 +6,7 @@ import {
 } from "react";
 import {
   getDefaultTextWeight,
-  getPrimaryFontFamily,
+  getDefaultFontFamily,
   getTextTypography,
   type TextVariantSize,
 } from "./text.variants";
@@ -40,7 +40,7 @@ export type TextProps<T extends ElementType = "span"> = TextVariantSize & {
   | "variant"
 >;
 
-const primaryFontFamily = getPrimaryFontFamily();
+const defaultFontFamily = getDefaultFontFamily();
 
 export function Text<T extends ElementType = "span">(props: TextProps<T>) {
   const {
@@ -64,7 +64,7 @@ export function Text<T extends ElementType = "span">(props: TextProps<T>) {
 
   const resolvedStyle: CSSProperties = {
     ...style,
-    fontFamily: fontFamily ?? primaryFontFamily,
+    fontFamily: fontFamily ?? defaultFontFamily,
     fontWeight: resolvedWeight,
     fontSize: typography.fontSize,
     lineHeight: typography.lineHeight,

@@ -34,8 +34,8 @@ size, while each hierarchy role has its own padding and radius:
 | `l` | 64 / 24 / 12px | 96 / 32 / 4px |
 
 Surface fills alternate weak and strong using the semantic context tokens:
-Container uses `surface-level-1` (weak), Card uses `surface-level-2` (strong),
-and Card child returns to `surface-level-1`. Each additional contained layer
+Container uses `surface-weak`, Card uses `surface-strong`, and Card child
+returns to `surface-weak`. Each additional contained layer
 continues that alternation.
 
 Use the practical contour guideline at each nested boundary:

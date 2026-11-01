@@ -7,57 +7,53 @@
     "$type": "color",
     "$value": "{numa-sys-col-slate-50}"
   },
-  "numa-color-context-surface-level-1": {
+  "numa-color-context-surface-weak": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-100}"
   },
-  "numa-color-context-surface-level-2": {
+  "numa-color-context-surface-strong": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-200}"
   },
-  "numa-color-context-text-primary": {
+  "numa-color-context-content-strong": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-950}"
   },
-  "numa-color-context-text-secondary": {
+  "numa-color-context-content-weak": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-700}"
   },
-  "numa-color-context-text-tertiary": {
-    "$type": "color",
-    "$value": "{numa-sys-col-slate-600}"
-  },
-  "numa-color-context-border-default": {
-    "$type": "color",
-    "$value": "{numa-sys-col-slate-300}"
-  },
-  "numa-color-context-border-subtle": {
+  "numa-color-context-outline-subtle": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-200}"
   },
-  "numa-color-context-border-strong": {
+  "numa-color-context-outline-default": {
     "$type": "color",
-    "$value": "{numa-sys-col-slate-400}"
+    "$value": "{numa-sys-col-slate-300}"
   },
-  "numa-color-interactive-surface-primary-default": {
+  "numa-color-accent-content-default": {
+    "$type": "color",
+    "$value": "{numa-sys-col-teal-800}"
+  },
+  "numa-color-interactive-background-disabled": {
+    "$type": "color",
+    "$value": "{numa-sys-col-gray-100}"
+  },
+  "numa-color-interactive-surface-disabled": {
+    "$type": "color",
+    "$value": "{numa-sys-col-gray-200}"
+  },
+  "numa-color-interactive-surface-action-default": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-600}"
   },
-  "numa-color-interactive-surface-primary-hover": {
+  "numa-color-interactive-surface-action-hover": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-700}"
   },
-  "numa-color-interactive-surface-primary-active": {
+  "numa-color-interactive-surface-action-active": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-800}"
-  },
-  "numa-color-interactive-surface-primary-selected": {
-    "$type": "color",
-    "$value": "{numa-sys-col-indigo-700}"
-  },
-  "numa-color-interactive-surface-primary-disabled": {
-    "$type": "color",
-    "$value": "{numa-sys-col-gray-200}"
   },
   "numa-color-interactive-surface-subtle-default": {
     "$type": "color",
@@ -71,75 +67,39 @@
     "$type": "color",
     "$value": "{numa-sys-col-slate-400}"
   },
-  "numa-color-interactive-surface-subtle-selected": {
-    "$type": "color",
-    "$value": "{numa-sys-col-slate-300}"
-  },
-  "numa-color-interactive-surface-subtle-disabled": {
-    "$type": "color",
-    "$value": "{numa-sys-col-gray-200}"
-  },
-  "numa-color-interactive-surface-ghost-default-color": {
+  "numa-color-interactive-surface-ghost-color": {
     "$type": "color",
     "$value": "{numa-sys-col-neutral-950}"
   },
-  "numa-color-interactive-surface-ghost-default-opacity": {
+  "numa-color-interactive-surface-ghost-opacity-default": {
     "$type": "number",
     "$value": "{numa-sys-per-000}"
   },
-  "numa-color-interactive-surface-ghost-hover-color": {
-    "$type": "color",
-    "$value": "{numa-sys-col-neutral-950}"
-  },
-  "numa-color-interactive-surface-ghost-hover-opacity": {
+  "numa-color-interactive-surface-ghost-opacity-hover": {
     "$type": "number",
     "$value": "{numa-sys-per-005}"
   },
-  "numa-color-interactive-surface-ghost-active-color": {
-    "$type": "color",
-    "$value": "{numa-sys-col-neutral-950}"
-  },
-  "numa-color-interactive-surface-ghost-active-opacity": {
+  "numa-color-interactive-surface-ghost-opacity-active": {
     "$type": "number",
     "$value": "{numa-sys-per-010}"
   },
-  "numa-color-interactive-surface-ghost-selected-color": {
-    "$type": "color",
-    "$value": "{numa-sys-col-neutral-950}"
-  },
-  "numa-color-interactive-surface-ghost-selected-opacity": {
-    "$type": "number",
-    "$value": "{numa-sys-per-005}"
-  },
-  "numa-color-interactive-surface-ghost-disabled-color": {
-    "$type": "color",
-    "$value": "{numa-sys-col-neutral-950}"
-  },
-  "numa-color-interactive-surface-ghost-disabled-opacity": {
-    "$type": "number",
-    "$value": "{numa-sys-per-000}"
-  },
-  "numa-color-interactive-text-primary": {
+  "numa-color-interactive-content-action": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-700}"
   },
-  "numa-color-interactive-text-on-primary": {
+  "numa-color-interactive-content-on-action": {
     "$type": "color",
     "$value": "{numa-sys-col-gray-50}"
   },
-  "numa-color-interactive-text-subtle": {
+  "numa-color-interactive-content-subtle": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-800}"
   },
-  "numa-color-interactive-text-ghost": {
-    "$type": "color",
-    "$value": "{numa-sys-col-indigo-700}"
-  },
-  "numa-color-interactive-text-disabled": {
+  "numa-color-interactive-content-disabled": {
     "$type": "color",
     "$value": "{numa-sys-col-gray-500}"
   },
-  "numa-color-interactive-outline-primary": {
+  "numa-color-interactive-outline-action": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-600}"
   },
@@ -147,28 +107,36 @@
     "$type": "color",
     "$value": "{numa-sys-col-slate-500}"
   },
-  "numa-color-interactive-outline-ghost-color": {
-    "$type": "color",
-    "$value": "{numa-sys-col-neutral-950}"
-  },
-  "numa-color-interactive-outline-ghost-opacity": {
-    "$type": "number",
-    "$value": "{numa-sys-per-000}"
-  },
   "numa-color-interactive-outline-focus": {
     "$type": "color",
     "$value": "{numa-sys-col-indigo-700}"
   },
-  "numa-color-interactive-outline-focus-on-primary-inner": {
+  "numa-color-interactive-outline-focus-on-action-inner": {
     "$type": "color",
     "$value": "{numa-sys-col-gray-50}"
   },
-  "numa-color-interactive-outline-focus-on-primary-outer": {
+  "numa-color-interactive-outline-focus-on-action-outer": {
     "$type": "color",
     "$value": "{numa-sys-col-slate-950}"
   },
   "numa-color-interactive-outline-disabled": {
     "$type": "color",
     "$value": "{numa-sys-col-gray-300}"
+  },
+  "numa-color-interactive-content-status-success": {
+    "$type": "color",
+    "$value": "{numa-sys-col-green-800}"
+  },
+  "numa-color-interactive-content-status-warning": {
+    "$type": "color",
+    "$value": "{numa-sys-col-amber-800}"
+  },
+  "numa-color-interactive-content-status-error": {
+    "$type": "color",
+    "$value": "{numa-sys-col-red-800}"
+  },
+  "numa-color-interactive-content-status-info": {
+    "$type": "color",
+    "$value": "{numa-sys-col-blue-800}"
   }
 }

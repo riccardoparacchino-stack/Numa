@@ -11,7 +11,7 @@
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: CanvasText;
         background: Canvas;
-        accent-color: var(--color-primary, #4f46e5);
+        accent-color: var(--color-action, #4f46e5);
         font-synthesis: none;
         text-rendering: optimizeLegibility;
       }
@@ -23,7 +23,7 @@
         background: color-mix(in srgb, Canvas 96%, CanvasText 4%);
       }
 
-      a { color: var(--color-link, #4338ca); }
+      a { color: var(--color-action, #4338ca); }
       code, .token-name, .token-value { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
       .page-header {
@@ -31,7 +31,7 @@
         color: white;
         background:
           radial-gradient(ellipse at 85% 0%, rgb(255 255 255 / 18%), transparent 42%),
-          var(--color-primary, #4f46e5);
+          var(--color-action, #4f46e5);
       }
 
       .eyebrow {
@@ -75,7 +75,7 @@
         background: Canvas;
         font: inherit;
       }
-      .toolbar input:focus-visible { outline: 3px solid var(--color-primary, #4f46e5); outline-offset: 2px; }
+      .toolbar input:focus-visible { outline: 3px solid var(--color-action, #4f46e5); outline-offset: 2px; }
 
       section { scroll-margin-top: 6rem; }
       .major-section { margin: 0 0 4rem; }
@@ -167,9 +167,9 @@
       .callout {
         margin: 1.2rem 0;
         padding: 1rem 1.15rem;
-        border-left: .25rem solid var(--color-primary, #4f46e5);
+        border-left: .25rem solid var(--color-action, #4f46e5);
         border-radius: .3rem .7rem .7rem .3rem;
-        background: color-mix(in srgb, var(--color-primary, #4f46e5) 8%, Canvas);
+        background: color-mix(in srgb, var(--color-action, #4f46e5) 8%, Canvas);
         line-height: 1.6;
       }
 
@@ -231,8 +231,8 @@
       <section id="semantic" class="major-section" aria-labelledby="semantic-heading">
         <div class="section-heading">
           <div>
-            <h2 id="semantic-heading">01 · Semantic colors</h2>
-            <p>Use these tokens for product UI. Each name communicates purpose and resolves to an existing primitive. The context collection covers non-interactive surroundings.</p>
+              <h2 id="semantic-heading">01 · Semantic colors</h2>
+              <p>Use these tokens for product UI. Each name communicates purpose and resolves to an existing primitive. Context describes neutral surroundings; accent is non-interactive; interactive roles describe control feedback.</p>
           </div>
           <a class="source-link" href="../../tokens/semantic/color.json">Semantic token source ↗</a>
         </div>
@@ -244,11 +244,18 @@
           </div>
           <div id="semantic-context"></div>
         </section>
+        <section class="collection" aria-labelledby="accent-heading">
+          <div class="collection-title">
+            <h3 id="accent-heading">Accent</h3>
+            <span>Non-interactive decorative emphasis</span>
+          </div>
+          <div id="semantic-accent"></div>
+        </section>
 
         <section class="collection" aria-labelledby="interactive-heading">
           <div class="collection-title">
             <h3 id="interactive-heading">Interactive</h3>
-            <span>Interactive surfaces, text, and outlines</span>
+            <span>Interactive surfaces, content, and outlines</span>
           </div>
           <div id="semantic-interactive"></div>
         </section>
@@ -272,7 +279,7 @@
           </li>
           <li class="rule">
             <strong>Keep values tokenized</strong>
-            <p>Do not hardcode hex, RGB, or opacity values in product UI. Semantic colors must alias primitives. Ghost surface feedback uses its paired color and percentage aliases.</p>
+            <p>Do not hardcode hex, RGB, or opacity values in product UI. Semantic colors must alias primitives. Ghost feedback uses one color alias and percentage aliases for its states.</p>
           </li>
           <li class="rule">
             <strong>Keep names purpose-based</strong>
@@ -280,11 +287,11 @@
           </li>
           <li class="rule">
             <strong>Apply state precedence</strong>
-            <p>Disabled suppresses hover, active, and selected. Active temporarily overrides selected while pressed; hover does not replace selected. Focus remains visible when a disabled control can receive focus.</p>
+            <p>Disabled suppresses hover and active feedback. Focus remains visible when a disabled control can receive focus. Add persistent selected roles only when a supported component needs them.</p>
           </li>
           <li class="rule">
             <strong>Preserve focus contrast</strong>
-            <p>Use the light-surface focus outline on neutral surfaces. Enabled primary surfaces use the two-color focus ring: light inside and dark outside.</p>
+            <p>Use the light-surface focus outline on neutral surfaces. Enabled action surfaces use the two-color focus ring: light inside and dark outside.</p>
           </li>
           <li class="rule">
             <strong>Check contrast in context</strong>
@@ -295,7 +302,7 @@
             <p>Only light mappings exist today. Keep semantic roles theme-neutral, but do not assume dark aliases or automatic theme switching are implemented.</p>
           </li>
         </ul>
-        <div class="callout"><strong>State order:</strong> disabled takes precedence; otherwise, active temporarily overrides selected; selected persists through hover; focus composes as an outline without changing the surface fill.</div>
+        <div class="callout"><strong>State order:</strong> disabled takes precedence over hover and active; focus composes as an outline without changing the surface fill.</div>
       </section>
 
       <section id="primitives" class="major-section" aria-labelledby="primitive-heading">
@@ -310,7 +317,7 @@
       </section>
 
       <footer>
-        Canonical sources: <a href="../../tokens/semantic/color.json">semantic color JSON</a> and <a href="../../tokens/primitive/color.json">primitive color JSON</a>. Ghost surface opacities also reference <a href="../../tokens/primitive/percentage.json">primitive percentages</a>. This page reads those files at runtime, so serve it over HTTP rather than opening it as a <code>file://</code> URL. No generated stylesheet or component integration is implied.
+        Canonical sources: <a href="../../tokens/semantic/color.json">semantic color JSON</a> and <a href="../../tokens/primitive/color.json">primitive color JSON</a>. Ghost surface opacities also reference <a href="../../tokens/primitive/percentage.json">primitive percentages</a>. This page reads those files at runtime, so serve it over HTTP rather than opening it as a <code>file://</code> URL. No generated stylesheet is implied; React Web components expose source-token values as cascading CSS variables.
       </footer>
     </main>
 
@@ -352,8 +359,8 @@
           colorSwatch.style.backgroundColor = color;
           swatch.append(colorSwatch);
           displayValue = isPrimitive ? color : `${target} · ${color}`;
-        } else if (!isPrimitive && name.endsWith("-opacity")) {
-          const colorName = name.slice(0, -"-opacity".length) + "-color";
+        } else if (!isPrimitive && /-opacity-(default|hover|active)$/.test(name)) {
+          const colorName = name.replace(/-opacity-(default|hover|active)$/, "-color");
           const colorAlias = primitiveTarget(primitiveTokens.semantic[colorName]?.$value ?? "");
           const color = primitiveTokens.colors[colorAlias]?.$value;
           const percent = primitiveTokens.percentages[primitiveTarget(value)]?.$value;
@@ -378,6 +385,7 @@
         const groups = {
           context: document.querySelector("#semantic-context"),
           interactive: document.querySelector("#semantic-interactive"),
+          accent: document.querySelector("#semantic-accent"),
         };
         const buckets = new Map();
 

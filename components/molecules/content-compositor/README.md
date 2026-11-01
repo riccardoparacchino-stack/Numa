@@ -17,7 +17,14 @@ remains a single-slot surface and does not own these layout regions.
 Omitted, `null`, `false`, and empty-string regions do not render. The main
 content flexes and wraps; leading and trailing content keep intrinsic size.
 This React Web component uses the Foundation dimension adapter to interpret
-the semantic spacing tokens as CSS pixels.
+the semantic spacing tokens as CSS pixels. A horizontal composition switches
+to a stacked layout at 28rem of its own available inline size; an explicit
+vertical layout remains vertical at every width.
+
+The compositor is an inline-size query container. Its own content adapts to
+that width, so it remains responsive when reused in a narrow Card or a wide
+page. A parent Container also exposes the named `numa-page` query context to
+other descendants.
 
 ```tsx
 <Container size="m">

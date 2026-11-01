@@ -1,4 +1,6 @@
 .numa-content-compositor {
+  container-name: numa-content;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -15,6 +17,13 @@
 .numa-content-compositor--vertical .numa-content-compositor__main {
   align-items: stretch;
   flex-direction: column;
+}
+
+@container numa-content (max-width: 28rem) {
+  .numa-content-compositor--horizontal .numa-content-compositor__main {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 
 .numa-content-compositor__leading,

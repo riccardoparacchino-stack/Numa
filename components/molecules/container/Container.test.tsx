@@ -20,7 +20,10 @@ describe("Container", () => {
     expect(container.style.borderRadius).toBe(radius);
     expect(container.className).toContain(`numa-tile--${size}`);
     expect(container.className).toContain("numa-tile--surface-level-1");
-    expect(container.style.getPropertyValue("--numa-tile-surface")).toBe("#f1f5f9");
+    expect(container.style.getPropertyValue("--numa-tile-surface")).toBe(
+      "var(--numa-color-context-surface-weak)",
+    );
+    expect(container.style.getPropertyValue("--numa-color-context-surface-weak")).toBe("#f1f5f9");
   });
 
   it("supports page composition such as fieldsets and nested cards", () => {
@@ -48,9 +51,9 @@ describe("Container", () => {
     const surfaces = Array.from(container.querySelectorAll(".numa-tile")) as HTMLDivElement[];
 
     expect(surfaces.map((surface) => surface.style.getPropertyValue("--numa-tile-surface"))).toEqual([
-      "#f1f5f9",
-      "#e2e8f0",
-      "#f1f5f9",
+      "var(--numa-color-context-surface-weak)",
+      "var(--numa-color-context-surface-strong)",
+      "var(--numa-color-context-surface-weak)",
     ]);
   });
 

@@ -1,0 +1,4 @@
+.numa-container {
+  container-name: numa-page;
+  container-type: inline-size;
+}

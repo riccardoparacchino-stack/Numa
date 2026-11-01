@@ -1,135 +1,118 @@
 # Semantic colors
 
-Semantic color tokens describe visual purpose and interaction, not component
-names or raw appearance. Primitive colors remain the source of color values.
-The semantic definitions are in
-[`tokens/semantic/color.json`](../../tokens/semantic/color.json); every color
-and opacity value aliases an existing primitive.
+Semantic color tokens describe purpose and interaction, not component names or
+raw appearance. Values in
+[`tokens/semantic/color.json`](../../tokens/semantic/color.json) alias existing
+primitive colors or percentages.
 
-## Collections
+See the [semantic color token structure diagram](semantic-token-structure.md)
+for the collection/scope/role hierarchy and modifier naming.
 
-The names use the repository's flat, `numa-`-prefixed token convention and
-separate two independent collections:
+## Naming and scope
 
-- **`context`** describes non-interactive context: backgrounds, surfaces, text,
-  and borders.
-- **`interactive`** describes surfaces, text, and outlines for interaction.
+Token names follow `numa-color-{collection}-{scope}-{role}-{modifier}` where
+applicable. Use **context** for non-interactive content and structure,
+**interactive** for control feedback, and **accent** for decorative emphasis.
+Scopes are explicit:
 
-No component-specific categories are defined. Components do not consume these
-tokens through generated styles; the file remains a Foundation source rather
-than a generated stylesheet. React Web Tile, Container, and Card resolve
-context surface roles directly from the token source.
+- **`background`** — page/environment fills.
+- **`surface`** — contained fills and interactive fills.
+- **`content`** — text and icons.
+- **`outline`** — borders and focus strokes.
 
-## Context colors
+Use semantic emphasis modifiers such as `strong`, `weak`, `subtle`, and
+`default`. Interactive action roles use `action`; never encode component names
+or ordinal action importance in Foundation tokens. Color token names do not use
+`primary` or `secondary`. Keep this set small: add a token only when an
+existing semantic role cannot express a distinct, required treatment.
+
+## Context and accent
 
 | Token | Primitive | Role |
 | --- | --- | --- |
+| `numa-color-context-background-default` | `slate-50` | Default light page environment |
 | `numa-color-context-background-sunken` | `slate-300` | Recessed environment |
-| `numa-color-context-background-default` | `slate-50` | Light base environment |
-| `numa-color-context-surface-level-1` | `slate-100` | First contained surface |
-| `numa-color-context-surface-level-2` | `slate-200` | Nested contained surface |
-| `numa-color-context-text-primary` | `slate-950` | Highest text emphasis |
-| `numa-color-context-text-secondary` | `slate-700` | Supporting text |
-| `numa-color-context-text-tertiary` | `slate-600` | Supplementary text |
-| `numa-color-context-border-subtle` | `slate-200` | Low-emphasis boundary |
-| `numa-color-context-border-default` | `slate-300` | Standard boundary |
-| `numa-color-context-border-strong` | `slate-400` | High-emphasis boundary |
+| `numa-color-context-surface-weak` | `slate-100` | First contained surface |
+| `numa-color-context-surface-strong` | `slate-200` | Nested contained surface |
+| `numa-color-context-content-strong` | `slate-950` | High-emphasis text and icons |
+| `numa-color-context-content-weak` | `slate-700` | Supporting text and icons |
+| `numa-color-context-outline-subtle` | `slate-200` | Low-emphasis boundary |
+| `numa-color-context-outline-default` | `slate-300` | Standard boundary |
+| `numa-color-accent-content-default` | `teal-800` | Non-interactive decorative icons, badges, and emphasis |
 
-The available light neutral ramp yields deliberately subtle surface steps.
-Border tokens reinforce their separation; shadows are not the only signal.
+Use `surface-weak` and `surface-strong` to alternate contained layers.
+Container uses weak; Card uses strong; a nested Card child returns to weak.
+The neutral surface steps are deliberately subtle, so boundaries should remain
+visible and must not rely on shadow alone.
 
-### Weak/strong surface alternation
+Accent is non-interactive: it communicates decoration or identity and must not
+be used to imply an action, success, warning, error, or informational state.
+The current accent is teal.
 
-Use `surface-level-1` (`slate-100`) as the weak surface and
-`surface-level-2` (`slate-200`) as the strong surface. Alternate contained
-layers rather than repeating one fill: a Container on the page background
-uses the weak surface, its Card uses the strong surface, and a nested Card
-child returns to the weak surface. A further contained layer returns to
-strong. This provides a subtle but explicit hierarchy against the page
-background; keep boundaries visible with the semantic border tokens rather
-than relying on shadow alone.
+## Interactive feedback
 
-The React Web `Container`, `Card`, and nested `Tile` implementations apply
-this alternation. Interactive hover/active/disabled states remain governed by
-the interactive surface tokens.
+| Role | Default | Hover | Active | Disabled |
+| --- | --- | --- | --- | --- |
+| `surface.action` | `indigo-600` | `indigo-700` | `indigo-800` | Shared `gray-200` |
+| `surface.subtle` | `slate-200` | `slate-300` | `slate-400` | Shared `gray-200` |
+| `surface.ghost` | 0% overlay | 5% overlay | 10% overlay | Shared `gray-200` |
 
-## Interactive colors
+Ghost feedback uses one `neutral-950` color alias with existing percentage
+primitives. Disabled mode suppresses visual hover/active feedback. Persistent
+selected surfaces are not currently defined because no supported component
+consumes them; add them only with a documented, tested selection use case.
 
-| Role | Default | Hover | Active | Selected | Disabled |
-| --- | --- | --- | --- | --- | --- |
-| `surface.primary` | `indigo-600` | `indigo-700` | `indigo-800` | `indigo-700` | `gray-200` |
-| `surface.subtle` | `slate-200` | `slate-300` | `slate-400` | `slate-300` | `gray-200` |
-| `surface.ghost` | transparent | near-black at 5% | near-black at 10% | near-black at 5% | no overlay |
-
-The primary selected treatment reuses hover's color, and subtle selected
-reuses active's color. Ghost selected reuses hover's 5% overlay. Each remains
-visually distinct from its family default when the pointer is absent.
-
-Ghost overlays are represented as a color alias and a separate opacity alias:
-`neutral-950` supplies the near-black color and the existing percentage
-primitives supply `0`, `5`, `10`, and `15`. This preserves primitive references
-without inventing composite-color syntax or literal RGBA values. Consumers
-must interpret the paired number as a percentage; the repository currently has
-no token build or runtime composition pipeline.
-
-| Interactive text role | Primitive | Intended use |
+| Scope and role | Primitive | Intended use |
 | --- | --- | --- |
-| `text.primary` | `indigo-700` | Primary interactive treatment on light context |
-| `text.on-primary` | `gray-50` | Text over enabled primary surfaces |
-| `text.subtle` | `slate-800` | Text over subtle surfaces |
-| `text.ghost` | `indigo-700` | Text over ghost surfaces |
-| `text.disabled` | `gray-500` | Disabled interactive text |
+| `interactive-content-action` | `indigo-700` | Action text and icons on light context |
+| `interactive-content-on-action` | `gray-50` | Content over enabled action surfaces |
+| `interactive-content-subtle` | `slate-800` | Content over subtle surfaces |
+| `interactive-content-disabled` | `gray-500` | Shared disabled content color |
+| `interactive-content-status-success` | `green-800` | Success feedback |
+| `interactive-content-status-warning` | `amber-800` | Warning feedback |
+| `interactive-content-status-error` | `red-800` | Error feedback |
+| `interactive-content-status-info` | `blue-800` | Informational feedback |
 
-Outline roles use `indigo-600` for primary, `slate-500` for subtle, `gray-300`
-for disabled, and zero opacity for the ghost default. Disabled text uses
-`gray-500`, separate from its deliberately subdued `gray-300` outline; disabled
-surfaces use `gray-200`. The disabled outline is decorative and does not meet
-the 3:1 non-text contrast threshold. Focus uses `indigo-700` on light surfaces.
-Enabled indigo primary surfaces use a two-color focus ring:
-`gray-50` on the inner edge and `slate-950` on the outer edge. One color alone
-cannot remain visible against both the primary fill and its light surroundings.
-A focusable disabled control uses the light-surface focus color because its
-disabled fill is neutral.
+Status modifiers distinguish feedback meaning and are not action colors. These
+status roles currently provide content color only; pair status with text or
+another non-color cue rather than relying on color alone.
 
-## State precedence
+Action outlines use `indigo-600`; subtle outlines use `slate-500`. Disabled
+outlines use shared `gray-300`, separate from disabled content, and are
+decorative rather than a required contrast cue. Disabled backgrounds use
+`gray-100`; every role within a scope maps to the shared disabled token for
+that scope. Thus every background becomes gray-100, every surface gray-200,
+every content color (including accent and status) gray-500, and every
+non-focus outline gray-300. The four aliases are the only disabled color
+tokens; do not add disabled variants for individual roles or surface families.
 
-Disabled has precedence over hover, active, and selected: disabled treatments
-never show hover or pressed feedback, and a disabled control does not retain
-its selected appearance. Focus remains visible when a disabled control can
-receive focus (for example, an `aria-disabled` control). Focus can coexist
-with selected and overlays the family treatment rather than changing it.
+Focus is the exception to outline remapping. Focus on light and disabled
+surfaces uses `indigo-700`. Action surfaces use a two-color focus ring:
+`gray-50` inside and `slate-950` outside, so the ring remains distinct from
+both the action fill and its light surroundings.
 
-Selected is persistent and active is temporary. Hover never replaces a
-selected treatment. While a selected control is pressed, active temporarily
-overrides its selected treatment and selection returns on release. This
-changes primary from `indigo-700` to `indigo-800`, subtle from `slate-300` to
-`slate-400`, and ghost from 5% to 10%. Do not create a new token for every
-state combination; compose the state treatments using this precedence.
+## Inherited disabled mode
 
-## Accessibility and validation
+When a Tile or another component establishes disabled mode, its descendants
+inherit the shared semantic CSS-variable palette. Numa components with a
+`disabled` API combine their own state with the inherited state; descendants
+cannot opt back in. Buttons and button Tiles use native disabled behavior and
+suppress activation.
 
-Enabled text mappings are checked against the WCAG AA normal-text threshold of
-4.5:1; focus indicators are checked against the 3:1 non-text contrast
-threshold. Disabled controls are exempt from WCAG text contrast requirements.
-The token tests verify the disabled text/outline distinction and treat the
-subdued disabled outline as decorative rather than a required contrast cue.
+Components without a disabled API inherit visual token overrides only; this
+does not make arbitrary elements inert or inaccessible. Custom content must
+consume semantic CSS variables to receive the mapped colors. Raw values and
+inline literal colors cannot be overridden by this mode. Focus outlines are
+preserved when a control can still receive focus.
 
-The light-theme selection meets the tested text criteria. Indigo focus on light
-surfaces and `gray-50` focus on enabled primary surfaces each exceed the
-non-text threshold; the primary focus ring's outer `slate-950` also contrasts
-with its light surroundings. Disabled focus uses indigo on its neutral
-background.
-These checks do not replace validation in actual component compositions,
-particularly for ghost overlays on surfaces outside the documented light
-environment.
+## Accessibility and implementation limits
 
-## Theme and implementation limits
+Tests check WCAG AA contrast of at least 4.5:1 for enabled content and 3:1 for
+focus indicators against the documented light surfaces. Disabled content is
+exempt from the normal-text threshold; disabled outlines are intentionally
+subdued. Color cannot be the only signal for status.
 
-Only light mappings exist. The semantic names do not bake in a theme, so a
-future theme can provide alternate aliases without changing consumer names;
-dark tokens are not implemented or validated.
-
-This repository has no token build configuration or generated color outputs.
-The DTCG-style source is not integrated into a component or CSS variable
-pipeline. React Web consumers, React Native output, automatic theme switching,
-and automatic color/opacity composition are not claimed.
+Only light mappings exist. Semantic names remain theme-neutral, but dark
+aliases, automatic theme switching, React Native output, and generated CSS are
+not implemented. Components currently resolve source tokens in React Web;
+there is no token generation pipeline.
