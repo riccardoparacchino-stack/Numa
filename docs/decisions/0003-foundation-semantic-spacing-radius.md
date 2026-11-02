@@ -1,7 +1,7 @@
 # ADR 0003: Foundation Semantic Spacing and Radius
 
 - **Date:** 2026-10-31
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 
@@ -62,4 +62,4 @@ not as a universal rule or automated validation constraint.
 - [Semantic spacing and radius](../foundation/semantic-spacing-radius.md)
 - [`tokens/semantic/spacing.json`](../../tokens/semantic/spacing.json)
 - [`tokens/semantic/radius.json`](../../tokens/semantic/radius.json)
-- [`foundation/semantic-spacing-radius-tokens.test.ts`](../../foundation/semantic-spacing-radius-tokens.test.ts)
+- [`foundation/semantic-spacing-radius-tokens.foundation.test.ts`](../../foundation/semantic-spacing-radius-tokens.foundation.test.ts)

@@ -265,16 +265,19 @@ describe("Text", () => {
   });
 
   it.each(
-    Object.entries(textVariants).flatMap(([variant, sizes]) =>
-      Object.entries(sizes).filter(([, pair]) => pair.fontSize.startsWith("numa-text-size-")).flatMap(([size, pair]) =>
-        letterSpacingOptions.map((option) => ({
-          variant,
-          size,
-          option,
-          fontSizeToken: pair.fontSize as FontSizeToken,
-        })),
+    Object.entries(textVariants)
+      .flatMap(([variant, sizes]) =>
+        Object.entries(sizes)
+          .filter(([, pair]) => pair.fontSize.startsWith("numa-text-size-"))
+          .flatMap(([size, pair]) =>
+          letterSpacingOptions.map((option) => ({
+            variant,
+            size,
+            option,
+            fontSizeToken: pair.fontSize as FontSizeToken,
+          })),
+        ),
       ),
-    ),
   )(
     "maps $variant/$size to the $option Foundation tracking token",
     ({ variant, size, option, fontSizeToken }) => {
@@ -325,11 +328,12 @@ describe("Text", () => {
   });
 
   it("declares exactly the supported variant/size combinations", () => {
-    expect(
-      Object.entries(textVariants).flatMap(([variant, sizes]) =>
-        Object.keys(sizes).map((size) => `${variant}/${size}`),
-      ),
-    ).toHaveLength(17);
+    const combinations = Object.entries(textVariants).flatMap(([variant, sizes]) =>
+      Object.keys(sizes).map((size) => `${variant}/${size}`),
+    );
+
+    expect(combinations.filter((pair) => !pair.startsWith("button/"))).toHaveLength(13);
+    expect(combinations.filter((pair) => pair.startsWith("button/"))).toHaveLength(4);
   });
 
   it("declares exactly the supported letter-spacing options", () => {

@@ -65,7 +65,10 @@ container queries remain a fallback. Explicit modes are stable at every width.
 </Container>
 ```
 
-The live interactive sizing demo is [`demos/tile-parametric.html`](../../../demos/tile-parametric.html).
+The [Tile molecule showcase](../showcase.html#tile-heading) demonstrates
+representative static, link, and button usage. The separate
+[experimental parametric sizing demo](../../../demos/tile-parametric.html)
+explores scale parameters and is not an API reference.
 
 ## Composition and interaction
 
@@ -86,3 +89,10 @@ The live interactive sizing demo is [`demos/tile-parametric.html`](../../../demo
 Tile uses Numa semantic color variables for surfaces, text, borders, hover,
 active, focus, and disabled states. React Native, generated CSS tokens, and a
 minimum target-size policy are not implemented.
+
+## Tests
+
+[Runtime tests](Tile.runtime.test.tsx) cover native rendering, nesting,
+interaction, disabled inheritance, and attribute forwarding.
+[Sizing algorithm tests](tile-sizing.algorithm.test.ts) cover role-to-step
+mapping and nested contour constraints.

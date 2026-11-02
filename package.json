@@ -6,10 +6,12 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "story": "vite --open /components/atoms/text/story.html",
-    "story:button": "vite --open /components/atoms/button/story.html",
-    "story:molecules": "vite --open /components/molecules/story.html",
-    "story:content": "vite --open /components/atoms/story.html"
+    "story": "vite --open /components/showcase.html",
+    "story:button": "vite --open /components/atoms/button/showcase.html",
+    "story:text": "vite --open /components/atoms/text/showcase.html",
+    "story:molecules": "vite --open /components/molecules/showcase.html",
+    "story:content": "vite --open /components/atoms/story.html",
+    "demo:tile": "vite --open /demos/tile-parametric.html"
   },
   "keywords": [],
   "author": "",

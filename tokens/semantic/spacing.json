@@ -62,5 +62,29 @@
   "numa-spacing-walls-3xl": {
     "$type": "number",
     "$value": "{numa-sys-int-96}"
+  },
+  "numa-spacing-stack-compact-vertical": {
+    "$type": "number",
+    "$value": "{numa-sys-int-8}"
+  },
+  "numa-spacing-stack-compact-horizontal": {
+    "$type": "number",
+    "$value": "{numa-sys-int-12}"
+  },
+  "numa-spacing-stack-relaxed-vertical": {
+    "$type": "number",
+    "$value": "{numa-sys-int-12}"
+  },
+  "numa-spacing-stack-relaxed-horizontal": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-spacing-stack-spacious-vertical": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-spacing-stack-spacious-horizontal": {
+    "$type": "number",
+    "$value": "{numa-sys-int-24}"
   }
 }

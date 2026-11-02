@@ -7,7 +7,7 @@ import { Page } from "../../molecules/page";
 import { Tile } from "../../molecules/tile";
 import { Text } from "../text";
 import { Button, buttonSizes, buttonVariants } from "./Button";
-import "./story.css";
+import "./showcase.css";
 
 function Preview({ label, children, surface = true }: { label: string; children: ReactNode; surface?: boolean }) {
   const content = (
@@ -36,7 +36,7 @@ function StoryApp() {
             Button
           </Text>
           <Text variant="body" size="m" as="p">
-            A reusable action atom using Foundation semantic colors, spacing, radius, and typography.
+            A native action atom using Foundation semantic colors, spacing, radius, and typography.
           </Text>
         </div>
       </header>

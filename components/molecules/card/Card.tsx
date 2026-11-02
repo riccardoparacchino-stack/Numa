@@ -32,7 +32,7 @@ export function Card(props: CardProps) {
 
   return (
     <CardDepthContext.Provider value={depth}>
-      <TileNestingContext.Provider value={{ depth, surfaceLevel }}>
+      <TileNestingContext.Provider value={{ depth, surfaceLevel, step: depth }}>
         <Tile {...tileProps} surfaceLevel={surfaceLevel} className={classes} style={style}>
           {children}
         </Tile>

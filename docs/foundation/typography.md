@@ -39,11 +39,12 @@ currently configured for this collection.
 ## Text integration
 
 [`components/atoms/text/text.variants.ts`](../../components/atoms/text/text.variants.ts)
-maps each valid Text variant/size pair to Foundation token names. The React
-component resolves the named tokens and applies them as CSS `fontSize` and
-`lineHeight`. It resolves the named tracking preset from the font-size token
-through Foundation and applies that value as CSS `letter-spacing`. Default
-font weights are also resolved from the Foundation weight tokens:
+maps each valid pair in the five-variant typography scale to Foundation token
+names. The React component resolves the named tokens and applies their values
+as CSS `fontSize` and `lineHeight`. It resolves the named tracking preset from
+the font-size token through Foundation and applies that value as CSS
+`letter-spacing`. Default font weights are also resolved from the Foundation
+weight tokens:
 
 | Variant | Default weight token | Weight |
 |---|---|---:|
@@ -67,6 +68,10 @@ implementation follows all 13 explicit variant/size rows. Named values absent
 from the existing numeric primitives were added to this typography collection;
 the primitive collection was not modified. The decision and alternatives are
 recorded in [ADR 0001](../decisions/0001-foundation-text-typography.md).
+The Text API also exposes a separate four-size `button` variant for Button
+labels; its fixed size and line-height values are component utilities, not
+Foundation typography tokens. See the [Text README](../../components/atoms/text/README.md)
+for the component contract.
 
 ## Semantics and accessibility
 

@@ -20,9 +20,11 @@ import {
   type FontSizeToken,
   type LetterSpacingOption,
 } from "../../../foundation/typography/letter-spacing";
-import "./story.css";
+import "./showcase.css";
 
-type StorySize = "s" | "m" | "l";
+type StorySize = "s" | "m" | "l" | "xl";
+type TypographySize = Exclude<StorySize, "xl">;
+type TypographyVariant = Exclude<TextVariant, "button">;
 type StoryElement = "span" | "p" | "div" | "h1" | "h2" | "h3" | "a" | "label" | "code" | "small" | "strong" | "th" | "td";
 type StoryTextProps = {
   variant: TextVariant;
@@ -56,7 +58,8 @@ const harmonicRatios = [
   { name: "Golden ratio", value: 1.618 },
 ] as const;
 
-const variants = Object.keys(textVariants) as TextVariant[];
+const variants = ["label", "body", "title", "headline", "display"] as const satisfies readonly TypographyVariant[];
+const buttonSizes = Object.keys(textVariants.button) as StorySize[];
 const sample = "Clear words. Thoughtful hierarchy.";
 const elements: StoryElement[] = ["span", "p", "div", "h1", "h2", "h3"];
 
@@ -69,8 +72,11 @@ function StoryText(props: StoryTextProps) {
   return <Text {...textProps}>{children}</Text>;
 }
 
-function metricsFor(variant: TextVariant, size: StorySize) {
+function metricsFor(variant: TypographyVariant, size: TypographySize) {
   const typography = getTextTypography(variant, size);
+  if (!typography.fontSizeToken) {
+    throw new Error(`Missing Foundation font-size token for ${variant}/${size}`);
+  }
   const fontSize = Number.parseFloat(typography.fontSize) * 16;
   const lineHeight = Number.parseFloat(typography.lineHeight) * 16;
   return {
@@ -119,24 +125,21 @@ function SectionHeading({
 }
 
 function StoryApp() {
-  const [variant, setVariant] = useState<TextVariant>("body");
-  const [size, setSize] = useState<StorySize>("m");
+  const [variant, setVariant] = useState<TypographyVariant>("body");
+  const [size, setSize] = useState<TypographySize>("m");
   const [element, setElement] = useState<StoryElement>("p");
   const [letterSpacing, setLetterSpacing] = useState<LetterSpacingOption>("relaxed");
   const [harmonicRatio, setHarmonicRatio] = useState<number>(1.2);
 
   const selectedMetrics = metricsFor(variant, size);
-  const selectedTracking = selectedMetrics.fontSizeToken
-    ? resolveLetterSpacing(selectedMetrics.fontSizeToken, letterSpacing)
-    : "0em";
-  const selectedToken = selectedMetrics.fontSizeToken
-    ? `numa-text-letter-spacing-${letterSpacing}-${selectedMetrics.fontSizeToken.replace("numa-text-size-", "")}`
-    : "no Foundation tracking token";
-  const availableSizes = Object.keys(textVariants[variant]) as StorySize[];
+  const selectedTracking = resolveLetterSpacing(selectedMetrics.fontSizeToken, letterSpacing);
+  const selectedToken = `numa-text-letter-spacing-${letterSpacing}-${selectedMetrics.fontSizeToken
+    .replace("numa-text-size-", "")}`;
+  const availableSizes = Object.keys(textVariants[variant]) as TypographySize[];
   const fontSizes = Array.from(
     new Map(
       variants.flatMap((name) =>
-        (Object.keys(textVariants[name]) as StorySize[]).map((textSize) => {
+        (Object.keys(textVariants[name]) as TypographySize[]).map((textSize) => {
           const metrics = metricsFor(name, textSize);
           return [metrics.fontSize, metrics] as const;
         }),
@@ -144,7 +147,7 @@ function StoryApp() {
     ).values(),
   ).sort((a, b) => a.fontSize - b.fontSize);
   const scaleSamples = variants.flatMap((name) =>
-    (Object.keys(textVariants[name]) as StorySize[]).map((textSize) => {
+    (Object.keys(textVariants[name]) as TypographySize[]).map((textSize) => {
       const metrics = metricsFor(name, textSize);
       const step = fontSizes.findIndex((fontSize) => fontSize.fontSize === metrics.fontSize);
       const generatedFontSize = 16 * harmonicRatio ** (step - 2);
@@ -167,11 +170,11 @@ function StoryApp() {
             Text, with intent.
           </StoryText>
           <StoryText variant="body" size="l" as="p" className="hero-copy">
-            Typography remains independent of HTML semantics. Button label sizing
-            is also available to the Button atom.
+            Typography remains independent of HTML semantics. Five variants
+            use Foundation typography; the Button atom has a separate label scale.
           </StoryText>
           <div className="status-row" aria-label="Implementation status">
-            <span className="pill"><StoryText variant="label" size="s">17 supported variant / size pairs</StoryText></span>
+            <span className="pill"><StoryText variant="label" size="s">13 typography pairs · 4 button-text sizes</StoryText></span>
             <span className="pill"><StoryText variant="label" size="s">Foundation-backed typography</StoryText></span>
             <span className="pill note"><StoryText variant="label" size="s">Web only · no font loader</StoryText></span>
           </div>
@@ -182,6 +185,7 @@ function StoryApp() {
         <nav className="story-nav" aria-label="Story sections">
           {[
             ["#specimens", "Specimens"],
+            ["#button-text-title", "Button text"],
             ["#playground", "Playground"],
             ["#semantics", "Semantics"],
             ["#scale", "Type scale"],
@@ -198,11 +202,11 @@ function StoryApp() {
               eyebrow="01 · Visual language"
               title="Variant specimens"
               id="specimens-title"
-              description="Each card shows every supported size. Labels show the implemented font size, line height, default weight, and relaxed tracking."
+              description="Each card shows the supported sizes for the five typography variants. Labels show the implemented font size, line height, default weight, and relaxed tracking."
             />
             <div className="variant-grid">
               {variants.map((name) => {
-                const sizes = Object.keys(textVariants[name]) as StorySize[];
+                const sizes = Object.keys(textVariants[name]) as TypographySize[];
                 return (
                   <article className="variant-card" key={name}>
                     <Card className="variant-card__surface">
@@ -255,7 +259,7 @@ function StoryApp() {
                     id="variant"
                     value={variant}
                     onChange={(event) => {
-                      const nextVariant = event.currentTarget.value as TextVariant;
+                      const nextVariant = event.currentTarget.value as TypographyVariant;
                       setVariant(nextVariant);
                       setSize((current) =>
                         (Object.keys(textVariants[nextVariant]) as StorySize[]).includes(current)
@@ -269,7 +273,7 @@ function StoryApp() {
                 </div>
                 <div className="control">
                   <StoryText variant="label" size="m" as="label" htmlFor="size">Size</StoryText>
-                  <select id="size" value={size} onChange={(event) => setSize(event.currentTarget.value as StorySize)}>
+                  <select id="size" value={size} onChange={(event) => setSize(event.currentTarget.value as TypographySize)}>
                     {availableSizes.map((value) => <option key={value} value={value}>{value}</option>)}
                   </select>
                 </div>
@@ -320,6 +324,36 @@ function StoryApp() {
                 </CodeBlock>
               </div>
             </Card>
+          </section>
+
+          <section aria-labelledby="button-text-title" className="button-text-section">
+            <SectionHeading
+              eyebrow="Button label utility"
+              title="Button text sizes"
+              id="button-text-title"
+              description="Text also exposes the button variant used by the Button atom. It is a separate four-size utility scale, not part of the 13 Foundation typography pairs."
+            />
+            <div className="variant-grid">
+              {buttonSizes.map((buttonSize) => (
+                <article className="variant-card card" key={buttonSize}>
+                  <div className="variant-topline">
+                    <StoryText variant="title" size="s" as="h3" className="variant-name">
+                      button / {buttonSize}
+                    </StoryText>
+                  </div>
+                  <div className="specimen">
+                    <StoryText variant="button" size={buttonSize}>
+                      Continue
+                    </StoryText>
+                    <div className="sample-meta">
+                      <StoryText variant="label" size="s">
+                        {getTextTypography("button", buttonSize).fontSize} · 100% line height
+                      </StoryText>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
 
           <section id="semantics" aria-labelledby="semantics-title">
@@ -452,7 +486,7 @@ function StoryApp() {
                   const tracking = trackingFor(metrics.fontSizeToken);
                   const next = fontSizes[index + 1];
                   const usedBy = variants.flatMap((name) =>
-                    (Object.keys(textVariants[name]) as StorySize[])
+                    (Object.keys(textVariants[name]) as TypographySize[])
                       .filter((textSize) => metricsFor(name, textSize).fontSize === metrics.fontSize)
                       .map((textSize) => `${name}/${textSize}`),
                   ).join(", ");
@@ -549,7 +583,7 @@ function StoryApp() {
               eyebrow="06 · Source documents"
               title="Read the implementation"
               id="references-title"
-              description="This story is a visual companion to the source documentation, not a replacement for it."
+              description="This showcase is a visual companion to the source documentation, not a replacement for it."
             />
             <div className="docs-links">
               <Link href="./README.md"><StoryText variant="body" size="m">Text Atom API and specification</StoryText></Link>
@@ -566,7 +600,7 @@ function StoryApp() {
       <footer className="story-footer">
         <div className="shell">
           <StoryText variant="label" size="s">
-            Numa Text Atom · React Web story · Typography and semantic color values from Foundation · No external fonts or network requests.
+            Numa Text Atom · React Web showcase · Typography and semantic color values from Foundation · No external fonts or network requests.
           </StoryText>
         </div>
       </footer>

@@ -41,5 +41,5 @@ The React Web `Page`, `Container`, `Tile`, and `Card` components implement these
 See
 [Container](../../components/molecules/container/README.md),
 [Card](../../components/molecules/card/README.md), and the
-[live molecule previews](../../components/molecules/story.html). This rule
+[molecule showcase](../../components/molecules/showcase.html). This rule
 does not claim React Native behavior or generated style output.

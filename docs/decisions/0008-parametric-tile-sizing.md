@@ -1,7 +1,7 @@
 # ADR 0008: Parametric Tile Sizing and Container Composition
 
 - **Date:** 2026-11-01
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 

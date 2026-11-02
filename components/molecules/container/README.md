@@ -51,4 +51,7 @@ sizing boundaries and start a fresh Tile composition.
 
 See the [Page documentation](../page/README.md), [Tile sizing
 documentation](../tile/README.md), and
-[interactive sizing demo](../../../demos/tile-parametric.html).
+[experimental parametric sizing demo](../../../demos/tile-parametric.html).
+The [molecule showcase](../showcase.html#tile-heading) includes representative
+Container compositions; [runtime tests](Container.runtime.test.tsx) cover its
+mode and sizing behavior.

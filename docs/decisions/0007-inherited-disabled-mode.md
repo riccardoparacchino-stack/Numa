@@ -1,7 +1,7 @@
 # ADR 0007: Inherited Disabled Mode
 
 - **Date:** 2026-11-01
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 

@@ -1,7 +1,7 @@
 # ADR 0004: React Web Semantic Dimension Adapter
 
 - **Date:** 2026-10-31
-- **Status:** Accepted
+- **Status:** Current
 
 ## Context
 
