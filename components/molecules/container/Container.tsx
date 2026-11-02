@@ -140,7 +140,7 @@ export function Container({
       data-effective-mode={effectiveMode}
     >
       <ContainerModeContext.Provider value={effectiveMode}>
-        <TileNestingContext.Provider value={{ depth: 1, surfaceLevel: "level-1" }}>
+        <TileNestingContext.Provider value={{ depth: 1, surfaceLevel: "level-1", step: 1 }}>
           {children}
         </TileNestingContext.Provider>
       </ContainerModeContext.Provider>

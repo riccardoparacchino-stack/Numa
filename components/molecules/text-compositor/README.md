@@ -28,8 +28,11 @@ component wrapper is a `span` rendered as a flex container, fills the parent's
 available width, has content-driven height, does
 not truncate, and allows long words to wrap. `start` and `end` are logical CSS
 values and follow writing direction. Typography variant and size remain
-separate from HTML semantics; choose semantic elements through the existing
-Text props when needed.
+separate from HTML semantics. The current TypeScript type for `titleTextProps`
+uses Text's default `span` generic, so it does not currently accept a non-span
+`as` value even though Text itself supports that prop. In a composed page, put
+TextCompositor inside the semantic heading or region selected by the caller;
+the showcase demonstrates this without casting or changing the component API.
 
 ## Examples
 

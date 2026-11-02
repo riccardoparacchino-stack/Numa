@@ -29,3 +29,8 @@ future documentation product.
 
 The final documentation site technology is intentionally undecided. Current
 README, TSX, CSS, and HTML files remain the source content and examples.
+
+## Additional notes
+
+- [Content component audit](content-component-audit.md) — observed document patterns and rationale for the content atoms.
+- [Showcase migration](showcase-migration.md) — showcase inventory and reuse decisions.

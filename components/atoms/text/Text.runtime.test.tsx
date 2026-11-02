@@ -266,9 +266,10 @@ describe("Text", () => {
 
   it.each(
     Object.entries(textVariants)
-      .filter(([variant]) => variant !== "button")
       .flatMap(([variant, sizes]) =>
-        Object.entries(sizes).flatMap(([size, pair]) =>
+        Object.entries(sizes)
+          .filter(([, pair]) => pair.fontSize.startsWith("numa-text-size-"))
+          .flatMap(([size, pair]) =>
           letterSpacingOptions.map((option) => ({
             variant,
             size,

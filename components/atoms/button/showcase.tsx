@@ -1,54 +1,26 @@
-import { type CSSProperties, type ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { createRoot } from "react-dom/client";
-import primitiveColors from "../../../tokens/primitive/color.json";
-import semanticColors from "../../../tokens/semantic/color.json";
+import { showcaseFoundationStyle } from "../../showcase-foundation";
+import { Card } from "../../molecules/card";
 import { Container } from "../../molecules/container";
+import { Page } from "../../molecules/page";
 import { Tile } from "../../molecules/tile";
 import { Text } from "../text";
-import { getDefaultFontFamily } from "../text/text.variants";
 import { Button, buttonSizes, buttonVariants } from "./Button";
 import "./showcase.css";
 
-type ThemeStyle = CSSProperties & {
-  [key: `--${string}`]: string;
-};
-
-function resolveSemanticColor(name: keyof typeof semanticColors): string {
-  const token = semanticColors[name];
-  if (token.$type !== "color" || typeof token.$value !== "string") {
-    throw new TypeError(`Expected a semantic color token: ${name}`);
-  }
-
-  const match = /^\{([^{}]+)\}$/.exec(token.$value);
-  if (!match) {
-    throw new TypeError(`Expected a primitive color alias: ${name}`);
-  }
-
-  const primitive = primitiveColors[match[1] as keyof typeof primitiveColors];
-  if (!primitive || primitive.$type !== "color" || typeof primitive.$value !== "string") {
-    throw new Error(`Missing primitive color referenced by ${name}`);
-  }
-
-  return primitive.$value;
-}
-
-const theme: ThemeStyle = {
-  "--paper": resolveSemanticColor("numa-color-context-background-default"),
-  "--surface": resolveSemanticColor("numa-color-context-surface-weak"),
-  "--ink": resolveSemanticColor("numa-color-context-content-strong"),
-  "--muted": resolveSemanticColor("numa-color-context-content-weak"),
-  "--line": resolveSemanticColor("numa-color-context-outline-subtle"),
-  "--accent": resolveSemanticColor("numa-color-accent-content-default"),
-  "--font-family": getDefaultFontFamily(),
-};
-
-function Preview({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <article className="preview">
+function Preview({ label, children, surface = true }: { label: string; children: ReactNode; surface?: boolean }) {
+  const content = (
+    <>
       <Text variant="label" size="s" as="p" className="preview__label">
         {label}
       </Text>
       {children}
+    </>
+  );
+  return (
+    <article className="preview">
+      {surface ? <Card className="preview__card">{content}</Card> : content}
     </article>
   );
 }
@@ -57,7 +29,7 @@ function StoryApp() {
   const [clickCount, setClickCount] = useState(0);
 
   return (
-    <div className="button-story" style={theme}>
+    <Page className="button-story" style={{ ...showcaseFoundationStyle, padding: 0 }}>
       <header className="hero">
         <div className="shell">
           <Text variant="display" size="m" as="h1">
@@ -73,7 +45,7 @@ function StoryApp() {
         <section aria-labelledby="button-sizes-heading">
           <div className="section-heading">
             <div>
-              <Text variant="label" size="s" as="p" style={{ color: "var(--accent)" }}>
+              <Text variant="label" size="s" as="p" color="var(--numa-color-accent-content-default)">
                 Sizes
               </Text>
               <Text variant="headline" size="s" as="h2" id="button-sizes-heading">
@@ -96,7 +68,7 @@ function StoryApp() {
         <section aria-labelledby="button-variants-heading">
           <div className="section-heading">
             <div>
-              <Text variant="label" size="s" as="p" style={{ color: "var(--accent)" }}>
+              <Text variant="label" size="s" as="p" color="var(--numa-color-accent-content-default)">
                 Variants
               </Text>
               <Text variant="headline" size="s" as="h2" id="button-variants-heading">
@@ -133,7 +105,7 @@ function StoryApp() {
         <section aria-labelledby="button-layout-heading">
           <div className="section-heading">
             <div>
-              <Text variant="label" size="s" as="p" style={{ color: "var(--accent)" }}>
+              <Text variant="label" size="s" as="p" color="var(--numa-color-accent-content-default)">
                 Layout
               </Text>
               <Text variant="headline" size="s" as="h2" id="button-layout-heading">
@@ -151,7 +123,7 @@ function StoryApp() {
               </div>
             </Preview>
 
-            <Preview label="Tile surface">
+            <Preview label="Tile surface" surface={false}>
               <Tile>
                 <div className="button-stack">
                   <Button variant="outlined" size="m">
@@ -170,7 +142,7 @@ function StoryApp() {
           Button interactions: {clickCount} click{clickCount === 1 ? "" : "s"} recorded.
         </Text>
       </main>
-    </div>
+    </Page>
   );
 }
 

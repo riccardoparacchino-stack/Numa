@@ -157,7 +157,7 @@ export function Tile(props: TileProps) {
     ...style,
   };
 
-  const nestedContext = { depth: depth + 1, surfaceLevel };
+  const nestedContext = { depth: depth + 1, surfaceLevel, step: (parentNesting?.step ?? 0) + 1 };
   const content = (
     <DisabledContext.Provider value={isDisabled}>
       <TileNestingContext.Provider value={nestedContext}>{children}</TileNestingContext.Provider>

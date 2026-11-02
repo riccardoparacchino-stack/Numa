@@ -14,7 +14,7 @@ Molecules compose existing atoms into reusable content patterns.
 
 The shared [Molecule showcase](showcase.html) is a React/Vite page that renders
 the real components and Foundation tokens. It offers representative examples,
-not a per-prop playground or an exhaustive API matrix. Run it with
-`npm run story:molecules`; the [showcase index](../showcase.html) links all
-standard pages. The [Tile parametric demo](../../demos/tile-parametric.html)
-is a separate exploratory tool, not the standard component showcase.
+including five TextCompositor compositions. Run it with `npm run story:molecules`;
+the [showcase index](../showcase.html) links all standard pages. The [Tile
+parametric demo](../../demos/tile-parametric.html) is a separate exploratory
+tool, not the standard component showcase.
