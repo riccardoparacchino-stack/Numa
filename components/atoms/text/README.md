@@ -20,7 +20,7 @@ The component exports `TextProps<T extends ElementType = "span">`,
 `TextVariant`, `TextSize<V extends TextVariant>`, `TextVariantSize`, and
 `TextLetterSpacing` (an alias for Foundation's `LetterSpacingOption`).
 `TextVariant` is the union `"label" | "body" | "title" | "headline" |
-"display"`. `TextSize` is derived from the actual variant map, so its result
+"display" | "button"`. `TextSize` is derived from the actual variant map, so its result
 depends on `V`; `TextVariantSize` forms the discriminated union of valid
 variant/size pairs shown below.
 
@@ -97,9 +97,11 @@ tracking overrides are not part of this API and were not previously supported.
 | `display` | `m` | 45px / 2.8125rem | 52px / 3.25rem | Regular / 400 |
 | `display` | `l` | 57px / 3.5625rem | 64px / 4rem | Regular / 400 |
 
-The explicit table contains **13** valid combinations. The initial brief called
-these “12” combinations, but its variant/size table specifies 13 rows; this
-implementation follows every explicitly listed row. `title/l`,
+The table above contains the **13 Foundation typography combinations**. The
+exported `button` variant adds four sizes for Button labels, for 17 combinations
+in the current variant map. Those four values are CSS dimensions in
+`text.variants.ts`; they have no Foundation font-size token and resolve
+letter-spacing to `0em`. `title/l`,
 `headline/l`, unknown variants, and unknown sizes are invalid. TypeScript
 rejects invalid pairs; the runtime throws `RangeError` for invalid pairs from
 untyped JavaScript callers.

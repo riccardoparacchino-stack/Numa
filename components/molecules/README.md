@@ -17,7 +17,7 @@ Molecules compose existing atoms into reusable content patterns.
   sizing behavior.
 
 Open the [live molecule previews](story.html) with
-`npm run story:molecules`. The page exercises the supported component options
-using the actual implementations.
-The [Tile parametric sizing demo](../../demos/tile-parametric.html) includes
-interactive sizing controls.
+`npm run story:molecules`. The page demonstrates every current Molecule with
+the shipped implementations, including five TextCompositor compositions.
+The [Tile parametric sizing demo](../../demos/tile-parametric.html) is an
+experimental sizing exploration with interactive controls.

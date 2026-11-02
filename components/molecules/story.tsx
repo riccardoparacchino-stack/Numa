@@ -1,9 +1,12 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import primitiveColors from "../../tokens/primitive/color.json";
-import semanticColors from "../../tokens/semantic/color.json";
+import { Callout } from "../atoms/callout";
+import { Code, CodeBlock } from "../atoms/code";
+import { Link } from "../atoms/link";
+import { List, ListItem } from "../atoms/list";
+import { Table } from "../atoms/table";
 import { Text } from "../atoms/text";
-import { getDefaultFontFamily } from "../atoms/text/text.variants";
+import { showcaseFoundationStyle } from "../showcase-foundation";
 import { Card } from "./card";
 import { ContentCompositor } from "./content-compositor";
 import { Container } from "./container";
@@ -11,39 +14,6 @@ import { Page } from "./page";
 import { TextCompositor } from "./text-compositor";
 import { Tile } from "./tile";
 import "./story.css";
-
-type ThemeStyle = CSSProperties & {
-  [key: `--${string}`]: string;
-};
-
-function resolveSemanticColor(name: keyof typeof semanticColors): string {
-  const token = semanticColors[name];
-  if (token.$type !== "color" || typeof token.$value !== "string") {
-    throw new TypeError(`Expected a semantic color token: ${name}`);
-  }
-
-  const match = /^\{([^{}]+)\}$/.exec(token.$value);
-  if (!match) {
-    throw new TypeError(`Expected a primitive alias for semantic color: ${name}`);
-  }
-
-  const primitive = primitiveColors[match[1] as keyof typeof primitiveColors];
-  if (!primitive || primitive.$type !== "color") {
-    throw new Error(`Missing primitive color referenced by ${name}`);
-  }
-
-  return primitive.$value;
-}
-
-const theme: ThemeStyle = {
-  "--paper": resolveSemanticColor("numa-color-context-background-default"),
-  "--surface": resolveSemanticColor("numa-color-context-surface-weak"),
-  "--ink": resolveSemanticColor("numa-color-context-content-strong"),
-  "--muted": resolveSemanticColor("numa-color-context-content-weak"),
-  "--line": resolveSemanticColor("numa-color-context-outline-subtle"),
-  "--accent": resolveSemanticColor("numa-color-accent-content-default"),
-  "--font-family": getDefaultFontFamily(),
-};
 
 const alignments = ["start", "center", "end"] as const;
 const gaps = [
@@ -55,13 +25,18 @@ const gaps = [
 const tileModes = ["compact", "relaxed", "spacious"] as const;
 const actionKinds = ["static", "link", "button"] as const;
 
-function Preview({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <article className="preview">
+function Preview({ label, children, surface = true }: { label: string; children: ReactNode; surface?: boolean }) {
+  const content = (
+    <>
       <Text variant="label" size="s" as="p" className="preview__label">
         {label}
       </Text>
       {children}
+    </>
+  );
+  return (
+    <article className="preview">
+      {surface ? <Card className="preview__card">{content}</Card> : content}
     </article>
   );
 }
@@ -70,14 +45,14 @@ function MoleculeStory() {
   const [actionMessage, setActionMessage] = useState("Activate a button preview to test its action.");
 
   return (
-    <Page className="molecule-story" style={theme}>
+    <Page className="molecule-story" style={{ ...showcaseFoundationStyle, padding: 0 }}>
       <header className="hero">
         <div className="shell">
           <Text variant="display" size="m" as="h1">
             Molecules
           </Text>
           <Text variant="body" size="m" as="p">
-            Live previews for Tile and Text Compositor. These use the shipped React Web components.
+            Live previews for every shipped molecule, composed with the document atoms and Foundation tokens.
           </Text>
         </div>
       </header>
@@ -86,7 +61,7 @@ function MoleculeStory() {
         <section aria-labelledby="text-compositor-heading">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Text Compositor</p>
+              <Text variant="label" size="s" className="eyebrow">Text Compositor</Text>
               <Text variant="headline" size="s" as="h2" id="text-compositor-heading">
                 Alignment × gap
               </Text>
@@ -114,10 +89,67 @@ function MoleculeStory() {
           </div>
         </section>
 
+        <section aria-labelledby="text-customization-heading">
+          <div className="section-heading">
+            <div>
+              <Text variant="label" size="s" className="eyebrow">TextCompositor</Text>
+              <Text variant="headline" size="s" as="h2" id="text-customization-heading">
+                Five title compositions
+              </Text>
+            </div>
+            <Text variant="body" size="m" as="p">
+              Visual typography and the title element are selected independently through the existing Text props.
+            </Text>
+          </div>
+          <div className="preview-grid preview-grid--text">
+            <Preview label="1 · Default title and description">
+              <TextCompositor title="Workspace" description="Manage members and settings." />
+            </Preview>
+            <Preview label="2 · Headline style, heading element">
+              <h3 className="compositor-semantic">
+                <TextCompositor
+                  title="Project overview"
+                  description="A prominent section title."
+                  titleTypography={{ variant: "headline", size: "s" }}
+                />
+              </h3>
+            </Preview>
+            <Preview label="3 · Same style, non-heading element">
+              <div className="compositor-semantic">
+                <TextCompositor
+                  title="Project overview"
+                  description="Identical visual treatment, different meaning."
+                  titleTypography={{ variant: "headline", size: "s" }}
+                />
+              </div>
+            </Preview>
+            <Preview label="4 · Custom color, heading element">
+              <h3 className="compositor-semantic compositor-semantic--accent">
+                <TextCompositor
+                  title="Attention to detail"
+                  description="The accent comes from the semantic Foundation color."
+                  titleTypography={{ variant: "title", size: "m" }}
+                />
+              </h3>
+            </Preview>
+            <Preview label="5 · Centered title with smaller description">
+              <div className="compositor-semantic">
+                <TextCompositor
+                  title="A centered group"
+                  description="Description typography is independently configurable."
+                  align="center"
+                  titleTypography={{ variant: "title", size: "m" }}
+                  descriptionTypography={{ variant: "body", size: "s" }}
+                />
+              </div>
+            </Preview>
+          </div>
+        </section>
+
         <section aria-labelledby="tile-heading">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Tile</p>
+              <Text variant="label" size="s" className="eyebrow">Tile</Text>
               <Text variant="headline" size="s" as="h2" id="tile-heading">
                 Density mode × behavior
               </Text>
@@ -173,7 +205,7 @@ function MoleculeStory() {
         <section aria-labelledby="slots-heading">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Composition</p>
+              <Text variant="label" size="s" className="eyebrow">Composition</Text>
               <Text variant="headline" size="s" as="h2" id="slots-heading">
                 Content Compositor
               </Text>
@@ -183,29 +215,29 @@ function MoleculeStory() {
             </Text>
           </div>
           <div className="preview-grid preview-grid--tile">
-            <Preview label="Main content only">
+            <Preview label="Main content only" surface={false}>
               <Tile>
                 <ContentCompositor>
                   <TextCompositor title="Content only" description="No leading or trailing region." />
                 </ContentCompositor>
               </Tile>
             </Preview>
-            <Preview label="Leading only">
+            <Preview label="Leading only" surface={false}>
               <Tile>
                 <ContentCompositor leading={<span aria-hidden="true">★</span>} />
               </Tile>
             </Preview>
-            <Preview label="Trailing only">
+            <Preview label="Trailing only" surface={false}>
               <Tile>
                 <ContentCompositor trailing={<span aria-hidden="true">✓</span>} />
               </Tile>
             </Preview>
-            <Preview label="Footer only">
+            <Preview label="Footer only" surface={false}>
               <Tile>
                 <ContentCompositor footer="The footer works without a main region." />
               </Tile>
             </Preview>
-            <Preview label="Custom content">
+            <Preview label="Custom content" surface={false}>
               <Tile>
                 <ContentCompositor
                   layout="vertical"
@@ -216,12 +248,12 @@ function MoleculeStory() {
                 </ContentCompositor>
               </Tile>
             </Preview>
-            <Preview label="Disabled action">
+            <Preview label="Disabled action" surface={false}>
               <Tile disabled onClick={() => setActionMessage("Disabled action unexpectedly activated.")}>
                 Unavailable action
               </Tile>
             </Preview>
-            <Preview label="Page Container with fieldset composition">
+            <Preview label="Page Container with fieldset composition" surface={false}>
               <Container mode="compact">
                 <fieldset>
                   <legend>Account settings</legend>
@@ -234,7 +266,7 @@ function MoleculeStory() {
             </Preview>
             {tileModes.map((mode) => {
               return (
-                <Preview key={`nested-${mode}`} label={`Container, Card, and child Card · ${mode}`}>
+                <Preview key={`nested-${mode}`} label={`Container, Card, and child Card · ${mode}`} surface={false}>
                   <Container mode={mode}>
                     <ContentCompositor layout="vertical">
                       <TextCompositor
@@ -265,6 +297,52 @@ function MoleculeStory() {
           </div>
         </section>
 
+        <section aria-labelledby="api-reference-heading">
+          <div className="section-heading">
+            <div>
+              <Text variant="label" size="s" className="eyebrow">API references</Text>
+              <Text variant="headline" size="s" as="h2" id="api-reference-heading">
+                Molecules in this showcase
+              </Text>
+            </div>
+            <Text variant="body" size="m" as="p">
+              Each listed component has a live example above and a local API guide.
+            </Text>
+          </div>
+          <Table aria-label="Molecules and their component guides">
+            <caption><Text variant="title" size="s">Molecule API guides</Text></caption>
+            <thead>
+              <tr>
+                <th scope="col"><Text variant="label" size="m">Component</Text></th>
+                <th scope="col"><Text variant="label" size="m">Guide</Text></th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Page", "page"],
+                ["Container", "container"],
+                ["Card", "card"],
+                ["Tile", "tile"],
+                ["TextCompositor", "text-compositor"],
+                ["ContentCompositor", "content-compositor"],
+              ].map(([name, slug]) => (
+                <tr key={slug}>
+                  <th scope="row"><Text variant="body" size="m">{name}</Text></th>
+                  <td><Link href={`./${slug}/README.md`}>Read {name} API</Link></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <div className="api-reference-examples">
+            <Callout>
+              <Text variant="body" size="m" as="p">
+                No <Code>Stack</Code> component is present in this repository. These showcase-only responsive grids remain page layout; their repeated gaps resolve semantic spacing tokens.
+              </Text>
+            </Callout>
+            <CodeBlock aria-label="Page and content composition example">{`<Page>\n  <Container mode="relaxed">\n    <Card>\n      <ContentCompositor>\n        <TextCompositor title="Workspace" description="Manage settings" />\n      </ContentCompositor>\n    </Card>\n  </Container>\n</Page>`}</CodeBlock>
+          </div>
+        </section>
+
         <section id="rules" aria-labelledby="rules-heading" className="rules">
           <Text variant="label" size="s" as="p" className="eyebrow">
             Usage rules
@@ -272,53 +350,53 @@ function MoleculeStory() {
           <Text variant="headline" size="s" as="h2" id="rules-heading">
             Compose with intent
           </Text>
-          <ul>
-            <li>
+          <List className="rules-list">
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Use TextCompositor for title and optional description; choose semantic Text elements by document structure.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Use Container as a sizing/query boundary; use Card for cohesive groups and one nested Card for child groups.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Containers may hold fieldsets and other compositions without wrapping them in cards. Use native fieldset and legend semantics for form groups.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Container sets the inherited density mode; Tile padding and radius are generated from the harmonic scale.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Use Page for the semantic page background, Container for sizing, and Tile for contained surfaces.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Use Tile as the low-level surface primitive and Container as an optional responsive sizing boundary.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Use ContentCompositor for optional leading/trailing/footer regions; custom children can compose other layouts.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Do not put independent controls inside interactive Cards; choose native links for navigation and buttons for one action.
               </Text>
-            </li>
-            <li>
+            </ListItem>
+            <ListItem>
               <Text variant="body" size="m" as="span">
                 Selectable and expandable Tiles are not implemented. Use native selection or disclosure controls.
               </Text>
-            </li>
-          </ul>
+            </ListItem>
+          </List>
         </section>
       </main>
     </Page>

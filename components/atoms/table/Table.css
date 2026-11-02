@@ -1,0 +1,30 @@
+.numa-table__overflow {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.numa-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--numa-table-surface);
+  text-align: start;
+}
+
+.numa-table caption {
+  text-align: start;
+  font-weight: 600;
+  padding-block: var(--numa-table-cell-padding-block);
+}
+
+.numa-table th,
+.numa-table td {
+  border: 1px solid var(--numa-table-outline);
+  padding: var(--numa-table-cell-padding-block) var(--numa-table-cell-padding-inline);
+  text-align: start;
+  vertical-align: top;
+}
+
+.numa-table thead th {
+  background-color: var(--numa-table-header-surface);
+  font-weight: 600;
+}

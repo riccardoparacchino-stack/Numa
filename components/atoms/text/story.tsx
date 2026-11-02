@@ -1,10 +1,14 @@
 import { useState, type CSSProperties, type ElementType, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import colorTokens from "../../../tokens/primitive/color.json";
-import semanticColorTokens from "../../../tokens/semantic/color.json";
+import { Callout } from "../callout";
+import { Code, CodeBlock } from "../code";
+import { Link } from "../link";
+import { Table } from "../table";
+import { Card } from "../../molecules/card";
+import { Page } from "../../molecules/page";
+import { showcaseFoundationStyle } from "../../showcase-foundation";
 import {
   getDefaultTextWeight,
-  getDefaultFontFamily,
   getTextTypography,
   textVariants,
   type TextVariant,
@@ -52,56 +56,6 @@ const harmonicRatios = [
   { name: "Golden ratio", value: 1.618 },
 ] as const;
 
-function resolveSemanticColor(name: keyof typeof semanticColorTokens): string {
-  const token = semanticColorTokens[name];
-  if (token.$type !== "color") {
-    throw new TypeError(`Expected a semantic color token: ${name}`);
-  }
-
-  const match = /^\{([^{}]+)\}$/.exec(token.$value);
-  if (!match) {
-    throw new TypeError(`Semantic color must alias a primitive color: ${name}`);
-  }
-
-  const primitive = colorTokens[match[1] as keyof typeof colorTokens];
-  if (!primitive || primitive.$type !== "color" || typeof primitive.$value !== "string") {
-    throw new Error(`Missing primitive color referenced by ${name}: ${match[1]}`);
-  }
-
-  return primitive.$value;
-}
-
-const palette = {
-  ink: resolveSemanticColor("numa-color-context-content-strong"),
-  muted: resolveSemanticColor("numa-color-context-content-weak"),
-  tertiary: resolveSemanticColor("numa-color-context-content-weak"),
-  line: resolveSemanticColor("numa-color-context-outline-subtle"),
-  paper: resolveSemanticColor("numa-color-context-background-default"),
-  surface: resolveSemanticColor("numa-color-context-surface-weak"),
-  accent: resolveSemanticColor("numa-color-accent-content-default"),
-  accentSurface: resolveSemanticColor("numa-color-interactive-surface-action-default"),
-  accentText: resolveSemanticColor("numa-color-interactive-content-on-action"),
-  focus: resolveSemanticColor("numa-color-interactive-outline-focus"),
-  focusOnAccent: resolveSemanticColor("numa-color-interactive-outline-focus-on-action-inner"),
-  subtleHover: resolveSemanticColor("numa-color-interactive-surface-subtle-hover"),
-} as const;
-
-const themeStyle: ThemeProperties = {
-  "--ink": palette.ink,
-  "--muted": palette.muted,
-  "--tertiary": palette.tertiary,
-  "--line": palette.line,
-  "--paper": palette.paper,
-  "--surface": palette.surface,
-  "--accent": palette.accent,
-  "--accent-surface": palette.accentSurface,
-  "--accent-text": palette.accentText,
-  "--focus": palette.focus,
-  "--focus-on-accent": palette.focusOnAccent,
-  "--subtle-hover": palette.subtleHover,
-  "--font-family": getDefaultFontFamily(),
-};
-
 const variants = Object.keys(textVariants) as TextVariant[];
 const sample = "Clear words. Thoughtful hierarchy.";
 const elements: StoryElement[] = ["span", "p", "div", "h1", "h2", "h3"];
@@ -128,21 +82,16 @@ function metricsFor(variant: TextVariant, size: StorySize) {
   };
 }
 
-function trackingFor(fontSizeToken: FontSizeToken) {
+function trackingFor(fontSizeToken: FontSizeToken | undefined) {
+  if (!fontSizeToken) {
+    return { compact: "0em", relaxed: "0em", spacious: "0em" };
+  }
   return Object.fromEntries(
     letterSpacingOptions.map((option) => [
       option,
       resolveLetterSpacing(fontSizeToken, option),
     ]),
   ) as Record<LetterSpacingOption, string>;
-}
-
-function Code({ children }: { children: ReactNode }) {
-  return (
-    <StoryText variant="label" size="s" as="code" className="inline-code">
-      {children}
-    </StoryText>
-  );
 }
 
 function SectionHeading({
@@ -177,9 +126,12 @@ function StoryApp() {
   const [harmonicRatio, setHarmonicRatio] = useState<number>(1.2);
 
   const selectedMetrics = metricsFor(variant, size);
-  const selectedTracking = resolveLetterSpacing(selectedMetrics.fontSizeToken, letterSpacing);
-  const selectedToken = `numa-text-letter-spacing-${letterSpacing}-${selectedMetrics.fontSizeToken
-    .replace("numa-text-size-", "")}`;
+  const selectedTracking = selectedMetrics.fontSizeToken
+    ? resolveLetterSpacing(selectedMetrics.fontSizeToken, letterSpacing)
+    : "0em";
+  const selectedToken = selectedMetrics.fontSizeToken
+    ? `numa-text-letter-spacing-${letterSpacing}-${selectedMetrics.fontSizeToken.replace("numa-text-size-", "")}`
+    : "no Foundation tracking token";
   const availableSizes = Object.keys(textVariants[variant]) as StorySize[];
   const fontSizes = Array.from(
     new Map(
@@ -207,7 +159,7 @@ function StoryApp() {
   );
 
   return (
-    <div className="story-theme" style={themeStyle}>
+    <Page className="story-theme" style={{ ...showcaseFoundationStyle, padding: 0 }}>
       <header className="hero">
         <div className="shell">
           <StoryText variant="label" size="s" className="eyebrow">Numa · Atoms · React Web</StoryText>
@@ -215,11 +167,11 @@ function StoryApp() {
             Text, with intent.
           </StoryText>
           <StoryText variant="body" size="l" as="p" className="hero-copy">
-            One typography atom. Five visual variants. HTML semantics remain a
-            deliberate choice made for the content, not inferred from its size.
+            Typography remains independent of HTML semantics. Button label sizing
+            is also available to the Button atom.
           </StoryText>
           <div className="status-row" aria-label="Implementation status">
-            <span className="pill"><StoryText variant="label" size="s">13 supported variant / size pairs</StoryText></span>
+            <span className="pill"><StoryText variant="label" size="s">17 supported variant / size pairs</StoryText></span>
             <span className="pill"><StoryText variant="label" size="s">Foundation-backed typography</StoryText></span>
             <span className="pill note"><StoryText variant="label" size="s">Web only · no font loader</StoryText></span>
           </div>
@@ -236,7 +188,7 @@ function StoryApp() {
             ["#rules", "Component rules"],
             ["#references", "References"],
           ].map(([href, label]) => (
-            <StoryText key={href} variant="label" size="m" as="a" href={href}>{label}</StoryText>
+            <Link key={href} href={href}><StoryText variant="label" size="m">{label}</StoryText></Link>
           ))}
         </nav>
 
@@ -252,20 +204,21 @@ function StoryApp() {
               {variants.map((name) => {
                 const sizes = Object.keys(textVariants[name]) as StorySize[];
                 return (
-                  <article className="variant-card card" key={name}>
+                  <article className="variant-card" key={name}>
+                    <Card className="variant-card__surface">
                     <div className="variant-topline">
                       <StoryText variant="title" size="s" as="h3" className="variant-name">
                         {name}
                       </StoryText>
                       <span className="tag">
-                        <StoryText variant="label" size="s" color={palette.accent}>
+                        <StoryText variant="label" size="s" color="var(--numa-color-accent-content-default)">
                           default weight {getDefaultTextWeight(name)}
                         </StoryText>
                       </span>
                     </div>
                     {sizes.map((textSize) => {
                       const dimensions = metricsFor(name, textSize);
-                      const tracking = resolveLetterSpacing(dimensions.fontSizeToken, "relaxed");
+                      const tracking = trackingFor(dimensions.fontSizeToken).relaxed;
                       return (
                         <div className="specimen" key={`${name}-${textSize}`}>
                           <StoryText variant={name} size={textSize} className="variant-sample">
@@ -280,6 +233,7 @@ function StoryApp() {
                         </div>
                       );
                     })}
+                    </Card>
                   </article>
                 );
               })}
@@ -293,7 +247,7 @@ function StoryApp() {
               id="playground-title"
               description="Change visual treatment and HTML element independently. The displayed tag never changes the selected typography."
             />
-            <div className="interactive-card card">
+            <Card className="interactive-card" style={{ padding: 0 }}>
               <form className="controls">
                 <div className="control">
                   <StoryText variant="label" size="m" as="label" htmlFor="variant">Variant</StoryText>
@@ -359,13 +313,13 @@ function StoryApp() {
                     {sample}
                   </StoryText>
                 </div>
-                <StoryText variant="label" size="s" as="code" className="preview-code">
+                <CodeBlock aria-label="Selected Text component example" className="preview-code">
                   {`<Text variant="${variant}" size="${size}" as="${element}"${
                     letterSpacing === "relaxed" ? "" : ` letterSpacing="${letterSpacing}"`
                   }>…</Text> · ${selectedMetrics.fontSize}px / ${selectedMetrics.lineHeight}px · weight ${getDefaultTextWeight(variant)} · ${selectedToken}: ${selectedTracking}`}
-                </StoryText>
+                </CodeBlock>
               </div>
-            </div>
+            </Card>
           </section>
 
           <section id="semantics" aria-labelledby="semantics-title">
@@ -376,36 +330,46 @@ function StoryApp() {
               description="A visual style is not a document outline. Choose the semantic tag that matches the role of the content."
             />
             <div className="semantic-grid">
-              <article className="semantic-card card">
+              <article className="semantic-card">
+                <Card className="semantic-card__surface">
                 <StoryText variant="label" size="m" as="h3" className="semantic-title">Page heading</StoryText>
                 <StoryText variant="display" size="l" as="h1" className="semantic-sample">A new chapter</StoryText>
                 <StoryText variant="label" size="s" as="small" className="semantic-meta">display / l · &lt;h1&gt;</StoryText>
+                </Card>
               </article>
-              <article className="semantic-card card">
+              <article className="semantic-card">
+                <Card className="semantic-card__surface">
                 <StoryText variant="label" size="m" as="h3" className="semantic-title">Prominent non-heading</StoryText>
                 <StoryText variant="display" size="l" as="div" className="semantic-sample">A new chapter</StoryText>
                 <StoryText variant="label" size="s" as="small" className="semantic-meta">display / l · &lt;div&gt;</StoryText>
+                </Card>
               </article>
-              <article className="semantic-card card">
+              <article className="semantic-card">
+                <Card className="semantic-card__surface">
                 <StoryText variant="label" size="m" as="h3" className="semantic-title">Section heading</StoryText>
                 <StoryText variant="title" size="m" as="h3" className="semantic-sample">Your preferences</StoryText>
                 <StoryText variant="label" size="s" as="small" className="semantic-meta">title / m · &lt;h3&gt;</StoryText>
+                </Card>
               </article>
-              <article className="semantic-card card">
+              <article className="semantic-card">
+                <Card className="semantic-card__surface">
                 <StoryText variant="label" size="m" as="h3" className="semantic-title">Paragraph</StoryText>
                 <StoryText variant="body" size="m" as="p" className="semantic-sample">
                   Manage the details that make this experience yours.
                 </StoryText>
                 <StoryText variant="label" size="s" as="small" className="semantic-meta">body / m · &lt;p&gt;</StoryText>
+                </Card>
               </article>
             </div>
-            <aside className="callout">
-              <StoryText variant="body" size="m" as="p">
+            <aside className="callout-region">
+              <Callout>
+                <StoryText variant="body" size="m" as="p">
                 <StoryText variant="title" size="s" as="strong">Native semantics first.</StoryText>{" "}
                 Text defaults to a <Code>span</Code>; it does not infer a heading
                 or ARIA role. Applicable native attributes, <Code>aria-*</Code>,
                 and <Code>data-*</Code> props are forwarded to the chosen element.
-              </StoryText>
+                </StoryText>
+              </Callout>
             </aside>
           </section>
 
@@ -416,7 +380,7 @@ function StoryApp() {
               id="scale-title"
               description="Compare harmonic-ratio configurations across every Text style. The Foundation scale currently used by Text remains documented below."
             />
-            <div className="scale-explorer card">
+            <Card className="scale-explorer">
               <div className="scale-explorer-heading">
                 <div>
                   <StoryText variant="title" size="s" as="h3">Test a harmonic ratio</StoryText>
@@ -449,6 +413,7 @@ function StoryApp() {
               <div className="scale-preview-grid">
                 {scaleSamples.map(({ variant: name, size: textSize, metrics, generatedFontSize, generatedLineHeight }) => (
                   <article className="scale-preview-card" key={`${name}-${textSize}`}>
+                    <Card className="scale-preview-card__surface">
                     <StoryText variant="label" size="s" className="scale-preview-name">
                       {name} / {textSize}
                     </StoryText>
@@ -466,49 +431,46 @@ function StoryApp() {
                     <StoryText variant="label" size="s" className="scale-preview-meta">
                       {generatedFontSize.toFixed(1)}px · {harmonicRatio.toFixed(3)} ratio step · weight {getDefaultTextWeight(name)}
                     </StoryText>
+                    </Card>
                   </article>
                 ))}
               </div>
-            </div>
+            </Card>
             <StoryText variant="title" size="s" as="h3" className="foundation-scale-heading">
               Foundation scale currently used by Text
             </StoryText>
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    {["Font size", "Rem", "Compact", "Relaxed", "Spacious", "Next step", "Adjacent ratio", "Used by"].map((heading) => (
-                      <StoryText key={heading} variant="label" size="s" as="th" scope="col">{heading}</StoryText>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {fontSizes.map((metrics, index) => {
-                    const tracking = trackingFor(metrics.fontSizeToken);
-                    const next = fontSizes[index + 1];
-                    const usedBy = variants.flatMap((name) =>
-                      (Object.keys(textVariants[name]) as StorySize[])
-                        .filter((textSize) => metricsFor(name, textSize).fontSize === metrics.fontSize)
-                        .map((textSize) => `${name}/${textSize}`),
-                    ).join(", ");
-                    return (
-                      <tr key={metrics.fontSize}>
-                        <StoryText variant="body" size="s" as="td">{metrics.fontSize}px</StoryText>
-                        <StoryText variant="body" size="s" as="td">{metrics.fontSize / 16}rem</StoryText>
-                        <StoryText variant="body" size="s" as="td">{tracking.compact}</StoryText>
-                        <StoryText variant="body" size="s" as="td">{tracking.relaxed}</StoryText>
-                        <StoryText variant="body" size="s" as="td">{tracking.spacious}</StoryText>
-                        <StoryText variant="body" size="s" as="td">{next ? `${next.fontSize}px` : "—"}</StoryText>
-                        <StoryText variant="body" size="s" as="td" className="ratio">
-                          {next ? `${(next.fontSize / metrics.fontSize).toFixed(3)}×` : "—"}
-                        </StoryText>
-                        <StoryText variant="body" size="s" as="td">{usedBy}</StoryText>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <Table aria-label="Foundation typography scale by font size" className="foundation-table">
+              <thead>
+                <tr>
+                  {["Font size", "Rem", "Compact", "Relaxed", "Spacious", "Next step", "Adjacent ratio", "Used by"].map((heading) => (
+                    <th key={heading} scope="col"><StoryText variant="label" size="s">{heading}</StoryText></th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {fontSizes.map((metrics, index) => {
+                  const tracking = trackingFor(metrics.fontSizeToken);
+                  const next = fontSizes[index + 1];
+                  const usedBy = variants.flatMap((name) =>
+                    (Object.keys(textVariants[name]) as StorySize[])
+                      .filter((textSize) => metricsFor(name, textSize).fontSize === metrics.fontSize)
+                      .map((textSize) => `${name}/${textSize}`),
+                  ).join(", ");
+                  return (
+                    <tr key={metrics.fontSize}>
+                      <th scope="row"><StoryText variant="body" size="s">{metrics.fontSize}px</StoryText></th>
+                      <td><StoryText variant="body" size="s">{metrics.fontSize / 16}rem</StoryText></td>
+                      <td><StoryText variant="body" size="s">{tracking.compact}</StoryText></td>
+                      <td><StoryText variant="body" size="s">{tracking.relaxed}</StoryText></td>
+                      <td><StoryText variant="body" size="s">{tracking.spacious}</StoryText></td>
+                      <td><StoryText variant="body" size="s">{next ? `${next.fontSize}px` : "—"}</StoryText></td>
+                      <td className="ratio"><StoryText variant="body" size="s">{next ? `${(next.fontSize / metrics.fontSize).toFixed(3)}×` : "—"}</StoryText></td>
+                      <td><StoryText variant="body" size="s">{usedBy}</StoryText></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
             <div className="scale-bars" aria-hidden="true">
               {fontSizes.map((metrics) => (
                 <div className="scale-row" key={metrics.fontSize}>
@@ -520,8 +482,9 @@ function StoryApp() {
                 </div>
               ))}
             </div>
-            <aside className="callout">
-              <StoryText variant="body" size="m" as="p">
+            <aside className="callout-region">
+              <Callout>
+                <StoryText variant="body" size="m" as="p">
                 The ratio explorer is an illustration for comparing generated
                 scales; it does not change Text’s Foundation token mapping.
                 Adjacent steps in the implemented scale vary, so it remains a
@@ -530,7 +493,8 @@ function StoryApp() {
                 paired explicitly per variant and size. Letter-spacing presets
                 are size-aware, expressed in em, and independent of line
                 height; relaxed is used when the prop is omitted.
-              </StoryText>
+                </StoryText>
+              </Callout>
             </aside>
           </section>
 
@@ -588,12 +552,12 @@ function StoryApp() {
               description="This story is a visual companion to the source documentation, not a replacement for it."
             />
             <div className="docs-links">
-              <StoryText variant="body" size="m" as="a" href="./README.md">Text Atom API and specification</StoryText>
-              <StoryText variant="body" size="m" as="a" href="../../../docs/foundation/typography.md">Foundation Typography</StoryText>
-              <StoryText variant="body" size="m" as="a" href="../../../docs/foundation/semantic-colors.md">Foundation Semantic Colors</StoryText>
-              <StoryText variant="body" size="m" as="a" href="../../../docs/decisions/0001-foundation-text-typography.md">ADR 0001 · Typography decision</StoryText>
-              <StoryText variant="body" size="m" as="a" href="../../../.github/skills/numa-components/SKILL.md">Component-development skill</StoryText>
-              <StoryText variant="body" size="m" as="a" href="../../../.github/copilot-instructions.md">Repository Copilot instructions</StoryText>
+              <Link href="./README.md"><StoryText variant="body" size="m">Text Atom API and specification</StoryText></Link>
+              <Link href="../../../docs/foundation/typography.md"><StoryText variant="body" size="m">Foundation Typography</StoryText></Link>
+              <Link href="../../../docs/foundation/semantic-colors.md"><StoryText variant="body" size="m">Foundation Semantic Colors</StoryText></Link>
+              <Link href="../../../docs/decisions/0001-foundation-text-typography.md"><StoryText variant="body" size="m">ADR 0001 · Typography decision</StoryText></Link>
+              <Link href="../../../.github/skills/numa-components/SKILL.md"><StoryText variant="body" size="m">Component-development skill</StoryText></Link>
+              <Link href="../../../.github/copilot-instructions.md"><StoryText variant="body" size="m">Repository Copilot instructions</StoryText></Link>
             </div>
           </section>
         </main>
@@ -606,15 +570,17 @@ function StoryApp() {
           </StoryText>
         </div>
       </footer>
-    </div>
+    </Page>
   );
 }
 
 function Rule({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <article className="rule-card card">
-      <StoryText variant="title" size="s" as="h3" className="rule-title">{title}</StoryText>
-      <StoryText variant="body" size="m" as="p" className="rule-description">{children}</StoryText>
+    <article className="rule-card">
+      <Card className="rule-card__surface">
+        <StoryText variant="title" size="s" as="h3" className="rule-title">{title}</StoryText>
+        <StoryText variant="body" size="m" as="p" className="rule-description">{children}</StoryText>
+      </Card>
     </article>
   );
 }

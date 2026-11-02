@@ -1,0 +1,14 @@
+.content-story__header {
+  margin-block-end: var(--showcase-space-bricks-m);
+}
+
+.content-story__sections {
+  display: grid;
+  gap: var(--showcase-space-bricks-m);
+}
+
+.content-story__sections section {
+  display: grid;
+  gap: var(--showcase-space-pebbles-m);
+  min-width: 0;
+}

@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "story": "vite --open /components/atoms/text/story.html",
     "story:button": "vite --open /components/atoms/button/story.html",
-    "story:molecules": "vite --open /components/molecules/story.html"
+    "story:molecules": "vite --open /components/molecules/story.html",
+    "story:content": "vite --open /components/atoms/story.html"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,21 @@
+.numa-code {
+  background-color: var(--numa-code-surface);
+  border-radius: var(--numa-code-radius);
+  padding-inline: var(--numa-code-inline-padding);
+  overflow-wrap: anywhere;
+}
+
+.numa-code-block {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre;
+  background-color: var(--numa-code-surface);
+  border-radius: var(--numa-code-radius);
+  padding: var(--numa-code-block-padding);
+}
+
+.numa-code-block > code {
+  font: inherit;
+  white-space: inherit;
+}

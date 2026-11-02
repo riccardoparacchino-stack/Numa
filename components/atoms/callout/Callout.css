@@ -1,0 +1,8 @@
+.numa-callout {
+  box-sizing: border-box;
+  min-width: 0;
+  background-color: var(--numa-callout-surface);
+  border: 1px solid var(--numa-callout-outline);
+  border-radius: var(--numa-callout-radius);
+  padding: var(--numa-callout-padding);
+}

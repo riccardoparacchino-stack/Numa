@@ -153,7 +153,7 @@ const letterSpacingBySize = {
 describe("Text", () => {
   it.each(cases)(
     "renders $name using Foundation typography",
-    ({ element, fontSize, lineHeight, fontWeight }) => {
+    ({ name, element, fontSize, lineHeight, fontWeight }) => {
       const { getByText } = render(element);
       const renderedElement = getByText("Example");
 
@@ -163,7 +163,9 @@ describe("Text", () => {
       expect(renderedElement.style.lineHeight).toBe(lineHeight);
       expect(renderedElement.style.fontWeight).toBe(fontWeight);
       const fontSizePx = Number.parseFloat(fontSize) * (fontSize.endsWith("rem") ? 16 : 1);
-      const expectedLetterSpacing = fontSizePx in letterSpacingBySize
+      const expectedLetterSpacing = name.startsWith("button/")
+        ? "0em"
+        : fontSizePx in letterSpacingBySize
         ? letterSpacingBySize[fontSizePx as keyof typeof letterSpacingBySize].relaxed
         : "0em";
       expect(renderedElement.style.letterSpacing).toBe(expectedLetterSpacing);
@@ -264,7 +266,7 @@ describe("Text", () => {
 
   it.each(
     Object.entries(textVariants).flatMap(([variant, sizes]) =>
-      Object.entries(sizes).flatMap(([size, pair]) =>
+      Object.entries(sizes).filter(([, pair]) => pair.fontSize.startsWith("numa-text-size-")).flatMap(([size, pair]) =>
         letterSpacingOptions.map((option) => ({
           variant,
           size,
@@ -327,7 +329,7 @@ describe("Text", () => {
       Object.entries(textVariants).flatMap(([variant, sizes]) =>
         Object.keys(sizes).map((size) => `${variant}/${size}`),
       ),
-    ).toHaveLength(13);
+    ).toHaveLength(17);
   });
 
   it("declares exactly the supported letter-spacing options", () => {

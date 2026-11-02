@@ -21,3 +21,15 @@ variants and the scale using the actual component and Foundation tokens.
 icon, loading, disabled, and full-width behavior without introducing custom
 styles or duplicate design tokens. Open the [interactive Button story](button/story.html)
 with `npm run story:button` to preview the actual component.
+
+## Document content
+
+The [content atoms showcase](story.html) demonstrates document links, lists,
+code, callouts, and semantic tables using the React Web components. Run it with
+`npm run story:content`.
+
+- [Link](link/README.md) renders a native anchor with semantic link and focus styling.
+- [List and ListItem](list/README.md) render native ordered/unordered lists and items.
+- [Code and CodeBlock](code/README.md) render inline and preformatted code.
+- [Callout](callout/README.md) provides one neutral supporting-content surface.
+- [Table](table/README.md) styles a native table and keeps its wrapper scrollable.

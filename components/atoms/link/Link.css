@@ -1,0 +1,15 @@
+.numa-link {
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+  border-radius: var(--numa-link-radius);
+}
+
+.numa-link:hover {
+  text-decoration-thickness: 0.14em;
+}
+
+.numa-link:focus-visible {
+  outline: 2px solid var(--numa-link-focus);
+  outline-offset: 2px;
+}
