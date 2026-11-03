@@ -19,6 +19,13 @@ body {
   gap: 4px;
 }
 
+.tile-demo__hint {
+  flex: 1 1 100%;
+  margin: 0;
+  color: #526071;
+  font-size: 0.875rem;
+}
+
 .tile-demo__preview {
   width: 100%;
   margin-block: 20px;
@@ -34,4 +41,15 @@ body {
   gap: 8px;
   padding: 0;
   list-style: none;
+}
+
+.tile-demo__values pre {
+  overflow: auto;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #d4d9e0;
+  border-radius: 8px;
+  background: #f5f7fa;
+  color: #202939;
+  font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
 }

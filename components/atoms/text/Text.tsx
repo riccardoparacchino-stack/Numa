@@ -12,8 +12,11 @@ import {
 } from "./text.variants";
 import {
   resolveLetterSpacing,
+  resolveResponsiveTypography,
   type LetterSpacingOption,
 } from "../../../foundation/typography/letter-spacing";
+import { useContext } from "react";
+import { ContainerModeContext } from "../../molecules/container/container-mode-context";
 
 export type TextProps<T extends ElementType = "span"> = TextVariantSize & {
   as?: T;
@@ -57,17 +60,21 @@ export function Text<T extends ElementType = "span">(props: TextProps<T>) {
     ...elementProps
   } = props;
   const typography = getTextTypography(variant, size);
+  const responsiveMode = useContext(ContainerModeContext);
   const resolvedWeight = fontWeight ?? getDefaultTextWeight(variant);
+  const responsiveDimensions = responsiveMode && typography.fontSizeToken
+    ? resolveResponsiveTypography(typography.fontSizeToken, typography.fontSize, typography.lineHeight, responsiveMode)
+    : undefined;
   const resolvedLetterSpacing = typography.fontSizeToken
-    ? resolveLetterSpacing(typography.fontSizeToken, letterSpacing)
+    ? resolveLetterSpacing(typography.fontSizeToken, letterSpacing ?? responsiveMode)
     : "0em";
 
   const resolvedStyle: CSSProperties = {
     ...style,
     fontFamily: fontFamily ?? defaultFontFamily,
     fontWeight: resolvedWeight,
-    fontSize: typography.fontSize,
-    lineHeight: typography.lineHeight,
+    fontSize: responsiveDimensions?.fontSize ?? typography.fontSize,
+    lineHeight: responsiveDimensions?.lineHeight ?? typography.lineHeight,
   };
 
   if (fontStyle !== undefined) resolvedStyle.fontStyle = fontStyle;

@@ -1,0 +1,26 @@
+{
+  "numa-container-max-width-compact": {
+    "$type": "number",
+    "$value": "{numa-sys-int-640}"
+  },
+  "numa-container-max-width-relaxed": {
+    "$type": "number",
+    "$value": "{numa-sys-int-960}"
+  },
+  "numa-container-max-width-spacious": {
+    "$type": "number",
+    "$value": "{numa-sys-int-1200}"
+  },
+  "numa-container-gap-compact": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-container-gap-relaxed": {
+    "$type": "number",
+    "$value": "{numa-sys-int-20}"
+  },
+  "numa-container-gap-spacious": {
+    "$type": "number",
+    "$value": "{numa-sys-int-24}"
+  }
+}

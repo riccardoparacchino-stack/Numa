@@ -6,9 +6,9 @@ describe("Tile sizing", () => {
   const modes: ContainerMode[] = ["compact", "relaxed", "spacious"];
 
   it.each([
-    ["compact", [16, 12, 8]],
-    ["relaxed", [20, 12, 8]],
-    ["spacious", [24, 16, 12]],
+    ["compact", [24, 16, 12]],
+    ["relaxed", [28, 20, 16]],
+    ["spacious", [36, 24, 16]],
   ] as const)("maps %s mode steps to outer, middle, and inner roles", (mode, expected) => {
     const dimensions = generateTileDimensions({ mode });
 
@@ -25,6 +25,7 @@ describe("Tile sizing", () => {
       basePadding: 20,
       harmonicRatio: 1.25,
       radiusMultiplier: 1.5,
+      paddingMultiplier: 1,
     });
 
     expect([

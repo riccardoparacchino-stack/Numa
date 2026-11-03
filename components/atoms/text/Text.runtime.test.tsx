@@ -288,7 +288,10 @@ describe("Text", () => {
         children: "Mapped",
       } as TextProps);
       const { getByText } = render(element);
-      const fontSize = Number(fontSizeToken.slice("numa-text-size-".length));
+      const sizeLabel = fontSizeToken.slice("numa-text-size-".length);
+      const fontSize = ({
+        "3xs": 12, "2xs": 14, xs: 16, s: 22, m: 24, l: 32, xl: 36, "2xl": 45, "3xl": 57,
+      } as const)[sizeLabel as "3xs" | "2xs" | "xs" | "s" | "m" | "l" | "xl" | "2xl" | "3xl"];
 
       expect(getByText("Mapped").style.letterSpacing).toBe(
         letterSpacingBySize[fontSize as keyof typeof letterSpacingBySize][option],
@@ -297,11 +300,12 @@ describe("Text", () => {
   );
 
   it.each(Object.entries(letterSpacingBySize))(
-    "resolves each named preset for the %s px font size",
+    "resolves each named preset for the %s px text size",
     (fontSize, values) => {
       for (const option of letterSpacingOptions) {
+        const sizeLabel = ({ 12: "3xs", 14: "2xs", 16: "xs", 22: "s", 24: "m", 32: "l", 36: "xl", 45: "2xl", 57: "3xl" } as const)[Number(fontSize) as 12 | 14 | 16 | 22 | 24 | 32 | 36 | 45 | 57];
         const tokenName =
-          `numa-text-size-${fontSize}` as FontSizeToken;
+          `numa-text-size-${sizeLabel}` as FontSizeToken;
         expect(resolveLetterSpacing(tokenName, option)).toBe(values[option]);
       }
     },
@@ -313,7 +317,7 @@ describe("Text", () => {
     expect(
       resolveAbsoluteLetterSpacing(
         32,
-        resolveLetterSpacing("numa-text-size-32", "spacious"),
+        resolveLetterSpacing("numa-text-size-l", "spacious"),
       ),
     ).toBeCloseTo(-0.16);
   });

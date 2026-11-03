@@ -1,7 +1,12 @@
 {
   "numa-text-family-default": {
     "$type": "fontFamily",
-    "$value": ["Rubik", "Helvetica Neue", "Arial", "sans-serif"]
+    "$value": [
+      "Rubik",
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif"
+    ]
   },
   "numa-text-weight-400": {
     "$type": "fontWeight",
@@ -15,183 +20,183 @@
     "$type": "fontWeight",
     "$value": 600
   },
-  "numa-text-letter-spacing-compact-12": {
+  "numa-text-letter-spacing-compact-3xs": {
     "$type": "dimension",
     "$value": "0em"
   },
-  "numa-text-letter-spacing-relaxed-12": {
+  "numa-text-letter-spacing-relaxed-3xs": {
     "$type": "dimension",
     "$value": "0.01em"
   },
-  "numa-text-letter-spacing-spacious-12": {
+  "numa-text-letter-spacing-spacious-3xs": {
     "$type": "dimension",
     "$value": "0.02em"
   },
-  "numa-text-letter-spacing-compact-14": {
+  "numa-text-letter-spacing-compact-2xs": {
     "$type": "dimension",
     "$value": "0em"
   },
-  "numa-text-letter-spacing-relaxed-14": {
+  "numa-text-letter-spacing-relaxed-2xs": {
     "$type": "dimension",
     "$value": "0.005em"
   },
-  "numa-text-letter-spacing-spacious-14": {
+  "numa-text-letter-spacing-spacious-2xs": {
     "$type": "dimension",
     "$value": "0.01em"
   },
-  "numa-text-letter-spacing-compact-16": {
+  "numa-text-letter-spacing-compact-xs": {
     "$type": "dimension",
     "$value": "-0.005em"
   },
-  "numa-text-letter-spacing-relaxed-16": {
+  "numa-text-letter-spacing-relaxed-xs": {
     "$type": "dimension",
     "$value": "0em"
   },
-  "numa-text-letter-spacing-spacious-16": {
+  "numa-text-letter-spacing-spacious-xs": {
     "$type": "dimension",
     "$value": "0.01em"
   },
-  "numa-text-letter-spacing-compact-22": {
+  "numa-text-letter-spacing-compact-s": {
     "$type": "dimension",
     "$value": "-0.02em"
   },
-  "numa-text-letter-spacing-relaxed-22": {
+  "numa-text-letter-spacing-relaxed-s": {
     "$type": "dimension",
     "$value": "-0.01em"
   },
-  "numa-text-letter-spacing-spacious-22": {
+  "numa-text-letter-spacing-spacious-s": {
     "$type": "dimension",
     "$value": "0em"
   },
-  "numa-text-letter-spacing-compact-24": {
+  "numa-text-letter-spacing-compact-m": {
     "$type": "dimension",
     "$value": "-0.02em"
   },
-  "numa-text-letter-spacing-relaxed-24": {
+  "numa-text-letter-spacing-relaxed-m": {
     "$type": "dimension",
     "$value": "-0.01em"
   },
-  "numa-text-letter-spacing-spacious-24": {
+  "numa-text-letter-spacing-spacious-m": {
     "$type": "dimension",
     "$value": "0em"
   },
-  "numa-text-letter-spacing-compact-32": {
+  "numa-text-letter-spacing-compact-l": {
     "$type": "dimension",
     "$value": "-0.025em"
   },
-  "numa-text-letter-spacing-relaxed-32": {
+  "numa-text-letter-spacing-relaxed-l": {
     "$type": "dimension",
     "$value": "-0.015em"
   },
-  "numa-text-letter-spacing-spacious-32": {
+  "numa-text-letter-spacing-spacious-l": {
     "$type": "dimension",
     "$value": "-0.005em"
   },
-  "numa-text-letter-spacing-compact-36": {
+  "numa-text-letter-spacing-compact-xl": {
     "$type": "dimension",
     "$value": "-0.03em"
   },
-  "numa-text-letter-spacing-relaxed-36": {
+  "numa-text-letter-spacing-relaxed-xl": {
     "$type": "dimension",
     "$value": "-0.02em"
   },
-  "numa-text-letter-spacing-spacious-36": {
+  "numa-text-letter-spacing-spacious-xl": {
     "$type": "dimension",
     "$value": "-0.01em"
   },
-  "numa-text-letter-spacing-compact-45": {
+  "numa-text-letter-spacing-compact-2xl": {
     "$type": "dimension",
     "$value": "-0.03em"
   },
-  "numa-text-letter-spacing-relaxed-45": {
+  "numa-text-letter-spacing-relaxed-2xl": {
     "$type": "dimension",
     "$value": "-0.02em"
   },
-  "numa-text-letter-spacing-spacious-45": {
+  "numa-text-letter-spacing-spacious-2xl": {
     "$type": "dimension",
     "$value": "-0.01em"
   },
-  "numa-text-letter-spacing-compact-57": {
+  "numa-text-letter-spacing-compact-3xl": {
     "$type": "dimension",
     "$value": "-0.03em"
   },
-  "numa-text-letter-spacing-relaxed-57": {
+  "numa-text-letter-spacing-relaxed-3xl": {
     "$type": "dimension",
     "$value": "-0.02em"
   },
-  "numa-text-letter-spacing-spacious-57": {
+  "numa-text-letter-spacing-spacious-3xl": {
     "$type": "dimension",
     "$value": "-0.01em"
   },
-  "numa-text-size-12": {
+  "numa-text-size-3xs": {
     "$type": "dimension",
     "$value": "0.75rem"
   },
-  "numa-text-size-14": {
+  "numa-text-size-2xs": {
     "$type": "dimension",
     "$value": "0.875rem"
   },
-  "numa-text-size-16": {
+  "numa-text-size-xs": {
     "$type": "dimension",
     "$value": "1rem"
   },
-  "numa-text-size-22": {
+  "numa-text-size-s": {
     "$type": "dimension",
     "$value": "1.375rem"
   },
-  "numa-text-size-24": {
+  "numa-text-size-m": {
     "$type": "dimension",
     "$value": "1.5rem"
   },
-  "numa-text-size-32": {
+  "numa-text-size-l": {
     "$type": "dimension",
     "$value": "2rem"
   },
-  "numa-text-size-36": {
+  "numa-text-size-xl": {
     "$type": "dimension",
     "$value": "2.25rem"
   },
-  "numa-text-size-45": {
+  "numa-text-size-2xl": {
     "$type": "dimension",
     "$value": "2.8125rem"
   },
-  "numa-text-size-57": {
+  "numa-text-size-3xl": {
     "$type": "dimension",
     "$value": "3.5625rem"
   },
-  "numa-text-line-height-16": {
+  "numa-text-line-height-3xs": {
     "$type": "dimension",
     "$value": "1rem"
   },
-  "numa-text-line-height-20": {
+  "numa-text-line-height-2xs": {
     "$type": "dimension",
     "$value": "1.25rem"
   },
-  "numa-text-line-height-24": {
+  "numa-text-line-height-xs": {
     "$type": "dimension",
     "$value": "1.5rem"
   },
-  "numa-text-line-height-28": {
+  "numa-text-line-height-s": {
     "$type": "dimension",
     "$value": "1.75rem"
   },
-  "numa-text-line-height-32": {
+  "numa-text-line-height-m": {
     "$type": "dimension",
     "$value": "2rem"
   },
-  "numa-text-line-height-40": {
+  "numa-text-line-height-l": {
     "$type": "dimension",
     "$value": "2.5rem"
   },
-  "numa-text-line-height-44": {
+  "numa-text-line-height-xl": {
     "$type": "dimension",
     "$value": "2.75rem"
   },
-  "numa-text-line-height-52": {
+  "numa-text-line-height-2xl": {
     "$type": "dimension",
     "$value": "3.25rem"
   },
-  "numa-text-line-height-64": {
+  "numa-text-line-height-3xl": {
     "$type": "dimension",
     "$value": "4rem"
   }

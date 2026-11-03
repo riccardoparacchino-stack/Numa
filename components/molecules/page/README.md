@@ -3,16 +3,16 @@
 Page is a generic React Web page-surface wrapper. It renders a `div`, accepts
 arbitrary children, and applies the semantic
 `numa-color-context-background-default` fill. It has no margin and applies
-80px top, 20px inline, and 120px bottom padding from existing semantic spacing
-tokens. The bottom padding composes the 80px and 40px tokens because the
-Foundation spacing scale has no single 120px token. It does not impose radius
-or child-component requirements.
+mode-specific gap and padding tokens. In automatic mode, a `ResizeObserver`
+selects compact below 680px, relaxed from 680px, and spacious from 1280px. It
+does not impose radius or child-component requirements.
 
 ## API
 
 | Prop | Type | Default | Behavior |
 |---|---|---|---|
 | `children` | `ReactNode` | — | Arbitrary page content. |
+| `mode` | `"compact" \| "relaxed" \| "spacious"` | Automatic | Selects Page gap and padding. Automatic mode follows the Page's inline width. |
 | HTML attributes | `HTMLAttributes<HTMLDivElement>` | — | Forwarded to the Page element. |
 | `className`, `style` | React Web values | — | Adds a class or overrides the page surface and layout. |
 

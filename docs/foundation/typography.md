@@ -12,26 +12,28 @@ Letter-spacing uses `em` so tracking scales with the selected font size. The
 complete Foundation matrix is:
 
 | Font size token suffix | Line height | Compact | Relaxed (default) | Spacious |
-|---:|---:|---:|---:|---:|
-| 12 | 16px | 0em | +0.01em | +0.02em |
-| 14 | 20px | 0em | +0.005em | +0.01em |
-| 16 | 24px | -0.005em | 0em | +0.01em |
-| 22 | 28px | -0.02em | -0.01em | 0em |
-| 24 | 32px | -0.02em | -0.01em | 0em |
-| 32 | 40px | -0.025em | -0.015em | -0.005em |
-| 36 | 44px | -0.03em | -0.02em | -0.01em |
-| 45 | 52px | -0.03em | -0.02em | -0.01em |
-| 57 | 64px | -0.03em | -0.02em | -0.01em |
+|---|---:|---:|---:|---:|
+| 3xs | 16px | 0em | +0.01em | +0.02em |
+| 2xs | 20px | 0em | +0.005em | +0.01em |
+| xs | 24px | -0.005em | 0em | +0.01em |
+| s | 28px | -0.02em | -0.01em | 0em |
+| m | 32px | -0.02em | -0.01em | 0em |
+| l | 40px | -0.025em | -0.015em | -0.005em |
+| xl | 44px | -0.03em | -0.02em | -0.01em |
+| 2xl | 52px | -0.03em | -0.02em | -0.01em |
+| 3xl | 64px | -0.03em | -0.02em | -0.01em |
 
 Each cell is an independent named token, for example
-`numa-text-letter-spacing-compact-12`. The Foundation resolver in
+`numa-text-letter-spacing-compact-3xs`. The Foundation resolver in
 [`foundation/typography/letter-spacing.ts`](../../foundation/typography/letter-spacing.ts)
 takes a font-size token and preset, then retrieves the matching token. The
 component does not duplicate this matrix. The preset's output depends on the
 effective font size, not the line height: line height controls vertical
 leading and is not the reference unit for glyph tracking.
 
-The collection is canonical Foundation data. It is not a set of
+Font-size and line-height token suffixes use the T-shirt scale `3xs`, `2xs`,
+`xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`; `numa-text-size-xs` remains the 16px
+base. The collection is canonical Foundation data. It is not a set of
 variant-specific component tokens: multiple Text variants and sizes reuse
 the same named size and line-height values. No typography generator is
 currently configured for this collection.

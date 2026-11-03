@@ -11,9 +11,11 @@ arbitrary children.
 |---|---|---|---|
 | `children` | `ReactNode` | — | Arbitrary children. |
 | `mode` | `"compact" \| "relaxed" \| "spacious"` | Automatic | Selects the Container's own dimensions and the descendant sizing environment. When omitted, the Container observes its inline size. |
+| `maxWidth` | `"compact" \| "relaxed" \| "spacious"` | Unbounded | Applies a semantic maximum-width token while keeping the Container fluid below that limit. |
 | `basePadding` | `number` | `8` | Positive base padding in CSS pixels for the generated scale. |
+| `paddingMultiplier` | `number` | `1.5` | Positive multiplier applied to base padding before generating the shared padding and radius scale. |
 | `harmonicRatio` | `number` | `1.2` | Positive scale multiplier, independent of mode. |
-| `radiusMultiplier` | `number` | `2` | Positive multiplier used by the shared sizing scale. |
+| `radiusMultiplier` | `number` | `0.75` | Positive multiplier used by the shared sizing scale. |
 | HTML attributes | `HTMLAttributes<HTMLDivElement>` | — | Forwarded to the Container element. |
 | `className`, `style` | React Web values | — | Adds classes or controls layout; explicit style values override generated styles. |
 
@@ -37,6 +39,14 @@ relaxed, and widths from 800px use spacious. Explicit modes are unaffected by
 width. CSS container queries remain as a fallback for descendant Tiles when
 `ResizeObserver` is unavailable. Nested Containers establish independent
 sizing boundaries and start a fresh Tile composition.
+
+Container exposes `--numa-container-gap` from the matching mode token for
+compositions that need the Container's internal spacing value. It does not
+arrange arbitrary children; use `Stack` when child layout is needed.
+
+The optional `maxWidth` prop resolves the semantic tokens to 640px, 960px, or
+1200px for compact, relaxed, and spacious. Padding and radius remain generated
+from the harmonic sizing calculation; they are not separate per-mode tokens.
 
 ```tsx
 <Page>

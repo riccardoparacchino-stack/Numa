@@ -11,27 +11,27 @@ type TypographyTokenPair = {
 
 export const textVariants = {
   label: {
-    s: { fontSize: "numa-text-size-12", lineHeight: "numa-text-line-height-16" },
-    m: { fontSize: "numa-text-size-14", lineHeight: "numa-text-line-height-20" },
-    l: { fontSize: "numa-text-size-16", lineHeight: "numa-text-line-height-24" },
+    s: { fontSize: "numa-text-size-3xs", lineHeight: "numa-text-line-height-3xs" },
+    m: { fontSize: "numa-text-size-2xs", lineHeight: "numa-text-line-height-2xs" },
+    l: { fontSize: "numa-text-size-xs", lineHeight: "numa-text-line-height-xs" },
   },
   body: {
-    s: { fontSize: "numa-text-size-12", lineHeight: "numa-text-line-height-16" },
-    m: { fontSize: "numa-text-size-14", lineHeight: "numa-text-line-height-20" },
-    l: { fontSize: "numa-text-size-16", lineHeight: "numa-text-line-height-24" },
+    s: { fontSize: "numa-text-size-3xs", lineHeight: "numa-text-line-height-3xs" },
+    m: { fontSize: "numa-text-size-2xs", lineHeight: "numa-text-line-height-2xs" },
+    l: { fontSize: "numa-text-size-xs", lineHeight: "numa-text-line-height-xs" },
   },
   title: {
-    s: { fontSize: "numa-text-size-16", lineHeight: "numa-text-line-height-24" },
-    m: { fontSize: "numa-text-size-22", lineHeight: "numa-text-line-height-28" },
+    s: { fontSize: "numa-text-size-xs", lineHeight: "numa-text-line-height-xs" },
+    m: { fontSize: "numa-text-size-s", lineHeight: "numa-text-line-height-s" },
   },
   headline: {
-    s: { fontSize: "numa-text-size-24", lineHeight: "numa-text-line-height-32" },
-    m: { fontSize: "numa-text-size-32", lineHeight: "numa-text-line-height-40" },
+    s: { fontSize: "numa-text-size-m", lineHeight: "numa-text-line-height-m" },
+    m: { fontSize: "numa-text-size-l", lineHeight: "numa-text-line-height-l" },
   },
   display: {
-    s: { fontSize: "numa-text-size-36", lineHeight: "numa-text-line-height-44" },
-    m: { fontSize: "numa-text-size-45", lineHeight: "numa-text-line-height-52" },
-    l: { fontSize: "numa-text-size-57", lineHeight: "numa-text-line-height-64" },
+    s: { fontSize: "numa-text-size-xl", lineHeight: "numa-text-line-height-xl" },
+    m: { fontSize: "numa-text-size-2xl", lineHeight: "numa-text-line-height-2xl" },
+    l: { fontSize: "numa-text-size-3xl", lineHeight: "numa-text-line-height-3xl" },
   },
   button: {
     s: { fontSize: "0.875rem", lineHeight: "100%" },

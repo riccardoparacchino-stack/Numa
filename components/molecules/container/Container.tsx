@@ -9,6 +9,7 @@ import {
   CONTAINER_SIZING_STEP_OFFSET,
   CONTAINER_MODE_STEP_OFFSETS,
   DEFAULT_BASE_PADDING,
+  DEFAULT_PADDING_MULTIPLIER,
   DEFAULT_HARMONIC_RATIO,
   DEFAULT_RADIUS_MULTIPLIER,
   generateDimensionScale,
@@ -16,11 +17,17 @@ import {
   type ContainerMode,
 } from "../../../foundation/parametric-sizing";
 import { getSemanticColorStyle, semanticColorVariable } from "../../../foundation/colors/semantic-color-style";
-import { resolveSpacingPx } from "../../../foundation/semantic-dimensions";
+import {
+  resolveContainerGapPx,
+  resolveContainerMaxWidthPx,
+  resolveSpacingPx,
+  type ContainerMaxWidth,
+} from "../../../foundation/semantic-dimensions";
 import primitivePercentages from "../../../tokens/primitive/percentage.json";
 import { DisabledContext } from "../../disabled-context";
 import { TileNestingContext } from "../tile/tile-nesting-context";
 import { ContainerModeContext } from "./container-mode-context";
+import { PageModeContext } from "../page/page-mode-context";
 import "./Container.css";
 
 type ContainerStyle = CSSProperties & {
@@ -33,7 +40,9 @@ export type ContainerProps = Omit<
 > & {
   children?: ReactNode;
   mode?: ContainerMode;
+  maxWidth?: ContainerMaxWidth;
   basePadding?: number;
+  paddingMultiplier?: number;
   harmonicRatio?: number;
   radiusMultiplier?: number;
   className?: string;
@@ -48,7 +57,9 @@ if (shadowOpacity.$type !== "number" || typeof shadowOpacity.$value !== "number"
 export function Container({
   children,
   mode,
+  maxWidth,
   basePadding = DEFAULT_BASE_PADDING,
+  paddingMultiplier = DEFAULT_PADDING_MULTIPLIER,
   harmonicRatio = DEFAULT_HARMONIC_RATIO,
   radiusMultiplier = DEFAULT_RADIUS_MULTIPLIER,
   className,
@@ -57,14 +68,16 @@ export function Container({
 }: ContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inheritedDisabled = useContext(DisabledContext);
+  const pageMode = useContext(PageModeContext);
   const [autoMode, setAutoMode] = useState<ContainerMode | null>(null);
   const scale = generateDimensionScale({
     basePadding,
+    paddingMultiplier,
     harmonicRatio,
     radiusMultiplier,
     steps: CONTAINER_SCALE_STEPS,
   });
-  const effectiveMode = mode ?? autoMode ?? "compact";
+  const effectiveMode = mode ?? pageMode ?? autoMode ?? "compact";
   const containerDimensions =
     scale[CONTAINER_MODE_STEP_OFFSETS[effectiveMode] + CONTAINER_SIZING_STEP_OFFSET];
   if (!containerDimensions) {
@@ -73,7 +86,7 @@ export function Container({
 
   useLayoutEffect(() => {
     const element = containerRef.current;
-    if (!element || mode || typeof ResizeObserver === "undefined") return;
+    if (!element || mode || pageMode || typeof ResizeObserver === "undefined") return;
 
     const updateMode = () => {
       setAutoMode(modeForContainerWidth(element.clientWidth));
@@ -83,7 +96,7 @@ export function Container({
     const observer = new ResizeObserver(updateMode);
     observer.observe(element);
     return () => observer.disconnect();
-  }, [mode]);
+  }, [mode, pageMode]);
 
   const classes = ["numa-container", className].filter(Boolean).join(" ");
   const generatedStyle: ContainerStyle = {};
@@ -112,6 +125,7 @@ export function Container({
     ...generatedStyle,
     ...getSemanticColorStyle(inheritedDisabled),
     "--numa-container-surface": semanticColorVariable("numa-color-context-surface-weak"),
+    "--numa-container-gap": `${resolveContainerGapPx(effectiveMode)}px`,
     "--numa-container-border": semanticColorVariable("numa-color-context-outline-subtle"),
     "--numa-container-text": semanticColorVariable("numa-color-context-content-strong"),
     "--numa-container-shadow": [
@@ -123,6 +137,7 @@ export function Container({
     ].join(" "),
     display: "block",
     width: "100%",
+    maxWidth: `${resolveContainerMaxWidthPx(maxWidth ?? effectiveMode)}px`,
     minWidth: 0,
     boxSizing: "border-box",
     padding: `${containerDimensions.padding}px`,

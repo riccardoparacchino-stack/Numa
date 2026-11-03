@@ -1,6 +1,8 @@
 .numa-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--numa-page-gap);
   margin: 0;
-  padding: var(--numa-page-padding-top) var(--numa-page-padding-inline)
-    var(--numa-page-padding-bottom);
+  padding: var(--numa-page-padding);
   background-color: var(--numa-page-background);
 }

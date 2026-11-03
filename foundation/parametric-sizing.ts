@@ -17,8 +17,9 @@ export const CONTAINER_MODE_BREAKPOINTS = {
 } as const;
 
 export const DEFAULT_BASE_PADDING = 8;
+export const DEFAULT_PADDING_MULTIPLIER = 1.5;
 export const DEFAULT_HARMONIC_RATIO = HARMONIC_RATIOS["Minor Third"];
-export const DEFAULT_RADIUS_MULTIPLIER = 2;
+export const DEFAULT_RADIUS_MULTIPLIER = 0.75;
 export const DEFAULT_SCALE_STEPS = 7;
 export const CONTAINER_SIZING_STEP_OFFSET = 4;
 export const CONTAINER_SCALE_STEPS = CONTAINER_SIZING_STEP_OFFSET + 3;
@@ -40,15 +41,18 @@ function validateSizingInputs({
   harmonicRatio,
   steps,
   radiusMultiplier,
+  paddingMultiplier,
 }: {
   basePadding: number;
   harmonicRatio: number;
   steps: number;
   radiusMultiplier: number;
+  paddingMultiplier: number;
 }): void {
   assertPositiveFinite(basePadding, "Base padding");
   assertPositiveFinite(harmonicRatio, "Harmonic ratio");
   assertPositiveFinite(radiusMultiplier, "Radius multiplier");
+  assertPositiveFinite(paddingMultiplier, "Padding multiplier");
   if (!Number.isInteger(steps) || steps <= 0) {
     throw new RangeError("Scale steps must be a positive integer.");
   }
@@ -77,16 +81,19 @@ export function generateDimensionScale({
   harmonicRatio = DEFAULT_HARMONIC_RATIO,
   steps = DEFAULT_SCALE_STEPS,
   radiusMultiplier = DEFAULT_RADIUS_MULTIPLIER,
+  paddingMultiplier = DEFAULT_PADDING_MULTIPLIER,
 }: {
   basePadding?: number;
   harmonicRatio?: number;
   steps?: number;
   radiusMultiplier?: number;
+  paddingMultiplier?: number;
 } = {}): GeneratedDimension[] {
-  validateSizingInputs({ basePadding, harmonicRatio, steps, radiusMultiplier });
+  validateSizingInputs({ basePadding, harmonicRatio, steps, radiusMultiplier, paddingMultiplier });
+  const effectiveBasePadding = basePadding * paddingMultiplier;
   const dimensions: GeneratedDimension[] = [];
   for (let step = 0; step < steps; step += 1) {
-    const padding = roundToMultipleOf4(basePadding * harmonicRatio ** step);
+    const padding = roundToMultipleOf4(effectiveBasePadding * harmonicRatio ** step);
     const scaledRadius = paddingToRadius(padding, radiusMultiplier);
     const nestedRadius =
       step < 2

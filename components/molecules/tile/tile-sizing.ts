@@ -1,6 +1,7 @@
 import {
   CONTAINER_MODE_STEP_OFFSETS,
   DEFAULT_BASE_PADDING,
+  DEFAULT_PADDING_MULTIPLIER,
   DEFAULT_HARMONIC_RATIO,
   DEFAULT_RADIUS_MULTIPLIER,
   DEFAULT_SCALE_STEPS,
@@ -25,14 +26,16 @@ export function generateTileDimensions({
   mode = "compact",
   steps = DEFAULT_SCALE_STEPS,
   radiusMultiplier = DEFAULT_RADIUS_MULTIPLIER,
+  paddingMultiplier = DEFAULT_PADDING_MULTIPLIER,
 }: {
   basePadding?: number;
   harmonicRatio?: number;
   mode?: ContainerMode;
   steps?: number;
   radiusMultiplier?: number;
+  paddingMultiplier?: number;
 } = {}): TileDimensions {
-  const scale = generateDimensionScale({ basePadding, harmonicRatio, steps, radiusMultiplier });
+  const scale = generateDimensionScale({ basePadding, harmonicRatio, steps, radiusMultiplier, paddingMultiplier });
   const dimensions = Object.fromEntries(
     (Object.keys(TILE_NESTING_STEP_OFFSETS) as TileNestingRole[]).map((role) => {
       const step = CONTAINER_MODE_STEP_OFFSETS[mode] + TILE_NESTING_STEP_OFFSETS[role];

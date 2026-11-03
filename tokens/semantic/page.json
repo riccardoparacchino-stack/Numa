@@ -1,0 +1,46 @@
+{
+  "numa-page-gap-compact": {
+    "$type": "number",
+    "$value": "{numa-sys-int-8}"
+  },
+  "numa-page-gap-relaxed": {
+    "$type": "number",
+    "$value": "{numa-sys-int-12}"
+  },
+  "numa-page-gap-spacious": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-page-padding-compact": {
+    "$type": "number",
+    "$value": "{numa-sys-int-0}"
+  },
+  "numa-page-padding-relaxed": {
+    "$type": "number",
+    "$value": "{numa-sys-int-8}"
+  },
+  "numa-page-padding-spacious": {
+    "$type": "number",
+    "$value": "{numa-sys-int-16}"
+  },
+  "numa-page-width-375": {
+    "$type": "number",
+    "$value": "{numa-sys-int-375}"
+  },
+  "numa-page-width-680": {
+    "$type": "number",
+    "$value": "{numa-sys-int-680}"
+  },
+  "numa-page-width-1280": {
+    "$type": "number",
+    "$value": "{numa-sys-int-1280}"
+  },
+  "numa-page-width-1440": {
+    "$type": "number",
+    "$value": "{numa-sys-int-1440}"
+  },
+  "numa-page-width-1900": {
+    "$type": "number",
+    "$value": "{numa-sys-int-1900}"
+  }
+}

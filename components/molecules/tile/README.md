@@ -19,13 +19,14 @@ content-layout API.
 
 Tile fills its parent's available width; parent layout controls placement and
 height. When no sizing Container is present, it uses the default compact
-configuration: 8px base padding, a 1.2 Minor Third ratio, and a 2× radius
-multiplier.
+configuration: 8px base padding, 1.5 padding multiplier, a 1.2 Minor Third
+ratio, and a 0.75 radius multiplier.
 
 ## Parametric sizing
 
 Tile reads generated padding and radius values from inherited CSS custom
-properties. The scale generator in
+properties. Its default sizing inputs are base padding 8px, padding multiplier
+1.5, and radius multiplier 0.75. The scale generator in
 [`foundation/parametric-sizing.ts`](../../../foundation/parametric-sizing.ts)
 is generic and independently tested; Tile maps nested roles to scale steps in
 [`tile-sizing.ts`](./tile-sizing.ts). Container takes the former outer Tile
@@ -33,8 +34,8 @@ step and weak surface. Inside a Container, the first Tile starts at the
 middle role and uses the strong surface; its nested Tile is the final inner
 role and returns to the weak surface.
 
-For base padding `b`, harmonic ratio `r`, and scale step `n`, padding is
-`roundToMultipleOf4(b × rⁿ)`. The default base is 8px. Compact, relaxed, and
+For base padding `b`, padding multiplier `m`, harmonic ratio `r`, and scale step `n`, padding is
+`roundToMultipleOf4(b × m × rⁿ)`. The defaults are `b = 8px` and `m = 1.5`. Compact, relaxed, and
 spacious start at steps 0, 1, and 2. Nested roles advance by two scale steps:
 inner uses the mode's initial step, middle uses two additional steps, and
 outer uses four. This tapers the nested surfaces without separate size
@@ -47,7 +48,7 @@ Tile's two-step nesting-role intervals.
 The harmonic ratio is independent of mode and can be any positive finite
 number. Named presets are Minor Second (1.067), Major Second (1.125), Minor
 Third (1.2), Major Third (1.25), Perfect Fourth (1.333), and Perfect Fifth
-(1.5). The default radius multiplier is 2 and can also be configured on
+(1.5). The default radius multiplier is 0.75 and can also be configured on
 Container.
 
 Container density can be selected explicitly, or left automatic. Automatic

@@ -54,8 +54,10 @@ default ARIA roles or override native semantics.
 
 ## Variants, sizes, and Foundation mapping
 
-All dimensions use rem based on a 16px root font size. The component maps each
-pair to named Foundation typography tokens in
+All dimensions use rem based on a 16px root font size. Foundation font-size
+and line-height tokens use the T-shirt suffixes `3xs`, `2xs`, `xs`, `s`, `m`,
+`l`, `xl`, `2xl`, and `3xl`; `xs` is the 16px base size. The component maps
+each pair to named Foundation typography tokens in
 [`tokens/typography/text.json`](../../../tokens/typography/text.json).
 Repeated dimensions share the same token; the component does not define
 duplicate values or component tokens.

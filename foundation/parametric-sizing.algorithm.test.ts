@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_BASE_PADDING,
+  DEFAULT_PADDING_MULTIPLIER,
   DEFAULT_HARMONIC_RATIO,
   HARMONIC_RATIOS,
   CONTAINER_MODE_STEP_OFFSETS,
@@ -90,8 +91,8 @@ describe("parametric sizing", () => {
 
   it("uses the documented 8px base padding and minor-third ratio by default", () => {
     const sizing = generateDimensionScale();
-    expect(sizing[0].padding).toBe(DEFAULT_BASE_PADDING);
-    expect(sizing[4].padding).toBe(16);
+    expect(sizing[0].padding).toBe(DEFAULT_BASE_PADDING * DEFAULT_PADDING_MULTIPLIER);
+    expect(sizing[4].padding).toBe(24);
     expect(DEFAULT_HARMONIC_RATIO).toBe(HARMONIC_RATIOS["Minor Third"]);
   });
 
