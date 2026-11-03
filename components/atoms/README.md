@@ -6,6 +6,7 @@ the component documentation.
 
 | Component | Purpose | Showcase | Runtime tests |
 |---|---|---|---|
+| [Icon](icon/README.md) | Feather SVG icon with semantic context content color. | — | — |
 | [Text](text/README.md) | React Web typography with independent visual and HTML semantics; five Foundation-backed variants plus a Button-label scale. | [Text showcase](text/showcase.html), `npm run story:text` | [Tests](text/Text.runtime.test.tsx) |
 | [Button](button/README.md) | Native React Web action button styled with semantic Foundation tokens. | [Button showcase](button/showcase.html), `npm run story:button` | [Tests](button/Button.runtime.test.tsx) |
 

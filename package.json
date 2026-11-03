@@ -27,9 +27,12 @@
     "jsdom": "^25.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "style-dictionary": "^4.4.0",
+    "style-dictionary": "^5.7.1",
     "typescript": "^5.6.3",
-    "vite": "^5.4.21",
-    "vitest": "^2.1.8"
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "feather-icons": "^4.29.2"
   }
 }
